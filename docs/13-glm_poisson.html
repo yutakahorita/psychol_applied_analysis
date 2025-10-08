@@ -23,7 +23,7 @@
 <meta name="author" content="帝京大学文学部心理学科　堀田結孝" />
 
 
-<meta name="date" content="2025-09-28" />
+<meta name="date" content="2025-10-08" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -647,7 +647,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="chap13_Preparation" class="section level2 hasAnchor" number="14.1">
 <h2><span class="header-section-number">14.1</span> 準備<a href="13-glm_poisson.html#chap13_Preparation" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>データの可視化のために、<code>ggplot2</code>パッケージをロードする。</p>
-<div class="sourceCode" id="cb443"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb443-1"><a href="13-glm_poisson.html#cb443-1" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span></code></pre></div>
+<div class="sourceCode" id="cb451"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb451-1"><a href="13-glm_poisson.html#cb451-1" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span></code></pre></div>
 </div>
 <div id="chap13_BasisPoisson" class="section level2 hasAnchor" number="14.2">
 <h2><span class="header-section-number">14.2</span> ポアソン回帰<a href="13-glm_poisson.html#chap13_BasisPoisson" class="anchor-section" aria-label="Anchor link to header"></a></h2>
@@ -655,20 +655,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>同じく応答変数の範囲に制約がある場合の例として、次は<strong>応答変数が正の値の整数しか取らない場合</strong>（0を含む）を扱う。</p>
 <p>具体的には、応答変数が<strong>カウントデータ</strong>の場合である（非負の整数。0個、1個、2個,3個といった個数など）。この場合は、<strong>ポアソン回帰</strong>と呼ばれる一般化線形モデルを扱うのが適切とされている。</p>
 <p>サンプルデータを用いながら、ポアソン回帰について学んでいこう。以下のプログラムを実行して、サンプルデータ<code>dat_poisson</code>を作成しよう。</p>
-<div class="sourceCode" id="cb444"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb444-1"><a href="13-glm_poisson.html#cb444-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
-<span id="cb444-2"><a href="13-glm_poisson.html#cb444-2" tabindex="-1"></a>N<span class="ot">=</span> <span class="dv">50</span></span>
-<span id="cb444-3"><a href="13-glm_poisson.html#cb444-3" tabindex="-1"></a>x <span class="ot">=</span> <span class="fu">rnorm</span>(<span class="at">n=</span>N, <span class="at">mean =</span> <span class="dv">2</span>, <span class="at">sd=</span><span class="dv">1</span>)</span>
-<span id="cb444-4"><a href="13-glm_poisson.html#cb444-4" tabindex="-1"></a>lambda <span class="ot">=</span> <span class="fu">exp</span>(<span class="fl">0.01</span><span class="sc">+</span> <span class="fl">0.6</span><span class="sc">*</span>x)</span>
-<span id="cb444-5"><a href="13-glm_poisson.html#cb444-5" tabindex="-1"></a>y <span class="ot">=</span> <span class="fu">rpois</span>(<span class="at">n=</span>N, <span class="at">lambda =</span> lambda)</span>
-<span id="cb444-6"><a href="13-glm_poisson.html#cb444-6" tabindex="-1"></a>dat_poisson <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="at">y=</span>y, <span class="at">x=</span>x)</span></code></pre></div>
+<div class="sourceCode" id="cb452"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb452-1"><a href="13-glm_poisson.html#cb452-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
+<span id="cb452-2"><a href="13-glm_poisson.html#cb452-2" tabindex="-1"></a>N<span class="ot">=</span> <span class="dv">50</span></span>
+<span id="cb452-3"><a href="13-glm_poisson.html#cb452-3" tabindex="-1"></a>x <span class="ot">=</span> <span class="fu">rnorm</span>(<span class="at">n=</span>N, <span class="at">mean =</span> <span class="dv">2</span>, <span class="at">sd=</span><span class="dv">1</span>)</span>
+<span id="cb452-4"><a href="13-glm_poisson.html#cb452-4" tabindex="-1"></a>lambda <span class="ot">=</span> <span class="fu">exp</span>(<span class="fl">0.01</span><span class="sc">+</span> <span class="fl">0.6</span><span class="sc">*</span>x)</span>
+<span id="cb452-5"><a href="13-glm_poisson.html#cb452-5" tabindex="-1"></a>y <span class="ot">=</span> <span class="fu">rpois</span>(<span class="at">n=</span>N, <span class="at">lambda =</span> lambda)</span>
+<span id="cb452-6"><a href="13-glm_poisson.html#cb452-6" tabindex="-1"></a>dat_poisson <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="at">y=</span>y, <span class="at">x=</span>x)</span></code></pre></div>
 <p>xとyの関係を散布図で確認してみる。</p>
-<div class="sourceCode" id="cb445"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb445-1"><a href="13-glm_poisson.html#cb445-1" tabindex="-1"></a>ggplot2<span class="sc">::</span><span class="fu">ggplot</span>()<span class="sc">+</span></span>
-<span id="cb445-2"><a href="13-glm_poisson.html#cb445-2" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_point</span>(<span class="at">data =</span> dat_poisson, <span class="fu">aes</span>(<span class="at">x=</span>x, <span class="at">y=</span>y))</span></code></pre></div>
-<p><img src="Data-Analysis-for-Psychology_files/figure-html/unnamed-chunk-251-1.png" width="672" /></p>
+<div class="sourceCode" id="cb453"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb453-1"><a href="13-glm_poisson.html#cb453-1" tabindex="-1"></a>ggplot2<span class="sc">::</span><span class="fu">ggplot</span>()<span class="sc">+</span></span>
+<span id="cb453-2"><a href="13-glm_poisson.html#cb453-2" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_point</span>(<span class="at">data =</span> dat_poisson, <span class="fu">aes</span>(<span class="at">x=</span>x, <span class="at">y=</span>y))</span></code></pre></div>
+<p><img src="Data-Analysis-for-Psychology_files/figure-html/unnamed-chunk-253-1.png" width="672" /></p>
 <p>xが大きいほど、yが大きいという関係がありそうである。<span class="math inline">\(x\)</span>から、<span class="math inline">\(y\)</span>を予測する。</p>
 <p>まずは、線形モデルを当てはめてみよう。</p>
-<div class="sourceCode" id="cb446"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb446-1"><a href="13-glm_poisson.html#cb446-1" tabindex="-1"></a>model <span class="ot">=</span> <span class="fu">lm</span>(<span class="at">data =</span> dat_poisson, y <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> x)</span>
-<span id="cb446-2"><a href="13-glm_poisson.html#cb446-2" tabindex="-1"></a><span class="fu">summary</span>(model)</span></code></pre></div>
+<div class="sourceCode" id="cb454"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb454-1"><a href="13-glm_poisson.html#cb454-1" tabindex="-1"></a>model <span class="ot">=</span> <span class="fu">lm</span>(<span class="at">data =</span> dat_poisson, y <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> x)</span>
+<span id="cb454-2"><a href="13-glm_poisson.html#cb454-2" tabindex="-1"></a><span class="fu">summary</span>(model)</span></code></pre></div>
 <pre><code>## 
 ## Call:
 ## lm(formula = y ~ 1 + x, data = dat_poisson)
@@ -688,15 +688,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## Multiple R-squared:  0.4853, Adjusted R-squared:  0.4746 
 ## F-statistic: 45.26 on 1 and 48 DF,  p-value: 1.924e-08</code></pre>
 <p>求めた傾きと切片をもとに、<code>y</code>を予測する直線を引いてみよう。</p>
-<div class="sourceCode" id="cb448"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb448-1"><a href="13-glm_poisson.html#cb448-1" tabindex="-1"></a>predict_lm <span class="ot">=</span> <span class="fu">predict</span>(model, <span class="at">interval =</span> <span class="st">&quot;confidence&quot;</span>, <span class="at">level =</span> <span class="fl">0.95</span>) <span class="co">#直線の95%信頼区間を求める</span></span>
-<span id="cb448-2"><a href="13-glm_poisson.html#cb448-2" tabindex="-1"></a>dat_predict <span class="ot">=</span> <span class="fu">cbind</span>(dat_poisson, predict_lm)</span>
-<span id="cb448-3"><a href="13-glm_poisson.html#cb448-3" tabindex="-1"></a></span>
-<span id="cb448-4"><a href="13-glm_poisson.html#cb448-4" tabindex="-1"></a>ggplot2<span class="sc">::</span><span class="fu">ggplot</span>() <span class="sc">+</span> </span>
-<span id="cb448-5"><a href="13-glm_poisson.html#cb448-5" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_point</span>(<span class="at">data =</span> dat_poisson, <span class="fu">aes</span>(<span class="at">x=</span>x, <span class="at">y=</span>y)) <span class="sc">+</span>  </span>
-<span id="cb448-6"><a href="13-glm_poisson.html#cb448-6" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_line</span>(<span class="at">data =</span> dat_predict, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> fit)) <span class="sc">+</span> </span>
-<span id="cb448-7"><a href="13-glm_poisson.html#cb448-7" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_ribbon</span>(<span class="at">data =</span> dat_predict, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">ymax =</span> upr, <span class="at">ymin =</span> lwr), <span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span> </span>
-<span id="cb448-8"><a href="13-glm_poisson.html#cb448-8" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">scale_y_continuous</span>(<span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">20</span>,<span class="dv">1</span>))</span></code></pre></div>
-<p><img src="Data-Analysis-for-Psychology_files/figure-html/unnamed-chunk-253-1.png" width="672" /></p>
+<div class="sourceCode" id="cb456"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb456-1"><a href="13-glm_poisson.html#cb456-1" tabindex="-1"></a>predict_lm <span class="ot">=</span> <span class="fu">predict</span>(model, <span class="at">interval =</span> <span class="st">&quot;confidence&quot;</span>, <span class="at">level =</span> <span class="fl">0.95</span>) <span class="co">#直線の95%信頼区間を求める</span></span>
+<span id="cb456-2"><a href="13-glm_poisson.html#cb456-2" tabindex="-1"></a>dat_predict <span class="ot">=</span> <span class="fu">cbind</span>(dat_poisson, predict_lm)</span>
+<span id="cb456-3"><a href="13-glm_poisson.html#cb456-3" tabindex="-1"></a></span>
+<span id="cb456-4"><a href="13-glm_poisson.html#cb456-4" tabindex="-1"></a>ggplot2<span class="sc">::</span><span class="fu">ggplot</span>() <span class="sc">+</span> </span>
+<span id="cb456-5"><a href="13-glm_poisson.html#cb456-5" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_point</span>(<span class="at">data =</span> dat_poisson, <span class="fu">aes</span>(<span class="at">x=</span>x, <span class="at">y=</span>y)) <span class="sc">+</span>  </span>
+<span id="cb456-6"><a href="13-glm_poisson.html#cb456-6" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_line</span>(<span class="at">data =</span> dat_predict, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> fit)) <span class="sc">+</span> </span>
+<span id="cb456-7"><a href="13-glm_poisson.html#cb456-7" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_ribbon</span>(<span class="at">data =</span> dat_predict, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">ymax =</span> upr, <span class="at">ymin =</span> lwr), <span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span> </span>
+<span id="cb456-8"><a href="13-glm_poisson.html#cb456-8" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">scale_y_continuous</span>(<span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">20</span>,<span class="dv">1</span>))</span></code></pre></div>
+<p><img src="Data-Analysis-for-Psychology_files/figure-html/unnamed-chunk-255-1.png" width="672" /></p>
 <p>直線の左側が、0より下にはみ出てしまっている。<span class="math inline">\(y\)</span>は正の値を取る離散値（整数）である。しかし、線形モデルで求めた直線の式ではマイナスの値も予測されてしまう。</p>
 <p>ポアソン回帰は、この問題を解消してくれる。ポアソン回帰を数式で表すと、以下のようになる。</p>
 <p><span class="math display">\[
@@ -713,9 +713,9 @@ y \sim \text{Poisson}(\lambda)
 \]</span></p>
 <p><span class="math inline">\(\lambda\)</span>をパラメータとするポアソン分布から、応答変数<span class="math inline">\(y\)</span>が生成されることを示している。</p>
 <p>例えば、以下にポアソン分布から乱数を生成する<code>rpois()</code>関数を使って、<span class="math inline">\(\lambda\)</span>が3のポアソン分布から乱数を20個作ってみよう。</p>
-<div class="sourceCode" id="cb449"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb449-1"><a href="13-glm_poisson.html#cb449-1" tabindex="-1"></a>lambda <span class="ot">=</span> <span class="dv">3</span></span>
-<span id="cb449-2"><a href="13-glm_poisson.html#cb449-2" tabindex="-1"></a>rand <span class="ot">=</span> <span class="fu">rpois</span>(<span class="at">n =</span> <span class="dv">20</span>, <span class="at">lambda =</span> lambda)</span>
-<span id="cb449-3"><a href="13-glm_poisson.html#cb449-3" tabindex="-1"></a>rand</span></code></pre></div>
+<div class="sourceCode" id="cb457"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb457-1"><a href="13-glm_poisson.html#cb457-1" tabindex="-1"></a>lambda <span class="ot">=</span> <span class="dv">3</span></span>
+<span id="cb457-2"><a href="13-glm_poisson.html#cb457-2" tabindex="-1"></a>rand <span class="ot">=</span> <span class="fu">rpois</span>(<span class="at">n =</span> <span class="dv">20</span>, <span class="at">lambda =</span> lambda)</span>
+<span id="cb457-3"><a href="13-glm_poisson.html#cb457-3" tabindex="-1"></a>rand</span></code></pre></div>
 <pre><code>##  [1] 3 3 2 3 3 1 3 1 2 2 2 5 3 4 5 2 1 2 4 2</code></pre>
 <p>正の離散値（整数）が生成される。</p>
 <hr />
@@ -725,23 +725,23 @@ P(y) = \frac{\lambda^y\exp(-\lambda)}{y!} \\
 \]</span></p>
 <p><span class="math inline">\(y\)</span>は0以上の整数（0, 1, 2, 3, …）、<span class="math inline">\(P(y)\)</span>は<span class="math inline">\(y\)</span>が生じる確率とする。<br />
 ポアソン分布のかたちを決定づけるパラメータは、<span class="math inline">\(\lambda\)</span>のみである。<span class="math inline">\(\lambda\)</span>は、ポアソン分布の期待値（平均）と分散の両方を意味する。つまり、ポアソン分布は平均と分散が等しい分布である。</p>
-<div class="sourceCode" id="cb451"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb451-1"><a href="13-glm_poisson.html#cb451-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
-<span id="cb451-2"><a href="13-glm_poisson.html#cb451-2" tabindex="-1"></a>x <span class="ot">=</span> <span class="fu">rpois</span>(<span class="at">n =</span> <span class="dv">30</span>, <span class="at">lambda =</span> <span class="dv">2</span>) <span class="co">#ポアソン分布から乱数を生成する関数 lambda =2のポアソン分布から30個乱数を生成</span></span>
-<span id="cb451-3"><a href="13-glm_poisson.html#cb451-3" tabindex="-1"></a>x <span class="co">#整数が生成される</span></span></code></pre></div>
+<div class="sourceCode" id="cb459"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb459-1"><a href="13-glm_poisson.html#cb459-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
+<span id="cb459-2"><a href="13-glm_poisson.html#cb459-2" tabindex="-1"></a>x <span class="ot">=</span> <span class="fu">rpois</span>(<span class="at">n =</span> <span class="dv">30</span>, <span class="at">lambda =</span> <span class="dv">2</span>) <span class="co">#ポアソン分布から乱数を生成する関数 lambda =2のポアソン分布から30個乱数を生成</span></span>
+<span id="cb459-3"><a href="13-glm_poisson.html#cb459-3" tabindex="-1"></a>x <span class="co">#整数が生成される</span></span></code></pre></div>
 <pre><code>##  [1] 1 1 2 4 1 4 4 2 2 0 1 1 3 1 3 2 3 6 1 3 4 1 2 0 1 1 0 1 4 1</code></pre>
-<div class="sourceCode" id="cb453"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb453-1"><a href="13-glm_poisson.html#cb453-1" tabindex="-1"></a><span class="fu">mean</span>(x)</span></code></pre></div>
+<div class="sourceCode" id="cb461"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb461-1"><a href="13-glm_poisson.html#cb461-1" tabindex="-1"></a><span class="fu">mean</span>(x)</span></code></pre></div>
 <pre><code>## [1] 2</code></pre>
-<div class="sourceCode" id="cb455"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb455-1"><a href="13-glm_poisson.html#cb455-1" tabindex="-1"></a><span class="fu">var</span>(x)</span></code></pre></div>
+<div class="sourceCode" id="cb463"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb463-1"><a href="13-glm_poisson.html#cb463-1" tabindex="-1"></a><span class="fu">var</span>(x)</span></code></pre></div>
 <pre><code>## [1] 2.206897</code></pre>
-<div class="sourceCode" id="cb457"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb457-1"><a href="13-glm_poisson.html#cb457-1" tabindex="-1"></a>d <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="at">x =</span> x)</span>
-<span id="cb457-2"><a href="13-glm_poisson.html#cb457-2" tabindex="-1"></a></span>
-<span id="cb457-3"><a href="13-glm_poisson.html#cb457-3" tabindex="-1"></a>ggplot2<span class="sc">::</span><span class="fu">ggplot</span>() <span class="sc">+</span> </span>
-<span id="cb457-4"><a href="13-glm_poisson.html#cb457-4" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_histogram</span>(<span class="at">data =</span> d, <span class="fu">aes</span>(<span class="at">x=</span>x)) </span></code></pre></div>
+<div class="sourceCode" id="cb465"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb465-1"><a href="13-glm_poisson.html#cb465-1" tabindex="-1"></a>d <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="at">x =</span> x)</span>
+<span id="cb465-2"><a href="13-glm_poisson.html#cb465-2" tabindex="-1"></a></span>
+<span id="cb465-3"><a href="13-glm_poisson.html#cb465-3" tabindex="-1"></a>ggplot2<span class="sc">::</span><span class="fu">ggplot</span>() <span class="sc">+</span> </span>
+<span id="cb465-4"><a href="13-glm_poisson.html#cb465-4" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_histogram</span>(<span class="at">data =</span> d, <span class="fu">aes</span>(<span class="at">x=</span>x)) </span></code></pre></div>
 <pre><code>## `stat_bin()` using `bins = 30`. Pick
 ## better value `binwidth`.</code></pre>
-<p><img src="Data-Analysis-for-Psychology_files/figure-html/unnamed-chunk-255-1.png" width="672" /></p>
+<p><img src="Data-Analysis-for-Psychology_files/figure-html/unnamed-chunk-257-1.png" width="672" /></p>
 <p>以下に、パラメータ<span class="math inline">\(\lambda = 1\)</span>, <span class="math inline">\(\lambda = 2\)</span>, <span class="math inline">\(\lambda = 3\)</span>それぞれの場合のポアソン分布を図で示す。</p>
-<p><img src="Data-Analysis-for-Psychology_files/figure-html/unnamed-chunk-256-1.png" width="672" /></p>
+<p><img src="Data-Analysis-for-Psychology_files/figure-html/unnamed-chunk-258-1.png" width="672" /></p>
 <p>ポアソン分布は、二項分布とも関連している。</p>
 <p>二項分布のパラメータは、試行回数<span class="math inline">\(n\)</span>と成功確率<span class="math inline">\(p\)</span>であった。二項分布の期待値（平均）は<span class="math inline">\(np\)</span>、分散は<span class="math inline">\(np(1-p)\)</span>である。</p>
 <p><span class="math display">\[
@@ -759,13 +759,13 @@ Var(y) = np(1-p)\\
 \lambda = \exp(\alpha +  \beta x) \\
 \]</span></p>
 <p>なぜ指数関数（<span class="math inline">\(\exp()\)</span>）を用いるのか？<span class="math inline">\(z=\alpha +  \beta x\)</span>として、<span class="math inline">\(\lambda=\exp(z)\)</span>との関係を図で見てみよう。</p>
-<div class="sourceCode" id="cb459"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb459-1"><a href="13-glm_poisson.html#cb459-1" tabindex="-1"></a>z <span class="ot">=</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">5</span>, <span class="dv">5</span>, <span class="fl">0.1</span>) <span class="co">#-10から10まで0.1刻みのベクトルzを作成</span></span>
-<span id="cb459-2"><a href="13-glm_poisson.html#cb459-2" tabindex="-1"></a>lambda <span class="ot">=</span> <span class="fu">exp</span>(z) <span class="co">#上の式にzを代入して、lambdaを求める</span></span>
-<span id="cb459-3"><a href="13-glm_poisson.html#cb459-3" tabindex="-1"></a>d <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="at">z =</span> z, <span class="at">q =</span> lambda) <span class="co">#グラフを作るために、データフレームを作る</span></span>
-<span id="cb459-4"><a href="13-glm_poisson.html#cb459-4" tabindex="-1"></a></span>
-<span id="cb459-5"><a href="13-glm_poisson.html#cb459-5" tabindex="-1"></a>ggplot2<span class="sc">::</span><span class="fu">ggplot</span>()<span class="sc">+</span></span>
-<span id="cb459-6"><a href="13-glm_poisson.html#cb459-6" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_line</span>(<span class="at">data =</span> d, <span class="fu">aes</span>(<span class="at">x=</span>z, <span class="at">y=</span>lambda))</span></code></pre></div>
-<p><img src="Data-Analysis-for-Psychology_files/figure-html/unnamed-chunk-257-1.png" width="672" /></p>
+<div class="sourceCode" id="cb467"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb467-1"><a href="13-glm_poisson.html#cb467-1" tabindex="-1"></a>z <span class="ot">=</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">5</span>, <span class="dv">5</span>, <span class="fl">0.1</span>) <span class="co">#-10から10まで0.1刻みのベクトルzを作成</span></span>
+<span id="cb467-2"><a href="13-glm_poisson.html#cb467-2" tabindex="-1"></a>lambda <span class="ot">=</span> <span class="fu">exp</span>(z) <span class="co">#上の式にzを代入して、lambdaを求める</span></span>
+<span id="cb467-3"><a href="13-glm_poisson.html#cb467-3" tabindex="-1"></a>d <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="at">z =</span> z, <span class="at">q =</span> lambda) <span class="co">#グラフを作るために、データフレームを作る</span></span>
+<span id="cb467-4"><a href="13-glm_poisson.html#cb467-4" tabindex="-1"></a></span>
+<span id="cb467-5"><a href="13-glm_poisson.html#cb467-5" tabindex="-1"></a>ggplot2<span class="sc">::</span><span class="fu">ggplot</span>()<span class="sc">+</span></span>
+<span id="cb467-6"><a href="13-glm_poisson.html#cb467-6" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_line</span>(<span class="at">data =</span> d, <span class="fu">aes</span>(<span class="at">x=</span>z, <span class="at">y=</span>lambda))</span></code></pre></div>
+<p><img src="Data-Analysis-for-Psychology_files/figure-html/unnamed-chunk-259-1.png" width="672" /></p>
 <p>図からもわかるように、<span class="math inline">\(z\)</span>の値に関わらず、<span class="math inline">\(\lambda\)</span>は常に正の値を取る。ポアソン分布のパラメータ<span class="math inline">\(\lambda\)</span>は<span class="math inline">\(\lambda&gt;0\)</span>という制約があるため、このような変換をする必要がある。</p>
 <p>また、式の右辺を線形予測子にして整理すると、以下の式になる。</p>
 <p><span class="math display">\[
@@ -778,8 +778,8 @@ Var(y) = np(1-p)\\
 <h2><span class="header-section-number">14.3</span> Rでのポアソン回帰<a href="13-glm_poisson.html#chap13_glmpoisson" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Rでポアソン回帰をやってみよう。一般化線形モデルを扱う関数<code>glm()</code>で、以下のように確率分布にポアソン分布、リンク関数に対数を指定する。<br />
 なお、<code>(link = "log")</code>は省略しても構わない。<code>family = poisson</code>で確率分布をポアソン分布に指定すれば、自動でリンク関数を対数にしてくれる。</p>
-<div class="sourceCode" id="cb460"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb460-1"><a href="13-glm_poisson.html#cb460-1" tabindex="-1"></a>result_poisson <span class="ot">=</span> <span class="fu">glm</span>(<span class="at">data =</span> dat_poisson, y <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> x, <span class="at">family =</span> <span class="fu">poisson</span>(<span class="at">link =</span> <span class="st">&quot;log&quot;</span>))</span>
-<span id="cb460-2"><a href="13-glm_poisson.html#cb460-2" tabindex="-1"></a><span class="fu">summary</span>(result_poisson)</span></code></pre></div>
+<div class="sourceCode" id="cb468"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb468-1"><a href="13-glm_poisson.html#cb468-1" tabindex="-1"></a>result_poisson <span class="ot">=</span> <span class="fu">glm</span>(<span class="at">data =</span> dat_poisson, y <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> x, <span class="at">family =</span> <span class="fu">poisson</span>(<span class="at">link =</span> <span class="st">&quot;log&quot;</span>))</span>
+<span id="cb468-2"><a href="13-glm_poisson.html#cb468-2" tabindex="-1"></a><span class="fu">summary</span>(result_poisson)</span></code></pre></div>
 <pre><code>## 
 ## Call:
 ## glm(formula = y ~ 1 + x, family = poisson(link = &quot;log&quot;), data = dat_poisson)
@@ -799,15 +799,15 @@ Var(y) = np(1-p)\\
 ## 
 ## Number of Fisher Scoring iterations: 5</code></pre>
 <p>推定された式が<span class="math inline">\(y\)</span>をうまく予測できているか、図で確認してみよう。</p>
-<div class="sourceCode" id="cb462"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb462-1"><a href="13-glm_poisson.html#cb462-1" tabindex="-1"></a>new <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="at">x =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">4</span>, <span class="fl">0.1</span>))</span>
-<span id="cb462-2"><a href="13-glm_poisson.html#cb462-2" tabindex="-1"></a>predict_glm <span class="ot">=</span> <span class="fu">predict</span>(result_poisson, <span class="at">newdata =</span> new, <span class="at">type =</span> <span class="st">&quot;response&quot;</span>) </span>
-<span id="cb462-3"><a href="13-glm_poisson.html#cb462-3" tabindex="-1"></a>dat_predict <span class="ot">=</span> <span class="fu">data.frame</span>(new, <span class="at">y =</span> predict_glm)</span>
-<span id="cb462-4"><a href="13-glm_poisson.html#cb462-4" tabindex="-1"></a></span>
-<span id="cb462-5"><a href="13-glm_poisson.html#cb462-5" tabindex="-1"></a></span>
-<span id="cb462-6"><a href="13-glm_poisson.html#cb462-6" tabindex="-1"></a>ggplot2<span class="sc">::</span><span class="fu">ggplot</span>() <span class="sc">+</span> </span>
-<span id="cb462-7"><a href="13-glm_poisson.html#cb462-7" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_point</span>(<span class="at">data =</span> dat_poisson, <span class="fu">aes</span>(<span class="at">x=</span>x, <span class="at">y=</span>y)) <span class="sc">+</span></span>
-<span id="cb462-8"><a href="13-glm_poisson.html#cb462-8" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_line</span>(<span class="at">data =</span> dat_predict, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y)) </span></code></pre></div>
-<p><img src="Data-Analysis-for-Psychology_files/figure-html/unnamed-chunk-259-1.png" width="672" /></p>
+<div class="sourceCode" id="cb470"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb470-1"><a href="13-glm_poisson.html#cb470-1" tabindex="-1"></a>new <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="at">x =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">4</span>, <span class="fl">0.1</span>))</span>
+<span id="cb470-2"><a href="13-glm_poisson.html#cb470-2" tabindex="-1"></a>predict_glm <span class="ot">=</span> <span class="fu">predict</span>(result_poisson, <span class="at">newdata =</span> new, <span class="at">type =</span> <span class="st">&quot;response&quot;</span>) </span>
+<span id="cb470-3"><a href="13-glm_poisson.html#cb470-3" tabindex="-1"></a>dat_predict <span class="ot">=</span> <span class="fu">data.frame</span>(new, <span class="at">y =</span> predict_glm)</span>
+<span id="cb470-4"><a href="13-glm_poisson.html#cb470-4" tabindex="-1"></a></span>
+<span id="cb470-5"><a href="13-glm_poisson.html#cb470-5" tabindex="-1"></a></span>
+<span id="cb470-6"><a href="13-glm_poisson.html#cb470-6" tabindex="-1"></a>ggplot2<span class="sc">::</span><span class="fu">ggplot</span>() <span class="sc">+</span> </span>
+<span id="cb470-7"><a href="13-glm_poisson.html#cb470-7" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_point</span>(<span class="at">data =</span> dat_poisson, <span class="fu">aes</span>(<span class="at">x=</span>x, <span class="at">y=</span>y)) <span class="sc">+</span></span>
+<span id="cb470-8"><a href="13-glm_poisson.html#cb470-8" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_line</span>(<span class="at">data =</span> dat_predict, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y)) </span></code></pre></div>
+<p><img src="Data-Analysis-for-Psychology_files/figure-html/unnamed-chunk-261-1.png" width="672" /></p>
 <p>ゼロよりも大きい値が予測されており、予測線も各データ（点）の近くに位置している。</p>
 <hr />
 <p>ロジスティック回帰のときと同様に、ポアソン回帰の予測変数の傾きの値も単純に「予測変数が1単位増えたときの応答変数の変化量」を意味するわけではない点に注意が必要である。式(10)をもう一度確認すると、</p>
@@ -828,16 +828,16 @@ Var(y) = np(1-p)\\
 <div id="chap13_Overdisperse" class="section level2 hasAnchor" number="14.4">
 <h2><span class="header-section-number">14.4</span> ポアソン回帰の注意点：過分散<a href="13-glm_poisson.html#chap13_Overdisperse" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>次のプログラムを実行して、サンプルデータ<code>dat_dis</code>を作成する。</p>
-<div class="sourceCode" id="cb463"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb463-1"><a href="13-glm_poisson.html#cb463-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
-<span id="cb463-2"><a href="13-glm_poisson.html#cb463-2" tabindex="-1"></a>N<span class="ot">=</span> <span class="dv">50</span></span>
-<span id="cb463-3"><a href="13-glm_poisson.html#cb463-3" tabindex="-1"></a>x <span class="ot">=</span> <span class="fu">rnorm</span>(<span class="at">n=</span>N, <span class="at">mean =</span> <span class="dv">2</span>, <span class="at">sd =</span> <span class="dv">1</span>)</span>
-<span id="cb463-4"><a href="13-glm_poisson.html#cb463-4" tabindex="-1"></a>e <span class="ot">=</span> <span class="fu">rnorm</span>(<span class="at">n=</span>N, <span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> <span class="dv">1</span>)</span>
-<span id="cb463-5"><a href="13-glm_poisson.html#cb463-5" tabindex="-1"></a>lambda <span class="ot">=</span> <span class="fu">exp</span>(<span class="fl">0.01</span> <span class="sc">+</span> <span class="fl">0.1</span><span class="sc">*</span>x <span class="sc">+</span> e)</span>
-<span id="cb463-6"><a href="13-glm_poisson.html#cb463-6" tabindex="-1"></a>y <span class="ot">=</span> <span class="fu">rpois</span>(<span class="at">n=</span>N, <span class="at">lambda =</span> lambda)</span>
-<span id="cb463-7"><a href="13-glm_poisson.html#cb463-7" tabindex="-1"></a>dat_dis <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="at">y=</span>y, <span class="at">x=</span>x)</span></code></pre></div>
+<div class="sourceCode" id="cb471"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb471-1"><a href="13-glm_poisson.html#cb471-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
+<span id="cb471-2"><a href="13-glm_poisson.html#cb471-2" tabindex="-1"></a>N<span class="ot">=</span> <span class="dv">50</span></span>
+<span id="cb471-3"><a href="13-glm_poisson.html#cb471-3" tabindex="-1"></a>x <span class="ot">=</span> <span class="fu">rnorm</span>(<span class="at">n=</span>N, <span class="at">mean =</span> <span class="dv">2</span>, <span class="at">sd =</span> <span class="dv">1</span>)</span>
+<span id="cb471-4"><a href="13-glm_poisson.html#cb471-4" tabindex="-1"></a>e <span class="ot">=</span> <span class="fu">rnorm</span>(<span class="at">n=</span>N, <span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> <span class="dv">1</span>)</span>
+<span id="cb471-5"><a href="13-glm_poisson.html#cb471-5" tabindex="-1"></a>lambda <span class="ot">=</span> <span class="fu">exp</span>(<span class="fl">0.01</span> <span class="sc">+</span> <span class="fl">0.1</span><span class="sc">*</span>x <span class="sc">+</span> e)</span>
+<span id="cb471-6"><a href="13-glm_poisson.html#cb471-6" tabindex="-1"></a>y <span class="ot">=</span> <span class="fu">rpois</span>(<span class="at">n=</span>N, <span class="at">lambda =</span> lambda)</span>
+<span id="cb471-7"><a href="13-glm_poisson.html#cb471-7" tabindex="-1"></a>dat_dis <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="at">y=</span>y, <span class="at">x=</span>x)</span></code></pre></div>
 <p>先ほどと同様に、このデータの変数<code>x</code>と<code>y</code>を用いて、<code>x</code>から<code>y</code>を予測するポアソン回帰をやってみる。</p>
-<div class="sourceCode" id="cb464"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb464-1"><a href="13-glm_poisson.html#cb464-1" tabindex="-1"></a>result_dis <span class="ot">=</span> <span class="fu">glm</span>(<span class="at">data =</span> dat_dis, y <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> x, <span class="at">family =</span> <span class="fu">poisson</span>(<span class="at">link =</span> <span class="st">&quot;log&quot;</span>))</span>
-<span id="cb464-2"><a href="13-glm_poisson.html#cb464-2" tabindex="-1"></a><span class="fu">summary</span>(result_dis)</span></code></pre></div>
+<div class="sourceCode" id="cb472"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb472-1"><a href="13-glm_poisson.html#cb472-1" tabindex="-1"></a>result_dis <span class="ot">=</span> <span class="fu">glm</span>(<span class="at">data =</span> dat_dis, y <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> x, <span class="at">family =</span> <span class="fu">poisson</span>(<span class="at">link =</span> <span class="st">&quot;log&quot;</span>))</span>
+<span id="cb472-2"><a href="13-glm_poisson.html#cb472-2" tabindex="-1"></a><span class="fu">summary</span>(result_dis)</span></code></pre></div>
 <pre><code>## 
 ## Call:
 ## glm(formula = y ~ 1 + x, family = poisson(link = &quot;log&quot;), data = dat_dis)
@@ -857,13 +857,13 @@ Var(y) = np(1-p)\\
 ## 
 ## Number of Fisher Scoring iterations: 6</code></pre>
 <p><code>x</code>は<code>y</code>を予測する上で、かなり強い効果を有しているように見える。しかし、単純にそのような結論を出すことはできない。このデータでは、分散が平均よりも過剰に大きい<strong>過分散</strong>が生じているためである。</p>
-<div class="sourceCode" id="cb466"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb466-1"><a href="13-glm_poisson.html#cb466-1" tabindex="-1"></a><span class="fu">mean</span>(dat_dis<span class="sc">$</span>y)</span></code></pre></div>
+<div class="sourceCode" id="cb474"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb474-1"><a href="13-glm_poisson.html#cb474-1" tabindex="-1"></a><span class="fu">mean</span>(dat_dis<span class="sc">$</span>y)</span></code></pre></div>
 <pre><code>## [1] 2.32</code></pre>
-<div class="sourceCode" id="cb468"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb468-1"><a href="13-glm_poisson.html#cb468-1" tabindex="-1"></a><span class="fu">var</span>(dat_dis<span class="sc">$</span>y)</span></code></pre></div>
+<div class="sourceCode" id="cb476"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb476-1"><a href="13-glm_poisson.html#cb476-1" tabindex="-1"></a><span class="fu">var</span>(dat_dis<span class="sc">$</span>y)</span></code></pre></div>
 <pre><code>## [1] 12.8751</code></pre>
 <div id="chap13_Overdisperse1" class="section level3 hasAnchor" number="14.4.1">
 <h3><span class="header-section-number">14.4.1</span> 過分散とは？<a href="13-glm_poisson.html#chap13_Overdisperse1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p><img src="Data-Analysis-for-Psychology_files/figure-html/unnamed-chunk-263-1.png" width="672" /></p>
+<p><img src="Data-Analysis-for-Psychology_files/figure-html/unnamed-chunk-265-1.png" width="672" /></p>
 <p>（<code>y</code>のヒストグラム。白いバーが実際の<code>y</code>の分布、薄い赤のバーはパラメータ<span class="math inline">\(\lambda\)</span>が<code>y</code>の実際の平均と等しい場合のポアソン分布）</p>
 <p>ポアソン分布は、平均と分散が等しい分布である。しかし、現実にはデータの平均と分散が等しいケースは少ない。逆に、分散が平均よりもかなり大きいケースがよく見られる。</p>
 <p>分散が平均よりも大きいときにポアソン回帰を使うと、分散を実際よりも小さいと推定してしまい、予測変数が平均に与える効果を過大に評価してしまう恐れがある（p値を過剰に小さく判断してしまい、第一種の過誤を犯しやすくなる。ポアソン回帰を行うとかなり低いp値が出ることが多いのは、このためである）。この問題は、<strong>過分散(overdispersion)</strong>と呼ばれる。</p>
@@ -871,8 +871,8 @@ Var(y) = np(1-p)\\
 <div id="chap13_CheckOverdisperse" class="section level3 hasAnchor" number="14.4.2">
 <h3><span class="header-section-number">14.4.2</span> 過分散の確認方法<a href="13-glm_poisson.html#chap13_CheckOverdisperse" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p><code>performance</code>パッケージの<code>check_overdispersion()</code>関数で過分散の有無を確認することができる。</p>
-<div class="sourceCode" id="cb470"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb470-1"><a href="13-glm_poisson.html#cb470-1" tabindex="-1"></a><span class="fu">library</span>(performance)</span>
-<span id="cb470-2"><a href="13-glm_poisson.html#cb470-2" tabindex="-1"></a>performance<span class="sc">::</span><span class="fu">check_overdispersion</span>(result_dis)</span></code></pre></div>
+<div class="sourceCode" id="cb478"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb478-1"><a href="13-glm_poisson.html#cb478-1" tabindex="-1"></a><span class="fu">library</span>(performance)</span>
+<span id="cb478-2"><a href="13-glm_poisson.html#cb478-2" tabindex="-1"></a>performance<span class="sc">::</span><span class="fu">check_overdispersion</span>(result_dis)</span></code></pre></div>
 <pre><code>## # Overdispersion test
 ## 
 ##        dispersion ratio =   4.048
@@ -910,19 +910,19 @@ Var(y) = np(1-p)\\
 Temp: 気温（摂氏）<br />
 Cloud: 天気（0 = 晴れ, 1 = くもり）<br />
 Humid: 湿度（%）</p>
-<div class="sourceCode" id="cb473"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb473-1"><a href="13-glm_poisson.html#cb473-1" tabindex="-1"></a>Birds <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">9</span>, <span class="dv">8</span>, <span class="dv">3</span>, <span class="dv">6</span>, <span class="dv">6</span>, <span class="dv">5</span>, <span class="dv">5</span>, <span class="dv">7</span>, <span class="dv">2</span>, <span class="dv">9</span>, <span class="dv">3</span>, <span class="dv">13</span>, <span class="dv">5</span>, <span class="dv">7</span>, <span class="dv">5</span>, <span class="dv">5</span>, <span class="dv">10</span>, <span class="dv">10</span>, <span class="dv">13</span>)</span>
-<span id="cb473-2"><a href="13-glm_poisson.html#cb473-2" tabindex="-1"></a>Temp <span class="ot">=</span> <span class="fu">c</span>(<span class="fl">23.8</span>, <span class="fl">25.3</span>, <span class="fl">26.1</span>, <span class="fl">22.7</span>, <span class="fl">25.4</span>, <span class="fl">25.5</span>, <span class="fl">24.4</span>, <span class="fl">24.5</span>, </span>
-<span id="cb473-3"><a href="13-glm_poisson.html#cb473-3" tabindex="-1"></a>                  <span class="fl">24.4</span>, <span class="fl">24.1</span>, <span class="fl">24.5</span>, <span class="fl">24.0</span>, <span class="fl">24.2</span>, <span class="fl">25.1</span>, <span class="fl">26.0</span>, <span class="fl">24.9</span>,</span>
-<span id="cb473-4"><a href="13-glm_poisson.html#cb473-4" tabindex="-1"></a>                  <span class="fl">24.5</span>, <span class="fl">24.1</span>, <span class="fl">24.2</span>, <span class="fl">27.4</span>)</span>
-<span id="cb473-5"><a href="13-glm_poisson.html#cb473-5" tabindex="-1"></a>Cloud <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>)</span>
-<span id="cb473-6"><a href="13-glm_poisson.html#cb473-6" tabindex="-1"></a>Humid <span class="ot">=</span> <span class="fu">c</span>(<span class="fl">50.3</span>, <span class="fl">49.0</span>, <span class="fl">49.1</span>, <span class="fl">50.9</span>, <span class="fl">48.6</span>, <span class="fl">47.1</span>, <span class="fl">51.1</span>, <span class="fl">48.0</span>, <span class="fl">50.0</span>, </span>
-<span id="cb473-7"><a href="13-glm_poisson.html#cb473-7" tabindex="-1"></a>                   <span class="fl">48.1</span>, <span class="fl">52.2</span>, <span class="fl">49.0</span>, <span class="fl">48.6</span>, <span class="fl">49.0</span>, <span class="fl">46.7</span>, <span class="fl">47.7</span>, <span class="fl">45.6</span>, <span class="fl">47.3</span>, </span>
-<span id="cb473-8"><a href="13-glm_poisson.html#cb473-8" tabindex="-1"></a>                   <span class="fl">49.4</span>, <span class="fl">49.1</span>)</span>
-<span id="cb473-9"><a href="13-glm_poisson.html#cb473-9" tabindex="-1"></a></span>
-<span id="cb473-10"><a href="13-glm_poisson.html#cb473-10" tabindex="-1"></a>data_q02 <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="at">Birds =</span> Birds, </span>
-<span id="cb473-11"><a href="13-glm_poisson.html#cb473-11" tabindex="-1"></a>                       <span class="at">Temp =</span> Temp, </span>
-<span id="cb473-12"><a href="13-glm_poisson.html#cb473-12" tabindex="-1"></a>                       <span class="at">Cloud =</span> Cloud, </span>
-<span id="cb473-13"><a href="13-glm_poisson.html#cb473-13" tabindex="-1"></a>                       <span class="at">Humid =</span> Humid)</span></code></pre></div>
+<div class="sourceCode" id="cb481"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb481-1"><a href="13-glm_poisson.html#cb481-1" tabindex="-1"></a>Birds <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">9</span>, <span class="dv">8</span>, <span class="dv">3</span>, <span class="dv">6</span>, <span class="dv">6</span>, <span class="dv">5</span>, <span class="dv">5</span>, <span class="dv">7</span>, <span class="dv">2</span>, <span class="dv">9</span>, <span class="dv">3</span>, <span class="dv">13</span>, <span class="dv">5</span>, <span class="dv">7</span>, <span class="dv">5</span>, <span class="dv">5</span>, <span class="dv">10</span>, <span class="dv">10</span>, <span class="dv">13</span>)</span>
+<span id="cb481-2"><a href="13-glm_poisson.html#cb481-2" tabindex="-1"></a>Temp <span class="ot">=</span> <span class="fu">c</span>(<span class="fl">23.8</span>, <span class="fl">25.3</span>, <span class="fl">26.1</span>, <span class="fl">22.7</span>, <span class="fl">25.4</span>, <span class="fl">25.5</span>, <span class="fl">24.4</span>, <span class="fl">24.5</span>, </span>
+<span id="cb481-3"><a href="13-glm_poisson.html#cb481-3" tabindex="-1"></a>                  <span class="fl">24.4</span>, <span class="fl">24.1</span>, <span class="fl">24.5</span>, <span class="fl">24.0</span>, <span class="fl">24.2</span>, <span class="fl">25.1</span>, <span class="fl">26.0</span>, <span class="fl">24.9</span>,</span>
+<span id="cb481-4"><a href="13-glm_poisson.html#cb481-4" tabindex="-1"></a>                  <span class="fl">24.5</span>, <span class="fl">24.1</span>, <span class="fl">24.2</span>, <span class="fl">27.4</span>)</span>
+<span id="cb481-5"><a href="13-glm_poisson.html#cb481-5" tabindex="-1"></a>Cloud <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>)</span>
+<span id="cb481-6"><a href="13-glm_poisson.html#cb481-6" tabindex="-1"></a>Humid <span class="ot">=</span> <span class="fu">c</span>(<span class="fl">50.3</span>, <span class="fl">49.0</span>, <span class="fl">49.1</span>, <span class="fl">50.9</span>, <span class="fl">48.6</span>, <span class="fl">47.1</span>, <span class="fl">51.1</span>, <span class="fl">48.0</span>, <span class="fl">50.0</span>, </span>
+<span id="cb481-7"><a href="13-glm_poisson.html#cb481-7" tabindex="-1"></a>                   <span class="fl">48.1</span>, <span class="fl">52.2</span>, <span class="fl">49.0</span>, <span class="fl">48.6</span>, <span class="fl">49.0</span>, <span class="fl">46.7</span>, <span class="fl">47.7</span>, <span class="fl">45.6</span>, <span class="fl">47.3</span>, </span>
+<span id="cb481-8"><a href="13-glm_poisson.html#cb481-8" tabindex="-1"></a>                   <span class="fl">49.4</span>, <span class="fl">49.1</span>)</span>
+<span id="cb481-9"><a href="13-glm_poisson.html#cb481-9" tabindex="-1"></a></span>
+<span id="cb481-10"><a href="13-glm_poisson.html#cb481-10" tabindex="-1"></a>data_q02 <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="at">Birds =</span> Birds, </span>
+<span id="cb481-11"><a href="13-glm_poisson.html#cb481-11" tabindex="-1"></a>                       <span class="at">Temp =</span> Temp, </span>
+<span id="cb481-12"><a href="13-glm_poisson.html#cb481-12" tabindex="-1"></a>                       <span class="at">Cloud =</span> Cloud, </span>
+<span id="cb481-13"><a href="13-glm_poisson.html#cb481-13" tabindex="-1"></a>                       <span class="at">Humid =</span> Humid)</span></code></pre></div>
 <p>Birdsを応答変数、Temp、Cloud、Humidの3つを予測変数としたポアソン回帰を行い、それぞれの予測変数の係数について報告せよ。また、5%水準で有意な効果を持っていた予測変数を報告せよ。</p>
 
 </div>

@@ -23,7 +23,7 @@
 <meta name="author" content="帝京大学文学部心理学科　堀田結孝" />
 
 
-<meta name="date" content="2025-09-28" />
+<meta name="date" content="2025-10-08" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -648,7 +648,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="chap10_preparation" class="section level2 hasAnchor" number="11.1">
 <h2><span class="header-section-number">11.1</span> 準備<a href="10-linear_model.html#chap10_preparation" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>データの可視化のために、<code>ggplot2</code>パッケージをロードする。</p>
-<div class="sourceCode" id="cb353"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb353-1"><a href="10-linear_model.html#cb353-1" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span></code></pre></div>
+<div class="sourceCode" id="cb361"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb361-1"><a href="10-linear_model.html#cb361-1" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span></code></pre></div>
 </div>
 <div id="chap10_Intro" class="section level2 hasAnchor" number="11.2">
 <h2><span class="header-section-number">11.2</span> 線形モデルの概要<a href="10-linear_model.html#chap10_Intro" class="anchor-section" aria-label="Anchor link to header"></a></h2>
@@ -692,16 +692,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>実際に、Rで線形モデルの解析をしてみよう。</p>
 <p>Rには線形モデルを扱える関数<code>lm()</code>がある。<code>iris</code>データを使って解析をしてみよう。</p>
 <p><code>Sepal.Length</code>と<code>Petal.Length</code>の関係を散布図で確認する。</p>
-<div class="sourceCode" id="cb354"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb354-1"><a href="10-linear_model.html#cb354-1" tabindex="-1"></a>p <span class="ot">=</span> ggplot2<span class="sc">::</span><span class="fu">ggplot</span>() <span class="sc">+</span> </span>
-<span id="cb354-2"><a href="10-linear_model.html#cb354-2" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_point</span>(<span class="at">data =</span> iris, <span class="fu">aes</span>(<span class="at">x =</span> Sepal.Length, <span class="at">y =</span> Petal.Length))</span>
-<span id="cb354-3"><a href="10-linear_model.html#cb354-3" tabindex="-1"></a>p</span></code></pre></div>
-<p><img src="Data-Analysis-for-Psychology_files/figure-html/unnamed-chunk-189-1.png" width="672" /></p>
+<div class="sourceCode" id="cb362"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb362-1"><a href="10-linear_model.html#cb362-1" tabindex="-1"></a>p <span class="ot">=</span> ggplot2<span class="sc">::</span><span class="fu">ggplot</span>() <span class="sc">+</span> </span>
+<span id="cb362-2"><a href="10-linear_model.html#cb362-2" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_point</span>(<span class="at">data =</span> iris, <span class="fu">aes</span>(<span class="at">x =</span> Sepal.Length, <span class="at">y =</span> Petal.Length))</span>
+<span id="cb362-3"><a href="10-linear_model.html#cb362-3" tabindex="-1"></a>p</span></code></pre></div>
+<p><img src="Data-Analysis-for-Psychology_files/figure-html/unnamed-chunk-191-1.png" width="672" /></p>
 <p><code>Sepal.Length</code>が大きいほど<code>Petal.Length</code>が大きいという関係（正の相関）がありそうである。そこで、<code>Sepal.Length</code>の大きさから、<code>Petal.Length</code>の大きさを予測することを試みる。</p>
 <p><code>lm()</code>関数に、「応答変数~ 1 + 予測変数」のかたちで入力する。以下のプログラムを実行してみよう。<br />
 ＊<code>1 +</code>の部分は省略しても構わない。<code>1 +</code>は線形予測子の切片の部分を表している。省略しても、<code>lm()</code>は自動で切片の値を求めてくれる。</p>
-<div class="sourceCode" id="cb355"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb355-1"><a href="10-linear_model.html#cb355-1" tabindex="-1"></a>result <span class="ot">=</span> <span class="fu">lm</span>(<span class="at">data =</span> iris, Petal.Length <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> Sepal.Length) </span></code></pre></div>
+<div class="sourceCode" id="cb363"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb363-1"><a href="10-linear_model.html#cb363-1" tabindex="-1"></a>result <span class="ot">=</span> <span class="fu">lm</span>(<span class="at">data =</span> iris, Petal.Length <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> Sepal.Length) </span></code></pre></div>
 <p>結果を<code>result</code>という名前でいったん保存した（名前は<code>result</code>以外でも構わない）。<code>summary()</code>関数の中に、<code>result</code>を入れて実行すると詳細な結果が出力される。</p>
-<div class="sourceCode" id="cb356"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb356-1"><a href="10-linear_model.html#cb356-1" tabindex="-1"></a><span class="fu">summary</span>(result)</span></code></pre></div>
+<div class="sourceCode" id="cb364"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb364-1"><a href="10-linear_model.html#cb364-1" tabindex="-1"></a><span class="fu">summary</span>(result)</span></code></pre></div>
 <pre><code>## 
 ## Call:
 ## lm(formula = Petal.Length ~ 1 + Sepal.Length, data = iris)
@@ -742,11 +742,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   Petal.Length =  -7.10 + 1.86 Sepal.Length\\ \tag{3}
 \end{equation}
 \]</span></p>
-<div class="sourceCode" id="cb358"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb358-1"><a href="10-linear_model.html#cb358-1" tabindex="-1"></a>p <span class="ot">=</span> ggplot2<span class="sc">::</span><span class="fu">ggplot</span>() <span class="sc">+</span> </span>
-<span id="cb358-2"><a href="10-linear_model.html#cb358-2" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_point</span>(<span class="at">data =</span> iris, <span class="fu">aes</span>(<span class="at">x =</span> Sepal.Length, <span class="at">y =</span> Petal.Length)) <span class="sc">+</span></span>
-<span id="cb358-3"><a href="10-linear_model.html#cb358-3" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_smooth</span>(<span class="at">data =</span> iris, <span class="fu">aes</span>(<span class="at">x =</span> Sepal.Length, <span class="at">y =</span> Petal.Length), <span class="at">formula =</span> y<span class="sc">~</span>x, <span class="at">method =</span> <span class="st">&quot;lm&quot;</span>, <span class="at">se =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb358-4"><a href="10-linear_model.html#cb358-4" tabindex="-1"></a>p</span></code></pre></div>
-<p><img src="Data-Analysis-for-Psychology_files/figure-html/unnamed-chunk-192-1.png" width="672" /></p>
+<div class="sourceCode" id="cb366"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb366-1"><a href="10-linear_model.html#cb366-1" tabindex="-1"></a>p <span class="ot">=</span> ggplot2<span class="sc">::</span><span class="fu">ggplot</span>() <span class="sc">+</span> </span>
+<span id="cb366-2"><a href="10-linear_model.html#cb366-2" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_point</span>(<span class="at">data =</span> iris, <span class="fu">aes</span>(<span class="at">x =</span> Sepal.Length, <span class="at">y =</span> Petal.Length)) <span class="sc">+</span></span>
+<span id="cb366-3"><a href="10-linear_model.html#cb366-3" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_smooth</span>(<span class="at">data =</span> iris, <span class="fu">aes</span>(<span class="at">x =</span> Sepal.Length, <span class="at">y =</span> Petal.Length), <span class="at">formula =</span> y<span class="sc">~</span>x, <span class="at">method =</span> <span class="st">&quot;lm&quot;</span>, <span class="at">se =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb366-4"><a href="10-linear_model.html#cb366-4" tabindex="-1"></a>p</span></code></pre></div>
+<p><img src="Data-Analysis-for-Psychology_files/figure-html/unnamed-chunk-194-1.png" width="672" /></p>
 <p>線形モデルでは、直線の式で予測変数と応答変数の関係を表現する。実際のデータ（散布図の点）とのズレが最小になるような、直線の式を推定する（予測値と実測値とのズレが最小になるのが、最も良い予測である）。</p>
 </div>
 <div id="chap10_MLE" class="section level2 hasAnchor" number="11.4">
@@ -770,39 +770,39 @@ L = (1-\theta)^3 \theta^2 \tag{4}
 \log L = \log(1-\theta)+\log(1-\theta)+\log(1-\theta)+\log(\theta)+\log(\theta) \tag{5}
 \]</span></p>
 <p>以下のプログラムで、上のコイン投げの例で最も対数尤度が高くなるときの<span class="math inline">\(\theta\)</span>を求めている。maximumが対数尤度が最も高くなるパラメータの値で、objectiveがそのときの対数尤度である。（プログラムの意味については理解しなくて良い）</p>
-<div class="sourceCode" id="cb359"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb359-1"><a href="10-linear_model.html#cb359-1" tabindex="-1"></a>D <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>) <span class="co">#観測データのベクトル：1=表、0=裏とする</span></span>
-<span id="cb359-2"><a href="10-linear_model.html#cb359-2" tabindex="-1"></a></span>
-<span id="cb359-3"><a href="10-linear_model.html#cb359-3" tabindex="-1"></a><span class="co">#対数尤度を求める関数</span></span>
-<span id="cb359-4"><a href="10-linear_model.html#cb359-4" tabindex="-1"></a>LogLikelihood <span class="ot">=</span> <span class="cf">function</span>(x){</span>
-<span id="cb359-5"><a href="10-linear_model.html#cb359-5" tabindex="-1"></a>  <span class="fu">return</span>(<span class="cf">function</span>(theta){</span>
-<span id="cb359-6"><a href="10-linear_model.html#cb359-6" tabindex="-1"></a>    L <span class="ot">=</span> <span class="dv">1</span></span>
-<span id="cb359-7"><a href="10-linear_model.html#cb359-7" tabindex="-1"></a>    <span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(x)){</span>
-<span id="cb359-8"><a href="10-linear_model.html#cb359-8" tabindex="-1"></a>      L <span class="ot">=</span> L <span class="sc">*</span> theta<span class="sc">^</span>(x[i]) <span class="sc">*</span> (<span class="dv">1</span><span class="sc">-</span>theta)<span class="sc">^</span>(<span class="dv">1</span><span class="sc">-</span>x[i])</span>
-<span id="cb359-9"><a href="10-linear_model.html#cb359-9" tabindex="-1"></a>    }</span>
-<span id="cb359-10"><a href="10-linear_model.html#cb359-10" tabindex="-1"></a>    <span class="fu">return</span>(<span class="fu">log</span>(L))</span>
-<span id="cb359-11"><a href="10-linear_model.html#cb359-11" tabindex="-1"></a>  })</span>
-<span id="cb359-12"><a href="10-linear_model.html#cb359-12" tabindex="-1"></a>}</span>
-<span id="cb359-13"><a href="10-linear_model.html#cb359-13" tabindex="-1"></a></span>
-<span id="cb359-14"><a href="10-linear_model.html#cb359-14" tabindex="-1"></a><span class="co">#optimize関数で、対数尤度が最も高くなるパラメータthetaを推定する</span></span>
-<span id="cb359-15"><a href="10-linear_model.html#cb359-15" tabindex="-1"></a>result_mlm <span class="ot">=</span> <span class="fu">optimize</span>(<span class="at">f =</span> <span class="fu">LogLikelihood</span>(D), <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="at">maximum=</span><span class="cn">TRUE</span>) </span>
-<span id="cb359-16"><a href="10-linear_model.html#cb359-16" tabindex="-1"></a></span>
-<span id="cb359-17"><a href="10-linear_model.html#cb359-17" tabindex="-1"></a>result_mlm</span></code></pre></div>
+<div class="sourceCode" id="cb367"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb367-1"><a href="10-linear_model.html#cb367-1" tabindex="-1"></a>D <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>) <span class="co">#観測データのベクトル：1=表、0=裏とする</span></span>
+<span id="cb367-2"><a href="10-linear_model.html#cb367-2" tabindex="-1"></a></span>
+<span id="cb367-3"><a href="10-linear_model.html#cb367-3" tabindex="-1"></a><span class="co">#対数尤度を求める関数</span></span>
+<span id="cb367-4"><a href="10-linear_model.html#cb367-4" tabindex="-1"></a>LogLikelihood <span class="ot">=</span> <span class="cf">function</span>(x){</span>
+<span id="cb367-5"><a href="10-linear_model.html#cb367-5" tabindex="-1"></a>  <span class="fu">return</span>(<span class="cf">function</span>(theta){</span>
+<span id="cb367-6"><a href="10-linear_model.html#cb367-6" tabindex="-1"></a>    L <span class="ot">=</span> <span class="dv">1</span></span>
+<span id="cb367-7"><a href="10-linear_model.html#cb367-7" tabindex="-1"></a>    <span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(x)){</span>
+<span id="cb367-8"><a href="10-linear_model.html#cb367-8" tabindex="-1"></a>      L <span class="ot">=</span> L <span class="sc">*</span> theta<span class="sc">^</span>(x[i]) <span class="sc">*</span> (<span class="dv">1</span><span class="sc">-</span>theta)<span class="sc">^</span>(<span class="dv">1</span><span class="sc">-</span>x[i])</span>
+<span id="cb367-9"><a href="10-linear_model.html#cb367-9" tabindex="-1"></a>    }</span>
+<span id="cb367-10"><a href="10-linear_model.html#cb367-10" tabindex="-1"></a>    <span class="fu">return</span>(<span class="fu">log</span>(L))</span>
+<span id="cb367-11"><a href="10-linear_model.html#cb367-11" tabindex="-1"></a>  })</span>
+<span id="cb367-12"><a href="10-linear_model.html#cb367-12" tabindex="-1"></a>}</span>
+<span id="cb367-13"><a href="10-linear_model.html#cb367-13" tabindex="-1"></a></span>
+<span id="cb367-14"><a href="10-linear_model.html#cb367-14" tabindex="-1"></a><span class="co">#optimize関数で、対数尤度が最も高くなるパラメータthetaを推定する</span></span>
+<span id="cb367-15"><a href="10-linear_model.html#cb367-15" tabindex="-1"></a>result_mlm <span class="ot">=</span> <span class="fu">optimize</span>(<span class="at">f =</span> <span class="fu">LogLikelihood</span>(D), <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="at">maximum=</span><span class="cn">TRUE</span>) </span>
+<span id="cb367-16"><a href="10-linear_model.html#cb367-16" tabindex="-1"></a></span>
+<span id="cb367-17"><a href="10-linear_model.html#cb367-17" tabindex="-1"></a>result_mlm</span></code></pre></div>
 <pre><code>## $maximum
 ## [1] 0.4000015
 ## 
 ## $objective
 ## [1] -3.365058</code></pre>
 <p>パラメータ<span class="math inline">\(\theta\)</span>と対数尤度<span class="math inline">\(\log L\)</span>との関係を以下に示す。</p>
-<div class="sourceCode" id="cb361"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb361-1"><a href="10-linear_model.html#cb361-1" tabindex="-1"></a><span class="co">#図示する</span></span>
-<span id="cb361-2"><a href="10-linear_model.html#cb361-2" tabindex="-1"></a>theta <span class="ot">=</span> <span class="fu">seq</span>(<span class="fl">0.01</span>,<span class="fl">0.99</span>,<span class="fl">0.01</span>)</span>
-<span id="cb361-3"><a href="10-linear_model.html#cb361-3" tabindex="-1"></a>logL <span class="ot">=</span> <span class="fu">log</span>(theta)<span class="sc">+</span><span class="fu">log</span>(<span class="dv">1</span><span class="sc">-</span>theta)<span class="sc">+</span><span class="fu">log</span>(theta)<span class="sc">+</span><span class="fu">log</span>(<span class="dv">1</span><span class="sc">-</span>theta) <span class="sc">+</span> <span class="fu">log</span>(<span class="dv">1</span><span class="sc">-</span>theta)</span>
-<span id="cb361-4"><a href="10-linear_model.html#cb361-4" tabindex="-1"></a></span>
-<span id="cb361-5"><a href="10-linear_model.html#cb361-5" tabindex="-1"></a>data_mlm <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="at">x=</span>theta, <span class="at">y=</span>logL)</span>
-<span id="cb361-6"><a href="10-linear_model.html#cb361-6" tabindex="-1"></a></span>
-<span id="cb361-7"><a href="10-linear_model.html#cb361-7" tabindex="-1"></a>ggplot2<span class="sc">::</span><span class="fu">ggplot</span>() <span class="sc">+</span></span>
-<span id="cb361-8"><a href="10-linear_model.html#cb361-8" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_line</span>(<span class="at">data=</span>data_mlm, <span class="fu">aes</span>(<span class="at">x=</span>x, <span class="at">y=</span> y), <span class="at">size=</span><span class="dv">1</span>) <span class="sc">+</span> </span>
-<span id="cb361-9"><a href="10-linear_model.html#cb361-9" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_vline</span>(<span class="at">xintercept =</span> result_mlm<span class="sc">$</span>maximum, <span class="at">linetype=</span><span class="st">&quot;dashed&quot;</span>, <span class="at">colour=</span><span class="st">&quot;red&quot;</span>, <span class="at">size=</span><span class="dv">1</span>) <span class="sc">+</span></span>
-<span id="cb361-10"><a href="10-linear_model.html#cb361-10" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">labs</span>(<span class="at">x =</span><span class="st">&quot;theta&quot;</span>, <span class="at">y=</span> <span class="st">&quot;log L&quot;</span>) </span></code></pre></div>
+<div class="sourceCode" id="cb369"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb369-1"><a href="10-linear_model.html#cb369-1" tabindex="-1"></a><span class="co">#図示する</span></span>
+<span id="cb369-2"><a href="10-linear_model.html#cb369-2" tabindex="-1"></a>theta <span class="ot">=</span> <span class="fu">seq</span>(<span class="fl">0.01</span>,<span class="fl">0.99</span>,<span class="fl">0.01</span>)</span>
+<span id="cb369-3"><a href="10-linear_model.html#cb369-3" tabindex="-1"></a>logL <span class="ot">=</span> <span class="fu">log</span>(theta)<span class="sc">+</span><span class="fu">log</span>(<span class="dv">1</span><span class="sc">-</span>theta)<span class="sc">+</span><span class="fu">log</span>(theta)<span class="sc">+</span><span class="fu">log</span>(<span class="dv">1</span><span class="sc">-</span>theta) <span class="sc">+</span> <span class="fu">log</span>(<span class="dv">1</span><span class="sc">-</span>theta)</span>
+<span id="cb369-4"><a href="10-linear_model.html#cb369-4" tabindex="-1"></a></span>
+<span id="cb369-5"><a href="10-linear_model.html#cb369-5" tabindex="-1"></a>data_mlm <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="at">x=</span>theta, <span class="at">y=</span>logL)</span>
+<span id="cb369-6"><a href="10-linear_model.html#cb369-6" tabindex="-1"></a></span>
+<span id="cb369-7"><a href="10-linear_model.html#cb369-7" tabindex="-1"></a>ggplot2<span class="sc">::</span><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb369-8"><a href="10-linear_model.html#cb369-8" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_line</span>(<span class="at">data=</span>data_mlm, <span class="fu">aes</span>(<span class="at">x=</span>x, <span class="at">y=</span> y), <span class="at">size=</span><span class="dv">1</span>) <span class="sc">+</span> </span>
+<span id="cb369-9"><a href="10-linear_model.html#cb369-9" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_vline</span>(<span class="at">xintercept =</span> result_mlm<span class="sc">$</span>maximum, <span class="at">linetype=</span><span class="st">&quot;dashed&quot;</span>, <span class="at">colour=</span><span class="st">&quot;red&quot;</span>, <span class="at">size=</span><span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb369-10"><a href="10-linear_model.html#cb369-10" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">labs</span>(<span class="at">x =</span><span class="st">&quot;theta&quot;</span>, <span class="at">y=</span> <span class="st">&quot;log L&quot;</span>) </span></code></pre></div>
 <pre><code>## Warning: Using `size` aesthetic for lines was
 ## deprecated in ggplot2 3.4.0.
 ## ℹ Please use `linewidth` instead.
@@ -812,7 +812,7 @@ L = (1-\theta)^3 \theta^2 \tag{4}
 ## `lifecycle::last_lifecycle_warnings()`
 ## to see where this warning was
 ## generated.</code></pre>
-<p><img src="Data-Analysis-for-Psychology_files/figure-html/unnamed-chunk-194-1.png" width="672" /></p>
+<p><img src="Data-Analysis-for-Psychology_files/figure-html/unnamed-chunk-196-1.png" width="672" /></p>
 <p>対数尤度が最も大きくなるのは、<span class="math inline">\(\theta=\)</span> 0.4のときである（表が出た割合である2/5と一致）。</p>
 <p>ここではわかりやすくパラメータを1つのみ使って説明しているが、線形モデルの傾きや切片の推定も同じである。上の例の<span class="math inline">\(\theta\)</span>を線形予測子に置き換えて同様の計算をする。</p>
 <hr />
@@ -822,7 +822,7 @@ L = (1-\theta)^3 \theta^2 \tag{4}
 <div id="chap10_Practice" class="section level2 hasAnchor" number="11.5">
 <h2><span class="header-section-number">11.5</span> 確認問題<a href="10-linear_model.html#chap10_Practice" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Rに入っているサンプルデータ<code>trees</code>を使って、線形モデルの結果の解釈の仕方と<code>lm()</code>関数の扱い方を復習をする。</p>
-<div class="sourceCode" id="cb363"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb363-1"><a href="10-linear_model.html#cb363-1" tabindex="-1"></a><span class="fu">head</span>(trees)</span></code></pre></div>
+<div class="sourceCode" id="cb371"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb371-1"><a href="10-linear_model.html#cb371-1" tabindex="-1"></a><span class="fu">head</span>(trees)</span></code></pre></div>
 <pre><code>##   Girth Height Volume
 ## 1   8.3     70   10.3
 ## 2   8.6     65   10.3
