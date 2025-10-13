@@ -808,14 +808,15 @@ L = (1-\theta)^3 \theta^2 \tag{4}
 <span id="cb369-8"><a href="10-linear_model.html#cb369-8" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_line</span>(<span class="at">data=</span>data_mlm, <span class="fu">aes</span>(<span class="at">x=</span>x, <span class="at">y=</span> y), <span class="at">size=</span><span class="dv">1</span>) <span class="sc">+</span> </span>
 <span id="cb369-9"><a href="10-linear_model.html#cb369-9" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_vline</span>(<span class="at">xintercept =</span> result_mlm<span class="sc">$</span>maximum, <span class="at">linetype=</span><span class="st">&quot;dashed&quot;</span>, <span class="at">colour=</span><span class="st">&quot;red&quot;</span>, <span class="at">size=</span><span class="dv">1</span>) <span class="sc">+</span></span>
 <span id="cb369-10"><a href="10-linear_model.html#cb369-10" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">labs</span>(<span class="at">x =</span><span class="st">&quot;theta&quot;</span>, <span class="at">y=</span> <span class="st">&quot;log L&quot;</span>) </span></code></pre></div>
-<pre><code>## Warning: Using `size` aesthetic for lines was
-## deprecated in ggplot2 3.4.0.
+<pre><code>## Warning: Using `size` aesthetic for lines
+## was deprecated in ggplot2 3.4.0.
 ## ℹ Please use `linewidth` instead.
-## This warning is displayed once every 8
-## hours.
+## This warning is displayed once
+## every 8 hours.
 ## Call
-## `lifecycle::last_lifecycle_warnings()` to
-## see where this warning was generated.</code></pre>
+## `lifecycle::last_lifecycle_warnings()`
+## to see where this warning was
+## generated.</code></pre>
 <p><img src="Data-Analysis-for-Psychology_files/figure-html/unnamed-chunk-196-1.png" width="672" /></p>
 <p>対数尤度が最も大きくなるのは、<span class="math inline">\(\theta=\)</span> 0.4のときである（表が出た割合である2/5と一致）。</p>
 <p>ここではわかりやすくパラメータを1つのみ使って説明しているが、線形モデルの傾きや切片の推定も同じである。上の例の<span class="math inline">\(\theta\)</span>を線形予測子に置き換えて同様の計算をする。</p>
