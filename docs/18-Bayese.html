@@ -23,7 +23,7 @@
 <meta name="author" content="帝京大学文学部心理学科　堀田結孝" />
 
 
-<meta name="date" content="2025-10-08" />
+<meta name="date" content="2025-10-13" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -408,10 +408,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path=""><a href="#%E5%95%8F1"><i class="fa fa-check"></i>問1</a></li>
 <li class="chapter" data-level="" data-path=""><a href="#%E5%95%8F2"><i class="fa fa-check"></i>問2</a></li>
 </ul></li>
-<li class="chapter" data-level="12.10" data-path="11-linear_model2.html"><a href="11-linear_model2.html#chap11_emmeans"><i class="fa fa-check"></i><b>12.10</b> 補足(emmeans)</a>
+<li class="chapter" data-level="12.10" data-path="11-linear_model2.html"><a href="11-linear_model2.html#chap11_emmeans"><i class="fa fa-check"></i><b>12.10</b> 補足１(emmeans)</a>
 <ul>
 <li class="chapter" data-level="12.10.1" data-path="11-linear_model2.html"><a href="11-linear_model2.html#chap11_emmeans1"><i class="fa fa-check"></i><b>12.10.1</b> 一要因の分散分析における多重比較</a></li>
 <li class="chapter" data-level="12.10.2" data-path="11-linear_model2.html"><a href="11-linear_model2.html#chap11_emmeans2"><i class="fa fa-check"></i><b>12.10.2</b> 二要因の分散分析における単純主効果検定</a></li>
+</ul></li>
+<li class="chapter" data-level="12.11" data-path="11-linear_model2.html"><a href="11-linear_model2.html#chap11_simpleslope"><i class="fa fa-check"></i><b>12.11</b> 補足２（単純傾斜）</a>
+<ul>
+<li class="chapter" data-level="12.11.1" data-path="11-linear_model2.html"><a href="11-linear_model2.html#chap11_ss_1"><i class="fa fa-check"></i><b>12.11.1</b> 調整変数がカテゴリカル変数，予測変数が量的変数のとき</a></li>
+<li class="chapter" data-level="12.11.2" data-path="11-linear_model2.html"><a href="11-linear_model2.html#chap11_ss_2"><i class="fa fa-check"></i><b>12.11.2</b> 予測変数と調整変数が量的変数のとき</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="13" data-path="12-glm_logistic.html"><a href="12-glm_logistic.html"><i class="fa fa-check"></i><b>13</b> 一般化線形モデル（ロジスティック回帰）</a>
@@ -729,9 +734,9 @@ Pr(\theta|x) \propto Pr(x|\theta) Pr(\theta)
 <p><span class="math display">\[
 Pr(\theta) = 1
 \]</span></p>
-<div class="sourceCode" id="cb606"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb606-1"><a href="18-Bayese.html#cb606-1" tabindex="-1"></a>theta_seq <span class="ot">=</span> <span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="fl">0.01</span>) <span class="co">#0から1までの範囲で0.01刻みでベクトルを作る</span></span>
-<span id="cb606-2"><a href="18-Bayese.html#cb606-2" tabindex="-1"></a>theta_prior <span class="ot">=</span> <span class="fu">rep</span>(<span class="dv">1</span>, <span class="fu">length</span>(theta_seq))</span></code></pre></div>
-<p><img src="Data-Analysis-for-Psychology_files/figure-html/unnamed-chunk-346-1.png" width="672" /></p>
+<div class="sourceCode" id="cb638"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb638-1"><a href="18-Bayese.html#cb638-1" tabindex="-1"></a>theta_seq <span class="ot">=</span> <span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="fl">0.01</span>) <span class="co">#0から1までの範囲で0.01刻みでベクトルを作る</span></span>
+<span id="cb638-2"><a href="18-Bayese.html#cb638-2" tabindex="-1"></a>theta_prior <span class="ot">=</span> <span class="fu">rep</span>(<span class="dv">1</span>, <span class="fu">length</span>(theta_seq))</span></code></pre></div>
+<p><img src="Data-Analysis-for-Psychology_files/figure-html/unnamed-chunk-357-1.png" width="672" /></p>
 <hr />
 <p>もちろん事前確率について仮説がある場合は、範囲を定めた一様分布あるいは別の確率分布を事前確率を設定しても良い。例えば、身長の分布を推定するときは、0cm ~ 250cmの範囲の一様分布を事前分布として設定するのは妥当であるといえる。</p>
 <hr />
@@ -742,8 +747,8 @@ Pr(\theta) = 1
 <p><span class="math display">\[
 Pr(x|\theta) = {}_n\mathrm{C}_h\theta^{h}(1-\theta)^{(n-h)}
 \]</span></p>
-<div class="sourceCode" id="cb607"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb607-1"><a href="18-Bayese.html#cb607-1" tabindex="-1"></a>theta_likelihood <span class="ot">=</span> <span class="fu">dbinom</span>(<span class="at">x=</span><span class="dv">6</span>, <span class="at">size=</span><span class="dv">10</span>, <span class="at">prob =</span> theta_seq)</span></code></pre></div>
-<p><img src="Data-Analysis-for-Psychology_files/figure-html/unnamed-chunk-348-1.png" width="672" /></p>
+<div class="sourceCode" id="cb639"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb639-1"><a href="18-Bayese.html#cb639-1" tabindex="-1"></a>theta_likelihood <span class="ot">=</span> <span class="fu">dbinom</span>(<span class="at">x=</span><span class="dv">6</span>, <span class="at">size=</span><span class="dv">10</span>, <span class="at">prob =</span> theta_seq)</span></code></pre></div>
+<p><img src="Data-Analysis-for-Psychology_files/figure-html/unnamed-chunk-359-1.png" width="672" /></p>
 </div>
 <div id="chap18_Posterior" class="section level3 hasAnchor" number="19.3.3">
 <h3><span class="header-section-number">19.3.3</span> 事後分布<a href="18-Bayese.html#chap18_Posterior" class="anchor-section" aria-label="Anchor link to header"></a></h3>
@@ -752,9 +757,9 @@ Pr(x|\theta) = {}_n\mathrm{C}_h\theta^{h}(1-\theta)^{(n-h)}
 Pr(\theta|x) \propto Pr(x|\theta) Pr(\theta)
 \]</span></p>
 <p>尤度と事前分布をかけて事後分布を求める（正確には、更に基準化定数<span class="math inline">\(Pr(x)\)</span>で割る）。</p>
-<div class="sourceCode" id="cb608"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb608-1"><a href="18-Bayese.html#cb608-1" tabindex="-1"></a>theta_posterior <span class="ot">=</span> theta_likelihood <span class="sc">*</span> theta_prior</span>
-<span id="cb608-2"><a href="18-Bayese.html#cb608-2" tabindex="-1"></a>theta_posterior_std <span class="ot">=</span> theta_posterior<span class="sc">/</span><span class="fu">sum</span>(theta_posterior) </span></code></pre></div>
-<p><img src="Data-Analysis-for-Psychology_files/figure-html/unnamed-chunk-350-1.png" width="672" /></p>
+<div class="sourceCode" id="cb640"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb640-1"><a href="18-Bayese.html#cb640-1" tabindex="-1"></a>theta_posterior <span class="ot">=</span> theta_likelihood <span class="sc">*</span> theta_prior</span>
+<span id="cb640-2"><a href="18-Bayese.html#cb640-2" tabindex="-1"></a>theta_posterior_std <span class="ot">=</span> theta_posterior<span class="sc">/</span><span class="fu">sum</span>(theta_posterior) </span></code></pre></div>
+<p><img src="Data-Analysis-for-Psychology_files/figure-html/unnamed-chunk-361-1.png" width="672" /></p>
 </div>
 </div>
 <div id="chap18_MCMC" class="section level2 hasAnchor" number="19.4">

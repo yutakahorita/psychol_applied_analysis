@@ -23,7 +23,7 @@
 <meta name="author" content="帝京大学文学部心理学科　堀田結孝" />
 
 
-<meta name="date" content="2025-10-08" />
+<meta name="date" content="2025-10-13" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -408,10 +408,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path=""><a href="#%E5%95%8F1"><i class="fa fa-check"></i>問1</a></li>
 <li class="chapter" data-level="" data-path=""><a href="#%E5%95%8F2"><i class="fa fa-check"></i>問2</a></li>
 </ul></li>
-<li class="chapter" data-level="12.10" data-path="11-linear_model2.html"><a href="11-linear_model2.html#chap11_emmeans"><i class="fa fa-check"></i><b>12.10</b> 補足(emmeans)</a>
+<li class="chapter" data-level="12.10" data-path="11-linear_model2.html"><a href="11-linear_model2.html#chap11_emmeans"><i class="fa fa-check"></i><b>12.10</b> 補足１(emmeans)</a>
 <ul>
 <li class="chapter" data-level="12.10.1" data-path="11-linear_model2.html"><a href="11-linear_model2.html#chap11_emmeans1"><i class="fa fa-check"></i><b>12.10.1</b> 一要因の分散分析における多重比較</a></li>
 <li class="chapter" data-level="12.10.2" data-path="11-linear_model2.html"><a href="11-linear_model2.html#chap11_emmeans2"><i class="fa fa-check"></i><b>12.10.2</b> 二要因の分散分析における単純主効果検定</a></li>
+</ul></li>
+<li class="chapter" data-level="12.11" data-path="11-linear_model2.html"><a href="11-linear_model2.html#chap11_simpleslope"><i class="fa fa-check"></i><b>12.11</b> 補足２（単純傾斜）</a>
+<ul>
+<li class="chapter" data-level="12.11.1" data-path="11-linear_model2.html"><a href="11-linear_model2.html#chap11_ss_1"><i class="fa fa-check"></i><b>12.11.1</b> 調整変数がカテゴリカル変数，予測変数が量的変数のとき</a></li>
+<li class="chapter" data-level="12.11.2" data-path="11-linear_model2.html"><a href="11-linear_model2.html#chap11_ss_2"><i class="fa fa-check"></i><b>12.11.2</b> 予測変数と調整変数が量的変数のとき</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="13" data-path="12-glm_logistic.html"><a href="12-glm_logistic.html"><i class="fa fa-check"></i><b>13</b> 一般化線形モデル（ロジスティック回帰）</a>
@@ -1071,7 +1076,28 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 \end{equation}
 \]</span></p>
 <p><span class="math inline">\(M\)</span>は性別<code>gender</code>のダミー変数で、<code>M</code>（男性）ならば1、<code>F</code>（女性）ならば0の変数とする。<br />
-線形モデルでは、<strong>交互作用は予測変数同士の積</strong>で扱う。男性（M=1）の場合の<span class="math inline">\(\mu\)</span>の推定値は、<span class="math inline">\(\mu = \alpha +(\beta_{1} + \beta_{3}) x +\beta_{2}\)</span>となる。一方、女性（M=0）の場合は、<span class="math inline">\(mu = \alpha +\beta_{1} x\)</span>となる。<span class="math inline">\(\beta_{3}\)</span>は、男性のときの<span class="math inline">\(x\)</span>に係る傾きの変化量を意味することになる。このように、交互作用を考慮する予測変数の積をモデルに加えることで、男性か女性かで切片及び傾きが変化することを表現できる。</p>
+線形モデルでは、<strong>交互作用は予測変数同士の積</strong>で扱う。式5の線形予測子を<span class="math inline">\(x\)</span>で整理すると、</p>
+<p><span class="math display">\[
+\begin{equation}
+  \hat{y} = \alpha +(\beta_{1} + \beta_{3}M) x +\beta_{2}M  \\ \tag{6}
+\end{equation}
+\]</span>
+となる。つまり、男性の場合には式6に<span class="math inline">\(M=1\)</span>を代入すると、</p>
+<p><span class="math display">\[
+\begin{equation}
+  \hat{y} = \alpha +(\beta_{1} + \beta_{3}) x +\beta_{2}
+\end{equation}
+\]</span></p>
+<p>となるので、男性の時の<span class="math inline">\(x\)</span>の効果は、<span class="math inline">\(x\)</span>に係る傾き<span class="math inline">\(\beta_{1}\)</span>と<span class="math inline">\(x\)</span>と<span class="math inline">\(M\)</span>の積に係る傾き<span class="math inline">\(\beta_{3}\)</span>をあわせたものになる。</p>
+<p>一方、女性の場合には、式6にM=0を代入すると</p>
+<p><span class="math display">\[
+\begin{equation}
+  \hat{y} = \alpha + \beta_{1} x  \\
+\end{equation}
+\]</span></p>
+<p>となる。つまり、<span class="math inline">\(x\)</span>に係る傾きである<span class="math inline">\(\beta_{1}\)</span>が女性の時の<span class="math inline">\(x\)</span>の効果を意味する。</p>
+<p>言い換えると、交互作用項にかかる傾き<span class="math inline">\(\beta_{3}\)</span>は、男性のときに女性の<span class="math inline">\(x\)</span>の効果に追加分でかかる<span class="math inline">\(x\)</span>の傾きの変化量を意味することになる。</p>
+<p>このように、交互作用を考慮する予測変数の積をモデルに加えることで、男性か女性かで切片及び傾きが変化することを表現できる。</p>
 <div class="sourceCode" id="cb403"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb403-1"><a href="11-linear_model2.html#cb403-1" tabindex="-1"></a>d<span class="sc">$</span>M <span class="ot">=</span> <span class="fu">ifelse</span>(d<span class="sc">$</span>gender <span class="sc">==</span> <span class="st">&quot;M&quot;</span>, <span class="dv">1</span>, <span class="dv">0</span>) <span class="co">#genderがMならば1, Fならば1のダミー変数を作る</span></span>
 <span id="cb403-2"><a href="11-linear_model2.html#cb403-2" tabindex="-1"></a>result <span class="ot">=</span> <span class="fu">lm</span>(<span class="at">data =</span> d, y <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> x<span class="sc">*</span>M)</span>
 <span id="cb403-3"><a href="11-linear_model2.html#cb403-3" tabindex="-1"></a><span class="fu">summary</span>(result)</span></code></pre></div>
@@ -1110,10 +1136,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p><img src="Data-Analysis-for-Psychology_files/figure-html/unnamed-chunk-219-1.png" width="672" /></p>
 <div id="chap11_NotingInteraction" class="section level3 hasAnchor" number="12.6.1">
 <h3><span class="header-section-number">12.6.1</span> 交互作用を扱うモデルの解釈<a href="11-linear_model2.html#chap11_NotingInteraction" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>2要因以上の分散分析と同様に、線形モデルでも交互作用の有無を検討することができる。しかし、ここで注意が必要なのは、交互作用を含む線形モデルは解釈が複雑になることである。
-　　
+<p>2要因以上の分散分析と同様に、線形モデルでも交互作用の有無を検討することができる。しかし、ここで注意が必要なのは、交互作用を含む線形モデルは解釈が複雑になることである。<br />
 分散分析では、変数の組み合わせの効果である交互作用とは別に、その変数そのものの効果である主効果についての検定も行われる。では、上述の線形モデルの<span class="math inline">\(\beta_{1}\)</span>及び<span class="math inline">\(\beta_{2}\)</span>のパラメータはそれぞれ、性別<span class="math inline">\(M\)</span>及び予測変数<span class="math inline">\(x\)</span>の主効果として解釈できるのだろうか？</p>
-<p>例えば<span class="math inline">\(\beta_{1}\)</span>について見てみよう。先述のように、男性（M=1）の場合の<span class="math inline">\(y\)</span>の推定値は<span class="math inline">\(\hat{y} = \alpha +(\beta_{1} + \beta_{3}) x +\beta_{2}\)</span>、女性（M=0）の場合は<span class="math inline">\(\hat{y} = \alpha +\beta_{1} x\)</span>となる。すなわち、<span class="math inline">\(\beta_{1}\)</span>は「女性のときのxの傾き」を意味し、性別が無関係なxの効果を必ずしも意味しない。</p>
+<p>もう一度、式5の線形予測子を見てみよう。</p>
+<p><span class="math display">\[
+\hat{y} = \alpha + \beta_{1} x + \beta_{2} M + \beta_{3} xM  \\ \tag{5}
+\]</span></p>
+<p><span class="math inline">\(M = 0\)</span>を代入すると、<span class="math inline">\(\hat{y} = \alpha +\beta_{1} x\)</span>となる。<span class="math inline">\(M = 0\)</span>はつまり女性であることを意味するので、<span class="math inline">\(\beta_{1}\)</span>は「データが女性であるときの、予測変数<span class="math inline">\(x\)</span>が１単位増加したときの応答変数<span class="math inline">\(y\)</span>の変化量」を意味する。
+つまり、交互作用項を含む際のある予測変数の傾きは、<strong>他の予測変数がゼロであるときの予測変数の効果</strong>を意味している。すなわち、<span class="math inline">\(x\)</span>の傾き<span class="math inline">\(\beta_{1}\)</span>は「限定的な条件のもとでの予測変数の応答変数に対する効果」を示しており、主効果の一般的理解である「応答変数に対する予測変数の平均的効果」とは異なる。<span class="math inline">\(M\)</span>の傾き<span class="math inline">\(\beta_{2}\)</span>も同様である（<span class="math inline">\(x\)</span>がゼロのときの、女性と比べて男性であることで生じる応答変数の変化量を意味する）。</p>
 <p>このように、交互作用を含むモデルの場合、<strong>予測変数の傾きは必ずしも主効果を意味するわけではない</strong>。次の節の補足で、この問題に対する対処法について説明する。</p>
 </div>
 </div>
@@ -1322,7 +1352,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 </div>
 <div id="chap11_emmeans" class="section level2 hasAnchor" number="12.10">
-<h2><span class="header-section-number">12.10</span> 補足(emmeans)<a href="11-linear_model2.html#chap11_emmeans" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<h2><span class="header-section-number">12.10</span> 補足１(emmeans)<a href="11-linear_model2.html#chap11_emmeans" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>この章では、ダミー変数を複数加えたモデル及び交互作用を加えたモデルで一要因の分散分析や二要因の分散分析と同様のことができることを学んできた。ただし、分散分析では条件の効果が有意だった場合には、どの条件間で差があるかを多重比較補正をした上で比較するプロセスが必要となる。</p>
 <p>ここでは、<code>emmeans</code>パッケージを用いて<code>lm()</code>関数で多重比較補正を行う手順を紹介する（詳細は<code>emmeans</code>パッケージのヘルプを参照のこと）。</p>
 <div class="sourceCode" id="cb424"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb424-1"><a href="11-linear_model2.html#cb424-1" tabindex="-1"></a><span class="fu">library</span>(emmeans)</span></code></pre></div>
@@ -1363,19 +1393,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ##  B    H       -0.70995 0.276 48   -1.265   -0.154
 ## 
 ## Confidence level used: 0.95</code></pre>
-<div class="sourceCode" id="cb431"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb431-1"><a href="11-linear_model2.html#cb431-1" tabindex="-1"></a><span class="fu">pairs</span>(emm, <span class="at">simple =</span> <span class="st">&quot;wool&quot;</span>)    <span class="co">#wool内でtension間の比較を行う</span></span></code></pre></div>
-<pre><code>## tension = L:
-##  contrast estimate    SE df t.ratio p.value
-##  A - B       1.238 0.391 48   3.167  0.0027
-## 
-## tension = M:
-##  contrast estimate    SE df t.ratio p.value
-##  A - B      -0.362 0.391 48  -0.926  0.3589
-## 
-## tension = H:
-##  contrast estimate    SE df t.ratio p.value
-##  A - B       0.438 0.391 48   1.120  0.2682</code></pre>
-<div class="sourceCode" id="cb433"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb433-1"><a href="11-linear_model2.html#cb433-1" tabindex="-1"></a><span class="fu">pairs</span>(emm, <span class="at">simple =</span> <span class="st">&quot;tension&quot;</span>)     <span class="co">#tension内でwool間の比較を行う</span></span></code></pre></div>
+<div class="sourceCode" id="cb431"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb431-1"><a href="11-linear_model2.html#cb431-1" tabindex="-1"></a>emmeans<span class="sc">::</span><span class="fu">contrast</span>(emm, <span class="at">method =</span> <span class="st">&quot;pairwise&quot;</span>, <span class="at">by =</span> <span class="st">&quot;wool&quot;</span>)<span class="co">#wool内でtension間の比較を行う</span></span></code></pre></div>
 <pre><code>## wool = A:
 ##  contrast estimate    SE df t.ratio p.value
 ##  L - M      1.5574 0.391 48   3.986  0.0007
@@ -1387,6 +1405,258 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ##  L - M     -0.0421 0.391 48  -0.108  0.9936
 ##  L - H      0.7156 0.391 48   1.831  0.1704
 ##  M - H      0.7577 0.391 48   1.939  0.1389
+## 
+## P value adjustment: tukey method for comparing a family of 3 estimates</code></pre>
+<div class="sourceCode" id="cb433"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb433-1"><a href="11-linear_model2.html#cb433-1" tabindex="-1"></a>emmeans<span class="sc">::</span><span class="fu">contrast</span>(emm, <span class="at">method =</span> <span class="st">&quot;pairwise&quot;</span>, <span class="at">by =</span> <span class="st">&quot;tension&quot;</span>) <span class="co">#tension内でwool間の比較を行う</span></span></code></pre></div>
+<pre><code>## tension = L:
+##  contrast estimate    SE df t.ratio p.value
+##  A - B       1.238 0.391 48   3.167  0.0027
+## 
+## tension = M:
+##  contrast estimate    SE df t.ratio p.value
+##  A - B      -0.362 0.391 48  -0.926  0.3589
+## 
+## tension = H:
+##  contrast estimate    SE df t.ratio p.value
+##  A - B       0.438 0.391 48   1.120  0.2682</code></pre>
+</div>
+</div>
+<div id="chap11_simpleslope" class="section level2 hasAnchor" number="12.11">
+<h2><span class="header-section-number">12.11</span> 補足２（単純傾斜）<a href="11-linear_model2.html#chap11_simpleslope" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>本章では２つの変数の積を加えた交互作用のモデルを扱ったが、ここで交互作用を構成する２つの変数について<span class="math inline">\(X\)</span>を「予測変数」、<span class="math inline">\(M\)</span>を「<strong>調整変数</strong>」と区別する。<br />
+<strong>調整変数(moderating variable)</strong>：予測変数<span class="math inline">\(X\)</span>と応答変数<span class="math inline">\(Y\)</span>との関係を調整する変数</p>
+<p>予測変数<span class="math inline">\(X\)</span>と調整変数<span class="math inline">\(M\)</span>の積である交互作用を含むモデルでは、予測変数の傾きが意味するのは予測変数そのものの効果ではなく、<strong>調整変数がゼロの時に予測変数が1単位変化したときの応答変数の変化量</strong>であった。<br />
+このような調整変数が特定の値を取るときの予測変数が応答変数に与える効果のことを<strong>単純傾斜(simple slope)</strong>と表現する。単純傾斜は、交互作用がいかなるかたちで生じているかの解釈に用いられる。</p>
+<div id="chap11_ss_1" class="section level3 hasAnchor" number="12.11.1">
+<h3><span class="header-section-number">12.11.1</span> 調整変数がカテゴリカル変数，予測変数が量的変数のとき<a href="11-linear_model2.html#chap11_ss_1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>本章で交互作用の解説で用いたサンプルデータを再び例にして、単純傾斜の推定方法について理解する。</p>
+<div class="sourceCode" id="cb435"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb435-1"><a href="11-linear_model2.html#cb435-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
+<span id="cb435-2"><a href="11-linear_model2.html#cb435-2" tabindex="-1"></a><span class="co">#男性のみのデータ</span></span>
+<span id="cb435-3"><a href="11-linear_model2.html#cb435-3" tabindex="-1"></a>x <span class="ot">=</span> <span class="fu">round</span>(<span class="fu">runif</span>(<span class="at">n =</span> <span class="dv">20</span>, <span class="at">min =</span> <span class="dv">1</span>, <span class="at">max =</span> <span class="dv">10</span>),<span class="dv">0</span>) </span>
+<span id="cb435-4"><a href="11-linear_model2.html#cb435-4" tabindex="-1"></a>mu <span class="ot">=</span> <span class="fl">0.1</span> <span class="sc">+</span> <span class="fl">0.4</span> <span class="sc">*</span> x</span>
+<span id="cb435-5"><a href="11-linear_model2.html#cb435-5" tabindex="-1"></a>y <span class="ot">=</span> <span class="fu">rnorm</span>(<span class="at">n =</span> <span class="dv">20</span>, <span class="at">mean =</span> mu, <span class="at">sd =</span> <span class="dv">1</span>)</span>
+<span id="cb435-6"><a href="11-linear_model2.html#cb435-6" tabindex="-1"></a>d_M <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="at">x =</span> x, <span class="at">y =</span> y, <span class="at">gender =</span> <span class="st">&quot;M&quot;</span>)</span>
+<span id="cb435-7"><a href="11-linear_model2.html#cb435-7" tabindex="-1"></a><span class="co">#女性のみのデータ</span></span>
+<span id="cb435-8"><a href="11-linear_model2.html#cb435-8" tabindex="-1"></a>x <span class="ot">=</span> <span class="fu">round</span>(<span class="fu">runif</span>(<span class="at">n =</span> <span class="dv">20</span>, <span class="at">min =</span> <span class="dv">1</span>, <span class="at">max =</span> <span class="dv">10</span>),<span class="dv">0</span>) </span>
+<span id="cb435-9"><a href="11-linear_model2.html#cb435-9" tabindex="-1"></a>mu <span class="ot">=</span> <span class="fl">0.3</span> <span class="sc">+</span> <span class="sc">-</span><span class="fl">0.6</span> <span class="sc">*</span> x</span>
+<span id="cb435-10"><a href="11-linear_model2.html#cb435-10" tabindex="-1"></a>y <span class="ot">=</span> <span class="fu">rnorm</span>(<span class="at">n =</span> <span class="dv">20</span>, <span class="at">mean =</span> mu, <span class="at">sd =</span> <span class="dv">1</span>)</span>
+<span id="cb435-11"><a href="11-linear_model2.html#cb435-11" tabindex="-1"></a>d_F <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="at">x =</span> x, <span class="at">y =</span> y, <span class="at">gender =</span> <span class="st">&quot;F&quot;</span>)</span>
+<span id="cb435-12"><a href="11-linear_model2.html#cb435-12" tabindex="-1"></a></span>
+<span id="cb435-13"><a href="11-linear_model2.html#cb435-13" tabindex="-1"></a><span class="co">#２つを合わせたデータ</span></span>
+<span id="cb435-14"><a href="11-linear_model2.html#cb435-14" tabindex="-1"></a>d <span class="ot">=</span> <span class="fu">rbind</span>(d_M, d_F)</span>
+<span id="cb435-15"><a href="11-linear_model2.html#cb435-15" tabindex="-1"></a></span>
+<span id="cb435-16"><a href="11-linear_model2.html#cb435-16" tabindex="-1"></a><span class="fu">head</span>(d)</span></code></pre></div>
+<pre><code>##   x        y gender
+## 1 3 2.811781      M
+## 2 4 2.089843      M
+## 3 6 1.878759      M
+## 4 9 1.485300      M
+## 5 3 2.424931      M
+## 6 9 3.655066      M</code></pre>
+<p>性別を調整変数、<span class="math inline">\(x\)</span>を予測変数として考える。<br />
+本章で行った分析と同様に、男性（<code>gender == M</code>）ならば1，女性（<code>gender == F</code>）ならば0のダミー変数<code>M</code>を作成し、調整変数<code>M</code>と予測変数<code>x</code>、さらに２つの積である交互作用（<code>x:M</code>）を加えた線形モデルを実行する。</p>
+<div class="sourceCode" id="cb437"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb437-1"><a href="11-linear_model2.html#cb437-1" tabindex="-1"></a><span class="co">#ダミー変数の作成</span></span>
+<span id="cb437-2"><a href="11-linear_model2.html#cb437-2" tabindex="-1"></a>d<span class="sc">$</span>M <span class="ot">=</span> <span class="fu">ifelse</span>(d<span class="sc">$</span>gender <span class="sc">==</span> <span class="st">&quot;M&quot;</span>, <span class="dv">1</span>, <span class="dv">0</span>) <span class="co">#genderがMならば1, Fならば1のダミー変数を作る</span></span>
+<span id="cb437-3"><a href="11-linear_model2.html#cb437-3" tabindex="-1"></a></span>
+<span id="cb437-4"><a href="11-linear_model2.html#cb437-4" tabindex="-1"></a>result_1 <span class="ot">=</span> <span class="fu">lm</span>(<span class="at">data =</span> d, y <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> x<span class="sc">*</span>M) <span class="co">#F=0, M=1のダミー変数を使った場合</span></span>
+<span id="cb437-5"><a href="11-linear_model2.html#cb437-5" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">coef</span>(<span class="fu">summary</span>(result_1)), <span class="dv">3</span>) <span class="co">#係数を確認する</span></span></code></pre></div>
+<pre><code>##             Estimate Std. Error t value Pr(&gt;|t|)
+## (Intercept)    0.051      0.536   0.095    0.925
+## x             -0.537      0.081  -6.622    0.000
+## M              1.048      0.737   1.421    0.164
+## x:M            0.779      0.113   6.907    0.000</code></pre>
+<p><code>x</code>の傾きは調整変数<code>M</code>がゼロのとき、すなわち女性の<code>x</code>の傾き（<code>x</code>が1単位増加したときの<code>y</code>の変化量）を意味していた。</p>
+<p>式で表すと、</p>
+<p><span class="math display">\[
+\hat{y} = \alpha + \beta_{1} x + \beta_{2} M + \beta_{3} xM  \\
+\]</span></p>
+<p>である。式からも、<span class="math inline">\(x\)</span>の傾きである<span class="math inline">\(\beta_{1}\)</span>は、調整変数<span class="math inline">\(M\)</span>がゼロ（すなわち、女性）のときに<span class="math inline">\(x\)</span>が1単位増えたときの<span class="math inline">\(y\)</span>の変化量であることが明らかである。</p>
+<p>逆に、男性の時の<code>x</code>の傾きを知りたいときにはどうすればよいか？この場合、先程のダミー変数のコーディングを逆にしたダミー変数を代わりに使えば良い。つまり、「女性ならば1, 男性ならば0」のダミー変数<code>F</code>を作成し、調整変数<code>F</code>, 予測変数<code>x</code>及び交互作用項<code>x:F</code>から<code>y</code>を予測する線形モデルを実行してみる。</p>
+<div class="sourceCode" id="cb439"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb439-1"><a href="11-linear_model2.html#cb439-1" tabindex="-1"></a>d<span class="sc">$</span>F <span class="ot">=</span> <span class="fu">ifelse</span>(d<span class="sc">$</span>gender <span class="sc">==</span> <span class="st">&quot;F&quot;</span>, <span class="dv">1</span>, <span class="dv">0</span>) <span class="co">#genderがFならば1, Mならば1のダミー変数を作る</span></span>
+<span id="cb439-2"><a href="11-linear_model2.html#cb439-2" tabindex="-1"></a></span>
+<span id="cb439-3"><a href="11-linear_model2.html#cb439-3" tabindex="-1"></a>result_2 <span class="ot">=</span> <span class="fu">lm</span>(<span class="at">data =</span> d, y <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> x<span class="sc">*</span>F) <span class="co">#F=1, M=0のダミー変数を使った場合</span></span>
+<span id="cb439-4"><a href="11-linear_model2.html#cb439-4" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">coef</span>(<span class="fu">summary</span>(result_2)), <span class="dv">3</span>) <span class="co">#係数を確認する</span></span></code></pre></div>
+<pre><code>##             Estimate Std. Error t value Pr(&gt;|t|)
+## (Intercept)    1.099      0.506   2.171    0.037
+## x              0.242      0.078   3.086    0.004
+## F             -1.048      0.737  -1.421    0.164
+## x:F           -0.779      0.113  -6.907    0.000</code></pre>
+<p>この<code>x</code>の傾きが、調整変数<code>F</code>がゼロのとき、すなわち男性の<code>x</code>の傾きを意味する。</p>
+<p>式で表すと、</p>
+<p><span class="math display">\[
+\hat{y} = \alpha + \beta_{1} x + \beta_{2} F + \beta_{3} xF  \\
+\]</span></p>
+<p>である。</p>
+<p>このように、ダミー変数のコーディングを工夫することで、それぞれの調整変数別に予測変数と応答変数との関連（単純傾斜）を推定することができる。</p>
+<p><code>interactions</code>パッケージの<code>sim_slopew</code>関数を使えば、ダミー変数を作り直さなくても調整変数のカテゴリごとに単純傾斜を算出することができる。</p>
+<div class="sourceCode" id="cb441"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb441-1"><a href="11-linear_model2.html#cb441-1" tabindex="-1"></a><span class="fu">library</span>(interactions)</span>
+<span id="cb441-2"><a href="11-linear_model2.html#cb441-2" tabindex="-1"></a>interactions<span class="sc">::</span><span class="fu">sim_slopes</span>(result_1, <span class="at">pred =</span> x, <span class="at">modx =</span> M) <span class="co">#predに予測変数、modxに調整変数を入れる。</span></span></code></pre></div>
+<pre><code>## JOHNSON-NEYMAN INTERVAL
+## 
+## When M is OUTSIDE the interval [0.54, 0.87], the slope of x is p &lt; .05.
+## 
+## Note: The range of observed values of M is [0.00, 1.00]
+## 
+## SIMPLE SLOPES ANALYSIS
+## 
+## Slope of x when M = 0.00 (0): 
+## 
+##    Est.   S.E.   t val.      p
+## ------- ------ -------- ------
+##   -0.54   0.08    -6.62   0.00
+## 
+## Slope of x when M = 1.00 (1): 
+## 
+##   Est.   S.E.   t val.      p
+## ------ ------ -------- ------
+##   0.24   0.08     3.09   0.00</code></pre>
+<div class="sourceCode" id="cb443"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb443-1"><a href="11-linear_model2.html#cb443-1" tabindex="-1"></a>interactions<span class="sc">::</span><span class="fu">interact_plot</span>(result_1, <span class="at">pred =</span> x, <span class="at">modx =</span> M, <span class="at">plot.points =</span> <span class="cn">TRUE</span>) <span class="co">#単純傾斜をプロットすることもできる</span></span></code></pre></div>
+<p><img src="Data-Analysis-for-Psychology_files/figure-html/unnamed-chunk-238-1.png" width="672" /></p>
+<p>また、<code>emmeans</code>パッケージの<code>emtrends</code>でも同様に推定することができる。</p>
+<div class="sourceCode" id="cb444"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb444-1"><a href="11-linear_model2.html#cb444-1" tabindex="-1"></a>emtrend_1 <span class="ot">=</span> emmeans<span class="sc">::</span><span class="fu">emtrends</span>(result_1, <span class="at">specs =</span> <span class="st">&quot;M&quot;</span>, <span class="at">var =</span> <span class="st">&quot;x&quot;</span>) <span class="co">#specsに調整変数, xに予測変数を指定する。</span></span>
+<span id="cb444-2"><a href="11-linear_model2.html#cb444-2" tabindex="-1"></a>emtrend_1</span></code></pre></div>
+<pre><code>##  M x.trend     SE df lower.CL upper.CL
+##  0  -0.537 0.0811 36  -0.7013   -0.372
+##  1   0.242 0.0783 36   0.0829    0.401
+## 
+## Confidence level used: 0.95</code></pre>
+<p>それぞれで推定された結果が、先ほどの線形モデルでの<span class="math inline">\(x\)</span>の傾きの推定値と一致していることがわかる。</p>
+<p>また、<code>emtrends</code>では単純傾斜の比較もすることができる（男性と女性で傾きが有意に異なるか？）。この結果は、線形モデルの推定結果に表示される交互作用項の検定の結果と一致する（交互作用の傾きが意味するのは「調整変数が1であるときに、予測変数の傾きがどのくらい変化するか」であり、その増え方がゼロより有意に大きいあるいは小さいかを検定している）。</p>
+<div class="sourceCode" id="cb446"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb446-1"><a href="11-linear_model2.html#cb446-1" tabindex="-1"></a>emmeans<span class="sc">::</span><span class="fu">emtrends</span>(result_1, pairwise <span class="sc">~</span> M, <span class="at">var =</span> <span class="st">&quot;x&quot;</span>)</span></code></pre></div>
+<pre><code>## $emtrends
+##  M x.trend     SE df lower.CL upper.CL
+##  0  -0.537 0.0811 36  -0.7013   -0.372
+##  1   0.242 0.0783 36   0.0829    0.401
+## 
+## Confidence level used: 0.95 
+## 
+## $contrasts
+##  contrast estimate    SE df t.ratio p.value
+##  M0 - M1    -0.779 0.113 36  -6.907  &lt;.0001</code></pre>
+<div class="sourceCode" id="cb448"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb448-1"><a href="11-linear_model2.html#cb448-1" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">coef</span>(<span class="fu">summary</span>(result_1)), <span class="dv">3</span>) <span class="co">#係数を確認する</span></span></code></pre></div>
+<pre><code>##             Estimate Std. Error t value Pr(&gt;|t|)
+## (Intercept)    0.051      0.536   0.095    0.925
+## x             -0.537      0.081  -6.622    0.000
+## M              1.048      0.737   1.421    0.164
+## x:M            0.779      0.113   6.907    0.000</code></pre>
+<p>なお、上述の例は、調整変数がカテゴリカル変数で予測変数が量的変数の場合だが、両者ともカテゴリカル変数の場合でも解釈は同様である（予測変数の傾きは、調整変数がゼロのときの予測変数がゼロから1に変化したときの応答変数の変化量）。</p>
+</div>
+<div id="chap11_ss_2" class="section level3 hasAnchor" number="12.11.2">
+<h3><span class="header-section-number">12.11.2</span> 予測変数と調整変数が量的変数のとき<a href="11-linear_model2.html#chap11_ss_2" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>交互作用項が２つの量的変数の積である場合も、予測変数の傾きが意味することは「調整変数がゼロであるときの予測変数の傾き」という点で同じだが、モデルによっては解釈に注意が必要である。</p>
+<p>サンプルデータの解析を通して確認していく。</p>
+<div class="sourceCode" id="cb450"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb450-1"><a href="11-linear_model2.html#cb450-1" tabindex="-1"></a><span class="co">#サンプルデータの作成</span></span>
+<span id="cb450-2"><a href="11-linear_model2.html#cb450-2" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
+<span id="cb450-3"><a href="11-linear_model2.html#cb450-3" tabindex="-1"></a>m <span class="ot">=</span> <span class="fu">rnorm</span>(<span class="at">n =</span> <span class="dv">40</span>, <span class="at">mean =</span> <span class="dv">1</span>, <span class="at">sd =</span> <span class="dv">1</span>)</span>
+<span id="cb450-4"><a href="11-linear_model2.html#cb450-4" tabindex="-1"></a>x <span class="ot">=</span> <span class="fu">rnorm</span>(<span class="at">n =</span> <span class="dv">40</span>, <span class="at">mean =</span> <span class="dv">2</span>, <span class="at">sd =</span> <span class="dv">1</span>)</span>
+<span id="cb450-5"><a href="11-linear_model2.html#cb450-5" tabindex="-1"></a>mu <span class="ot">=</span> <span class="fl">0.1</span> <span class="sc">+</span> <span class="fl">0.3</span> <span class="sc">*</span> x <span class="sc">+</span> <span class="fl">0.2</span> <span class="sc">*</span> m <span class="sc">-</span> <span class="fl">0.2</span> <span class="sc">*</span> x <span class="sc">*</span> m</span>
+<span id="cb450-6"><a href="11-linear_model2.html#cb450-6" tabindex="-1"></a>y <span class="ot">=</span> <span class="fu">rnorm</span>(<span class="at">n =</span> <span class="dv">40</span>, <span class="at">mean =</span> mu, <span class="at">sd =</span> <span class="dv">1</span>)</span>
+<span id="cb450-7"><a href="11-linear_model2.html#cb450-7" tabindex="-1"></a>d <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="at">x =</span> x, <span class="at">m =</span> m, <span class="at">y =</span> y)</span>
+<span id="cb450-8"><a href="11-linear_model2.html#cb450-8" tabindex="-1"></a></span>
+<span id="cb450-9"><a href="11-linear_model2.html#cb450-9" tabindex="-1"></a><span class="fu">head</span>(d)</span></code></pre></div>
+<pre><code>##          x         m           y
+## 1 1.835476 0.3735462  0.01955638
+## 2 1.746638 1.1836433  0.31206219
+## 3 2.696963 0.1643714  2.03138956
+## 4 2.556663 2.5952808 -1.46456346
+## 5 1.311244 1.3295078  1.00455913
+## 6 1.292505 0.1795316  0.81019905</code></pre>
+<p><code>m</code>を調整変数、<code>x</code>を予測変数とし、応答変数<code>y</code>を予測する線形モデルを行う。</p>
+<div class="sourceCode" id="cb452"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb452-1"><a href="11-linear_model2.html#cb452-1" tabindex="-1"></a>result_3 <span class="ot">=</span> <span class="fu">lm</span>(<span class="at">data =</span> d, y <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> x <span class="sc">*</span> m)</span>
+<span id="cb452-2"><a href="11-linear_model2.html#cb452-2" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">coef</span>(<span class="fu">summary</span>(result_3)), <span class="dv">3</span>)</span></code></pre></div>
+<pre><code>##             Estimate Std. Error t value Pr(&gt;|t|)
+## (Intercept)   -0.104      0.473  -0.220    0.827
+## x              0.615      0.229   2.690    0.011
+## m              0.024      0.368   0.066    0.947
+## x:m           -0.262      0.165  -1.592    0.120</code></pre>
+<p>モデルを式で表すと、以下の通りになる。</p>
+<p><span class="math display">\[
+\hat{y} = \alpha + \beta_{1} x + \beta_{2}  m + \beta_{3}  x m  \\
+\]</span></p>
+<p>先ほどと同様に<span class="math inline">\(\beta_{1}\)</span>は<span class="math inline">\(m = 0\)</span>であるときの<span class="math inline">\(\x\)</span>が1単位増えたときの<span class="math inline">\(y\)</span>の変化量として解釈することができる。</p>
+<p>しかし、調整変数がゼロを取り得ない変数である場合には（例として身長や体重など）、係数の意味の解釈がしにくくなる（本章でも述べているように、平均値をゼロに変換する標準化も一つの対応策である）。</p>
+<p>そこで、調整変数が量的変数の場合には調整変数のレベルを「平均」、「平均＋1標準偏差」および「平均 - 1標準偏差」の3つに分けて、予測変数の単純傾斜を推定することが多い。</p>
+<p>ここでは、<code>m</code>が「平均」、「平均 + 1標準偏差」および「平均 - 1標準偏差」の場合に分けて、<code>x</code>が<code>y</code>に及ぼす影響を見てみよう。</p>
+<div class="sourceCode" id="cb454"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb454-1"><a href="11-linear_model2.html#cb454-1" tabindex="-1"></a>d<span class="sc">$</span>m_minus_SD <span class="ot">=</span> d<span class="sc">$</span>m <span class="sc">-</span> (<span class="fu">mean</span>(d<span class="sc">$</span>m) <span class="sc">-</span> <span class="fu">sd</span>(d<span class="sc">$</span>m)) <span class="co"># mが平均-1標準偏差の値であるときにゼロになる変数を作成</span></span>
+<span id="cb454-2"><a href="11-linear_model2.html#cb454-2" tabindex="-1"></a>d<span class="sc">$</span>m_plus_SD <span class="ot">=</span> d<span class="sc">$</span>m <span class="sc">-</span> (<span class="fu">mean</span>(d<span class="sc">$</span>m) <span class="sc">+</span> <span class="fu">sd</span>(d<span class="sc">$</span>m)) <span class="co"># mが平均値であるときにゼロになる変数を作成</span></span>
+<span id="cb454-3"><a href="11-linear_model2.html#cb454-3" tabindex="-1"></a>d<span class="sc">$</span>m_mean <span class="ot">=</span> d<span class="sc">$</span>m <span class="sc">-</span> <span class="fu">mean</span>(d<span class="sc">$</span>m)  <span class="co"># mが平均+1標準偏差の値であるときにゼロになる変数を作成</span></span>
+<span id="cb454-4"><a href="11-linear_model2.html#cb454-4" tabindex="-1"></a></span>
+<span id="cb454-5"><a href="11-linear_model2.html#cb454-5" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">coef</span>(<span class="fu">summary</span>(<span class="fu">lm</span>(<span class="at">data =</span> d, y <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> x <span class="sc">*</span> m_minus_SD))), <span class="dv">3</span>) <span class="co"># mean -1SD</span></span></code></pre></div>
+<pre><code>##              Estimate Std. Error t value Pr(&gt;|t|)
+## (Intercept)    -0.099      0.423  -0.234    0.816
+## x               0.561      0.204   2.753    0.009
+## m_minus_SD      0.024      0.368   0.066    0.947
+## x:m_minus_SD   -0.262      0.165  -1.592    0.120</code></pre>
+<div class="sourceCode" id="cb456"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb456-1"><a href="11-linear_model2.html#cb456-1" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">coef</span>(<span class="fu">summary</span>(<span class="fu">lm</span>(<span class="at">data =</span> d, y <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> x <span class="sc">*</span> m_mean))), <span class="dv">3</span>) <span class="co"># mean</span></span></code></pre></div>
+<pre><code>##             Estimate Std. Error t value Pr(&gt;|t|)
+## (Intercept)   -0.077      0.339  -0.228    0.821
+## x              0.329      0.147   2.241    0.031
+## m_mean         0.024      0.368   0.066    0.947
+## x:m_mean      -0.262      0.165  -1.592    0.120</code></pre>
+<div class="sourceCode" id="cb458"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb458-1"><a href="11-linear_model2.html#cb458-1" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">coef</span>(<span class="fu">summary</span>(<span class="fu">lm</span>(<span class="at">data =</span> d, y <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> x <span class="sc">*</span> m_plus_SD))), <span class="dv">3</span>) <span class="co"># mean + 1SD</span></span></code></pre></div>
+<pre><code>##             Estimate Std. Error t value Pr(&gt;|t|)
+## (Intercept)   -0.056      0.514  -0.108    0.915
+## x              0.096      0.210   0.459    0.649
+## m_plus_SD      0.024      0.368   0.066    0.947
+## x:m_plus_SD   -0.262      0.165  -1.592    0.120</code></pre>
+<p>それぞれのモデルの<code>x</code>の傾きは、<code>m_minum_SD</code>, <code>m_mean</code>, <code>m_plus_SD</code>がゼロのとき、すなわち調整変数がそれぞれ平均-1標準偏差, 平均、平均-1標準偏差の値を取るときの<code>x</code>の傾きを意味する。</p>
+<p>「平均」、「平均+1標準偏差」、「平均-1標準偏差」に対応する変数を新たに作らなくても、<code>interactions</code>パッケージの<code>sim_slopes</code>でも単純傾斜を推定することができる。</p>
+<div class="sourceCode" id="cb460"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb460-1"><a href="11-linear_model2.html#cb460-1" tabindex="-1"></a>interactions<span class="sc">::</span><span class="fu">sim_slopes</span>(result_3, <span class="at">pred =</span> x, <span class="at">modx =</span> m) <span class="co">#predに連続量の予測変数、modxに調整変数を入れる。</span></span></code></pre></div>
+<pre><code>## JOHNSON-NEYMAN INTERVAL
+## 
+## When m is INSIDE the interval [-3.18, 1.20], the slope of x is p &lt; .05.
+## 
+## Note: The range of observed values of m is [-1.21, 2.60]
+## 
+## SIMPLE SLOPES ANALYSIS
+## 
+## Slope of x when m = 0.2053592 (- 1 SD): 
+## 
+##   Est.   S.E.   t val.      p
+## ------ ------ -------- ------
+##   0.56   0.20     2.75   0.01
+## 
+## Slope of x when m = 1.0920262 (Mean): 
+## 
+##   Est.   S.E.   t val.      p
+## ------ ------ -------- ------
+##   0.33   0.15     2.24   0.03
+## 
+## Slope of x when m = 1.9786932 (+ 1 SD): 
+## 
+##   Est.   S.E.   t val.      p
+## ------ ------ -------- ------
+##   0.10   0.21     0.46   0.65</code></pre>
+<div class="sourceCode" id="cb462"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb462-1"><a href="11-linear_model2.html#cb462-1" tabindex="-1"></a>interactions<span class="sc">::</span><span class="fu">interact_plot</span>(result_3, <span class="at">pred =</span> x, <span class="at">modx =</span> m, <span class="at">plot.points =</span> <span class="cn">TRUE</span>) <span class="co">#単純傾斜をプロットすることもできる</span></span></code></pre></div>
+<p><img src="Data-Analysis-for-Psychology_files/figure-html/unnamed-chunk-244-1.png" width="672" /></p>
+<div class="sourceCode" id="cb463"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb463-1"><a href="11-linear_model2.html#cb463-1" tabindex="-1"></a><span class="co">#emmeansパッケージのemtrendsを使う場合（自分でmean -1sd, mean, mean + 1sdのレベルを予め指定する必要がある）</span></span>
+<span id="cb463-2"><a href="11-linear_model2.html#cb463-2" tabindex="-1"></a>m_minus_SD <span class="ot">=</span> (<span class="fu">mean</span>(d<span class="sc">$</span>m) <span class="sc">-</span> <span class="fu">sd</span>(d<span class="sc">$</span>m)) <span class="co"># x_2 = mean - 1SDのときにゼロになる変数を作成</span></span>
+<span id="cb463-3"><a href="11-linear_model2.html#cb463-3" tabindex="-1"></a>m_Mean <span class="ot">=</span> <span class="fu">mean</span>(d<span class="sc">$</span>m)  <span class="co"># x_2 = mean のときにゼロになる変数を作成</span></span>
+<span id="cb463-4"><a href="11-linear_model2.html#cb463-4" tabindex="-1"></a>m_plus_SD <span class="ot">=</span> (<span class="fu">mean</span>(d<span class="sc">$</span>m) <span class="sc">+</span> <span class="fu">sd</span>(d<span class="sc">$</span>m)) <span class="co"># x_2 = mean + 1SDのときにゼロになる変数を作成</span></span>
+<span id="cb463-5"><a href="11-linear_model2.html#cb463-5" tabindex="-1"></a>m_list <span class="ot">=</span> <span class="fu">list</span>(<span class="at">m =</span> <span class="fu">c</span>(m_minus_SD, m_plus_SD, m_Mean))</span>
+<span id="cb463-6"><a href="11-linear_model2.html#cb463-6" tabindex="-1"></a></span>
+<span id="cb463-7"><a href="11-linear_model2.html#cb463-7" tabindex="-1"></a>emmeans<span class="sc">::</span><span class="fu">emtrends</span>(result_3, <span class="at">specs =</span> <span class="st">&quot;m&quot;</span>, <span class="at">var =</span> <span class="st">&quot;x&quot;</span>, <span class="at">at =</span> m_list)</span></code></pre></div>
+<pre><code>##      m x.trend    SE df lower.CL upper.CL
+##  0.205  0.5610 0.204 36   0.1476    0.974
+##  1.979  0.0964 0.210 36  -0.3296    0.522
+##  1.092  0.3287 0.147 36   0.0312    0.626
+## 
+## Confidence level used: 0.95</code></pre>
+<div class="sourceCode" id="cb465"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb465-1"><a href="11-linear_model2.html#cb465-1" tabindex="-1"></a><span class="co">#単純傾斜の比較</span></span>
+<span id="cb465-2"><a href="11-linear_model2.html#cb465-2" tabindex="-1"></a>emmeans<span class="sc">::</span><span class="fu">emtrends</span>(result_3, pairwise <span class="sc">~</span> m, <span class="at">var =</span> <span class="st">&quot;x&quot;</span>, <span class="at">at =</span> m_list) </span></code></pre></div>
+<pre><code>## $emtrends
+##      m x.trend    SE df lower.CL upper.CL
+##  0.205  0.5610 0.204 36   0.1476    0.974
+##  1.979  0.0964 0.210 36  -0.3296    0.522
+##  1.092  0.3287 0.147 36   0.0312    0.626
+## 
+## Confidence level used: 0.95 
+## 
+## $contrasts
+##  contrast                              estimate    SE df t.ratio p.value
+##  m0.20535917754117 - m1.97869318000282    0.465 0.292 36   1.592  0.2623
+##  m0.20535917754117 - m1.092026178772      0.232 0.146 36   1.592  0.2623
+##  m1.97869318000282 - m1.092026178772     -0.232 0.146 36  -1.592  0.2623
 ## 
 ## P value adjustment: tukey method for comparing a family of 3 estimates</code></pre>
 

@@ -23,7 +23,7 @@
 <meta name="author" content="帝京大学文学部心理学科　堀田結孝" />
 
 
-<meta name="date" content="2025-10-08" />
+<meta name="date" content="2025-10-13" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -408,10 +408,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path=""><a href="#%E5%95%8F1"><i class="fa fa-check"></i>問1</a></li>
 <li class="chapter" data-level="" data-path=""><a href="#%E5%95%8F2"><i class="fa fa-check"></i>問2</a></li>
 </ul></li>
-<li class="chapter" data-level="12.10" data-path="11-linear_model2.html"><a href="11-linear_model2.html#chap11_emmeans"><i class="fa fa-check"></i><b>12.10</b> 補足(emmeans)</a>
+<li class="chapter" data-level="12.10" data-path="11-linear_model2.html"><a href="11-linear_model2.html#chap11_emmeans"><i class="fa fa-check"></i><b>12.10</b> 補足１(emmeans)</a>
 <ul>
 <li class="chapter" data-level="12.10.1" data-path="11-linear_model2.html"><a href="11-linear_model2.html#chap11_emmeans1"><i class="fa fa-check"></i><b>12.10.1</b> 一要因の分散分析における多重比較</a></li>
 <li class="chapter" data-level="12.10.2" data-path="11-linear_model2.html"><a href="11-linear_model2.html#chap11_emmeans2"><i class="fa fa-check"></i><b>12.10.2</b> 二要因の分散分析における単純主効果検定</a></li>
+</ul></li>
+<li class="chapter" data-level="12.11" data-path="11-linear_model2.html"><a href="11-linear_model2.html#chap11_simpleslope"><i class="fa fa-check"></i><b>12.11</b> 補足２（単純傾斜）</a>
+<ul>
+<li class="chapter" data-level="12.11.1" data-path="11-linear_model2.html"><a href="11-linear_model2.html#chap11_ss_1"><i class="fa fa-check"></i><b>12.11.1</b> 調整変数がカテゴリカル変数，予測変数が量的変数のとき</a></li>
+<li class="chapter" data-level="12.11.2" data-path="11-linear_model2.html"><a href="11-linear_model2.html#chap11_ss_2"><i class="fa fa-check"></i><b>12.11.2</b> 予測変数と調整変数が量的変数のとき</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="13" data-path="12-glm_logistic.html"><a href="12-glm_logistic.html"><i class="fa fa-check"></i><b>13</b> 一般化線形モデル（ロジスティック回帰）</a>
@@ -806,12 +811,11 @@ L = (1-\theta)^3 \theta^2 \tag{4}
 <pre><code>## Warning: Using `size` aesthetic for lines was
 ## deprecated in ggplot2 3.4.0.
 ## ℹ Please use `linewidth` instead.
-## This warning is displayed once every
-## 8 hours.
+## This warning is displayed once every 8
+## hours.
 ## Call
-## `lifecycle::last_lifecycle_warnings()`
-## to see where this warning was
-## generated.</code></pre>
+## `lifecycle::last_lifecycle_warnings()` to
+## see where this warning was generated.</code></pre>
 <p><img src="Data-Analysis-for-Psychology_files/figure-html/unnamed-chunk-196-1.png" width="672" /></p>
 <p>対数尤度が最も大きくなるのは、<span class="math inline">\(\theta=\)</span> 0.4のときである（表が出た割合である2/5と一致）。</p>
 <p>ここではわかりやすくパラメータを1つのみ使って説明しているが、線形モデルの傾きや切片の推定も同じである。上の例の<span class="math inline">\(\theta\)</span>を線形予測子に置き換えて同様の計算をする。</p>

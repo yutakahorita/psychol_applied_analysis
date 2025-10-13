@@ -157,6 +157,9 @@ chap11_Practice
 chap11_emmeans
 chap11_emmeans1
 chap11_emmeans2
+chap11_simpleslope
+chap11_ss_1
+chap11_ss_2
 chap12_Logistic
 chap12_Preparation
 chap12_GLM

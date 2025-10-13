@@ -23,7 +23,7 @@
 <meta name="author" content="帝京大学文学部心理学科　堀田結孝" />
 
 
-<meta name="date" content="2025-10-08" />
+<meta name="date" content="2025-10-13" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -408,10 +408,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path=""><a href="#%E5%95%8F1"><i class="fa fa-check"></i>問1</a></li>
 <li class="chapter" data-level="" data-path=""><a href="#%E5%95%8F2"><i class="fa fa-check"></i>問2</a></li>
 </ul></li>
-<li class="chapter" data-level="12.10" data-path="11-linear_model2.html"><a href="11-linear_model2.html#chap11_emmeans"><i class="fa fa-check"></i><b>12.10</b> 補足(emmeans)</a>
+<li class="chapter" data-level="12.10" data-path="11-linear_model2.html"><a href="11-linear_model2.html#chap11_emmeans"><i class="fa fa-check"></i><b>12.10</b> 補足１(emmeans)</a>
 <ul>
 <li class="chapter" data-level="12.10.1" data-path="11-linear_model2.html"><a href="11-linear_model2.html#chap11_emmeans1"><i class="fa fa-check"></i><b>12.10.1</b> 一要因の分散分析における多重比較</a></li>
 <li class="chapter" data-level="12.10.2" data-path="11-linear_model2.html"><a href="11-linear_model2.html#chap11_emmeans2"><i class="fa fa-check"></i><b>12.10.2</b> 二要因の分散分析における単純主効果検定</a></li>
+</ul></li>
+<li class="chapter" data-level="12.11" data-path="11-linear_model2.html"><a href="11-linear_model2.html#chap11_simpleslope"><i class="fa fa-check"></i><b>12.11</b> 補足２（単純傾斜）</a>
+<ul>
+<li class="chapter" data-level="12.11.1" data-path="11-linear_model2.html"><a href="11-linear_model2.html#chap11_ss_1"><i class="fa fa-check"></i><b>12.11.1</b> 調整変数がカテゴリカル変数，予測変数が量的変数のとき</a></li>
+<li class="chapter" data-level="12.11.2" data-path="11-linear_model2.html"><a href="11-linear_model2.html#chap11_ss_2"><i class="fa fa-check"></i><b>12.11.2</b> 予測変数と調整変数が量的変数のとき</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="13" data-path="12-glm_logistic.html"><a href="12-glm_logistic.html"><i class="fa fa-check"></i><b>13</b> 一般化線形モデル（ロジスティック回帰）</a>
@@ -655,7 +660,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="chap17_Preparation" class="section level2 hasAnchor" number="18.1">
 <h2><span class="header-section-number">18.1</span> 準備<a href="17-evaluation.html#chap17_Preparation" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>この章では、<code>performance</code>パッケージを使う。</p>
-<div class="sourceCode" id="cb567"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb567-1"><a href="17-evaluation.html#cb567-1" tabindex="-1"></a><span class="fu">library</span>(performance)</span></code></pre></div>
+<div class="sourceCode" id="cb599"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb599-1"><a href="17-evaluation.html#cb599-1" tabindex="-1"></a><span class="fu">library</span>(performance)</span></code></pre></div>
 </div>
 <div id="chap17_Intervals" class="section level2 hasAnchor" number="18.2">
 <h2><span class="header-section-number">18.2</span> 信頼区間と予測区間<a href="17-evaluation.html#chap17_Intervals" class="anchor-section" aria-label="Anchor link to header"></a></h2>
@@ -666,12 +671,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Rには、線形モデルの推定結果から信頼区間と予測区間を算出してくれる<code>predict()</code>関数が用意されている。先ほどの線形モデルの解析結果を使って、信頼区間と予測区間を求めてみよう。</p>
 <div id="chap17_CI" class="section level3 hasAnchor" number="18.2.1">
 <h3><span class="header-section-number">18.2.1</span> 信頼区間<a href="17-evaluation.html#chap17_CI" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<div class="sourceCode" id="cb568"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb568-1"><a href="17-evaluation.html#cb568-1" tabindex="-1"></a>result <span class="ot">=</span> <span class="fu">lm</span>(<span class="at">data =</span> iris, Petal.Length <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> Sepal.Length) </span>
-<span id="cb568-2"><a href="17-evaluation.html#cb568-2" tabindex="-1"></a></span>
-<span id="cb568-3"><a href="17-evaluation.html#cb568-3" tabindex="-1"></a>result_conf <span class="ot">=</span> <span class="fu">predict</span>(result, <span class="at">interval =</span> <span class="st">&quot;confidence&quot;</span>, <span class="at">level =</span> <span class="fl">0.95</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb600"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb600-1"><a href="17-evaluation.html#cb600-1" tabindex="-1"></a>result <span class="ot">=</span> <span class="fu">lm</span>(<span class="at">data =</span> iris, Petal.Length <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> Sepal.Length) </span>
+<span id="cb600-2"><a href="17-evaluation.html#cb600-2" tabindex="-1"></a></span>
+<span id="cb600-3"><a href="17-evaluation.html#cb600-3" tabindex="-1"></a>result_conf <span class="ot">=</span> <span class="fu">predict</span>(result, <span class="at">interval =</span> <span class="st">&quot;confidence&quot;</span>, <span class="at">level =</span> <span class="fl">0.95</span>)</span></code></pre></div>
 <p><code>interval = "confidence"</code>とすると、信頼区間を求めてくれる。
 <code>level =</code> に信頼区間の幅を入力する（デフォルトで0.95だが、幅を変えたい場合は指定する）。</p>
-<div class="sourceCode" id="cb569"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb569-1"><a href="17-evaluation.html#cb569-1" tabindex="-1"></a><span class="fu">head</span>(result_conf)</span></code></pre></div>
+<div class="sourceCode" id="cb601"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb601-1"><a href="17-evaluation.html#cb601-1" tabindex="-1"></a><span class="fu">head</span>(result_conf)</span></code></pre></div>
 <pre><code>##        fit      lwr      upr
 ## 1 2.376565 2.188121 2.565009
 ## 2 2.004878 1.792226 2.217531
@@ -681,23 +686,23 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## 6 2.934095 2.775149 3.093040</code></pre>
 <p>uprが95%信頼区間の上限、lwrが95%信頼区間の下限に当たる。</p>
 <p>求めた信頼区間を図示してみよう</p>
-<div class="sourceCode" id="cb571"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb571-1"><a href="17-evaluation.html#cb571-1" tabindex="-1"></a>plot_conf <span class="ot">=</span> <span class="fu">cbind</span>(iris, result_conf) <span class="co">#実測値のデータと予測値のデータを結合する。</span></span>
-<span id="cb571-2"><a href="17-evaluation.html#cb571-2" tabindex="-1"></a></span>
-<span id="cb571-3"><a href="17-evaluation.html#cb571-3" tabindex="-1"></a>ggplot2<span class="sc">::</span><span class="fu">ggplot</span>() <span class="sc">+</span> </span>
-<span id="cb571-4"><a href="17-evaluation.html#cb571-4" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_point</span>(<span class="at">data =</span> plot_conf, <span class="fu">aes</span>(<span class="at">x =</span> Sepal.Length, <span class="at">y =</span> Petal.Length)) <span class="sc">+</span> </span>
-<span id="cb571-5"><a href="17-evaluation.html#cb571-5" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_line</span>(<span class="at">data =</span> plot_conf, <span class="fu">aes</span>(<span class="at">x =</span> Sepal.Length, <span class="at">y =</span> fit)) <span class="sc">+</span> </span>
-<span id="cb571-6"><a href="17-evaluation.html#cb571-6" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_ribbon</span>(<span class="at">data =</span> plot_conf, <span class="fu">aes</span>(<span class="at">x =</span> Sepal.Length, <span class="at">ymax =</span> upr, <span class="at">ymin =</span> lwr), <span class="at">alpha =</span> <span class="fl">0.4</span>) </span></code></pre></div>
-<p><img src="Data-Analysis-for-Psychology_files/figure-html/unnamed-chunk-323-1.png" width="672" /></p>
+<div class="sourceCode" id="cb603"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb603-1"><a href="17-evaluation.html#cb603-1" tabindex="-1"></a>plot_conf <span class="ot">=</span> <span class="fu">cbind</span>(iris, result_conf) <span class="co">#実測値のデータと予測値のデータを結合する。</span></span>
+<span id="cb603-2"><a href="17-evaluation.html#cb603-2" tabindex="-1"></a></span>
+<span id="cb603-3"><a href="17-evaluation.html#cb603-3" tabindex="-1"></a>ggplot2<span class="sc">::</span><span class="fu">ggplot</span>() <span class="sc">+</span> </span>
+<span id="cb603-4"><a href="17-evaluation.html#cb603-4" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_point</span>(<span class="at">data =</span> plot_conf, <span class="fu">aes</span>(<span class="at">x =</span> Sepal.Length, <span class="at">y =</span> Petal.Length)) <span class="sc">+</span> </span>
+<span id="cb603-5"><a href="17-evaluation.html#cb603-5" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_line</span>(<span class="at">data =</span> plot_conf, <span class="fu">aes</span>(<span class="at">x =</span> Sepal.Length, <span class="at">y =</span> fit)) <span class="sc">+</span> </span>
+<span id="cb603-6"><a href="17-evaluation.html#cb603-6" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_ribbon</span>(<span class="at">data =</span> plot_conf, <span class="fu">aes</span>(<span class="at">x =</span> Sepal.Length, <span class="at">ymax =</span> upr, <span class="at">ymin =</span> lwr), <span class="at">alpha =</span> <span class="fl">0.4</span>) </span></code></pre></div>
+<p><img src="Data-Analysis-for-Psychology_files/figure-html/unnamed-chunk-334-1.png" width="672" /></p>
 </div>
 <div id="chap17_PI" class="section level3 hasAnchor" number="18.2.2">
 <h3><span class="header-section-number">18.2.2</span> 予測区間<a href="17-evaluation.html#chap17_PI" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<div class="sourceCode" id="cb572"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb572-1"><a href="17-evaluation.html#cb572-1" tabindex="-1"></a>result <span class="ot">=</span> <span class="fu">lm</span>(<span class="at">data =</span> iris, Petal.Length <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> Sepal.Length) </span>
-<span id="cb572-2"><a href="17-evaluation.html#cb572-2" tabindex="-1"></a></span>
-<span id="cb572-3"><a href="17-evaluation.html#cb572-3" tabindex="-1"></a>new <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="at">Sepal.Length =</span> <span class="fu">seq</span>(<span class="dv">4</span>, <span class="dv">8</span>, <span class="fl">0.1</span>)) <span class="co">#0.1刻みで4から8まで範囲の数値ベクトルを入れたデータを仮に作る</span></span>
-<span id="cb572-4"><a href="17-evaluation.html#cb572-4" tabindex="-1"></a></span>
-<span id="cb572-5"><a href="17-evaluation.html#cb572-5" tabindex="-1"></a>result_pred <span class="ot">=</span> <span class="fu">predict</span>(result, <span class="at">newdata =</span> new, <span class="at">interval =</span> <span class="st">&quot;prediction&quot;</span>, <span class="at">level =</span> <span class="fl">0.95</span>) <span class="co">#newdataに先ほど作成した仮のデータを入れる。</span></span>
-<span id="cb572-6"><a href="17-evaluation.html#cb572-6" tabindex="-1"></a></span>
-<span id="cb572-7"><a href="17-evaluation.html#cb572-7" tabindex="-1"></a><span class="fu">head</span>(result_pred) <span class="co">#仮データの数値に対応する予測区間が求められる</span></span></code></pre></div>
+<div class="sourceCode" id="cb604"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb604-1"><a href="17-evaluation.html#cb604-1" tabindex="-1"></a>result <span class="ot">=</span> <span class="fu">lm</span>(<span class="at">data =</span> iris, Petal.Length <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> Sepal.Length) </span>
+<span id="cb604-2"><a href="17-evaluation.html#cb604-2" tabindex="-1"></a></span>
+<span id="cb604-3"><a href="17-evaluation.html#cb604-3" tabindex="-1"></a>new <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="at">Sepal.Length =</span> <span class="fu">seq</span>(<span class="dv">4</span>, <span class="dv">8</span>, <span class="fl">0.1</span>)) <span class="co">#0.1刻みで4から8まで範囲の数値ベクトルを入れたデータを仮に作る</span></span>
+<span id="cb604-4"><a href="17-evaluation.html#cb604-4" tabindex="-1"></a></span>
+<span id="cb604-5"><a href="17-evaluation.html#cb604-5" tabindex="-1"></a>result_pred <span class="ot">=</span> <span class="fu">predict</span>(result, <span class="at">newdata =</span> new, <span class="at">interval =</span> <span class="st">&quot;prediction&quot;</span>, <span class="at">level =</span> <span class="fl">0.95</span>) <span class="co">#newdataに先ほど作成した仮のデータを入れる。</span></span>
+<span id="cb604-6"><a href="17-evaluation.html#cb604-6" tabindex="-1"></a></span>
+<span id="cb604-7"><a href="17-evaluation.html#cb604-7" tabindex="-1"></a><span class="fu">head</span>(result_pred) <span class="co">#仮データの数値に対応する予測区間が求められる</span></span></code></pre></div>
 <pre><code>##         fit        lwr      upr
 ## 1 0.3322885 -1.4165179 2.081095
 ## 2 0.5181318 -1.2277203 2.263984
@@ -707,13 +712,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## 6 1.2615050 -0.4741389 2.997149</code></pre>
 <p><code>interval = "prediction"</code>と入力する。</p>
 <p>予測区間を図示してみよう。</p>
-<div class="sourceCode" id="cb574"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb574-1"><a href="17-evaluation.html#cb574-1" tabindex="-1"></a>plot_pred <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="at">Sepal.Length =</span> <span class="fu">seq</span>(<span class="dv">4</span>, <span class="dv">8</span>, <span class="fl">0.1</span>), result_pred) <span class="co">#予測区間のデータを作成する</span></span>
-<span id="cb574-2"><a href="17-evaluation.html#cb574-2" tabindex="-1"></a></span>
-<span id="cb574-3"><a href="17-evaluation.html#cb574-3" tabindex="-1"></a>ggplot2<span class="sc">::</span><span class="fu">ggplot</span>() <span class="sc">+</span> </span>
-<span id="cb574-4"><a href="17-evaluation.html#cb574-4" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_point</span>(<span class="at">data =</span> iris, <span class="fu">aes</span>(<span class="at">x =</span> Sepal.Length, <span class="at">y =</span> Petal.Length)) <span class="sc">+</span> </span>
-<span id="cb574-5"><a href="17-evaluation.html#cb574-5" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_line</span>(<span class="at">data =</span> plot_pred, <span class="fu">aes</span>(<span class="at">x =</span> Sepal.Length, <span class="at">y =</span> fit)) <span class="sc">+</span> </span>
-<span id="cb574-6"><a href="17-evaluation.html#cb574-6" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_ribbon</span>(<span class="at">data =</span> plot_pred, <span class="fu">aes</span>(<span class="at">x =</span> Sepal.Length, <span class="at">ymax =</span> upr, <span class="at">ymin =</span> lwr), <span class="at">alpha =</span> <span class="fl">0.4</span>) </span></code></pre></div>
-<p><img src="Data-Analysis-for-Psychology_files/figure-html/unnamed-chunk-325-1.png" width="672" /></p>
+<div class="sourceCode" id="cb606"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb606-1"><a href="17-evaluation.html#cb606-1" tabindex="-1"></a>plot_pred <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="at">Sepal.Length =</span> <span class="fu">seq</span>(<span class="dv">4</span>, <span class="dv">8</span>, <span class="fl">0.1</span>), result_pred) <span class="co">#予測区間のデータを作成する</span></span>
+<span id="cb606-2"><a href="17-evaluation.html#cb606-2" tabindex="-1"></a></span>
+<span id="cb606-3"><a href="17-evaluation.html#cb606-3" tabindex="-1"></a>ggplot2<span class="sc">::</span><span class="fu">ggplot</span>() <span class="sc">+</span> </span>
+<span id="cb606-4"><a href="17-evaluation.html#cb606-4" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_point</span>(<span class="at">data =</span> iris, <span class="fu">aes</span>(<span class="at">x =</span> Sepal.Length, <span class="at">y =</span> Petal.Length)) <span class="sc">+</span> </span>
+<span id="cb606-5"><a href="17-evaluation.html#cb606-5" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_line</span>(<span class="at">data =</span> plot_pred, <span class="fu">aes</span>(<span class="at">x =</span> Sepal.Length, <span class="at">y =</span> fit)) <span class="sc">+</span> </span>
+<span id="cb606-6"><a href="17-evaluation.html#cb606-6" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_ribbon</span>(<span class="at">data =</span> plot_pred, <span class="fu">aes</span>(<span class="at">x =</span> Sepal.Length, <span class="at">ymax =</span> upr, <span class="at">ymin =</span> lwr), <span class="at">alpha =</span> <span class="fl">0.4</span>) </span></code></pre></div>
+<p><img src="Data-Analysis-for-Psychology_files/figure-html/unnamed-chunk-336-1.png" width="672" /></p>
 <p>実際のデータが予測区間の範囲に収まっているならば、そのモデルは概ねよくデータを予測できていることを示している。</p>
 </div>
 </div>
@@ -721,7 +726,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2><span class="header-section-number">18.3</span> 多重共線性<a href="17-evaluation.html#chap17_Multico" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>予測変数同士が非常に強く相関しあっている場合、予測変数の係数の推定結果が信頼できなくなる恐れがある。この問題は、<strong>多重共線性(multicollinearity)</strong>と呼ばれる。</p>
 <p>サンプルデータを使って確認してみよう。Rには多重共線性の例として<code>longley</code>というサンプルデータがある。</p>
-<div class="sourceCode" id="cb575"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb575-1"><a href="17-evaluation.html#cb575-1" tabindex="-1"></a><span class="fu">head</span>(longley)</span></code></pre></div>
+<div class="sourceCode" id="cb607"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb607-1"><a href="17-evaluation.html#cb607-1" tabindex="-1"></a><span class="fu">head</span>(longley)</span></code></pre></div>
 <pre><code>##      GNP.deflator     GNP Unemployed Armed.Forces Population Year Employed
 ## 1947         83.0 234.289      235.6        159.0    107.608 1947   60.323
 ## 1948         88.5 259.426      232.5        145.6    108.632 1948   61.122
@@ -730,7 +735,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## 1951         96.2 328.975      209.9        309.9    112.075 1951   63.221
 ## 1952         98.1 346.999      193.2        359.4    113.270 1952   63.639</code></pre>
 <p>まず、このデータに入っている変数間の相関を確認してみよう。</p>
-<div class="sourceCode" id="cb577"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb577-1"><a href="17-evaluation.html#cb577-1" tabindex="-1"></a><span class="fu">cor</span>(longley)</span></code></pre></div>
+<div class="sourceCode" id="cb609"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb609-1"><a href="17-evaluation.html#cb609-1" tabindex="-1"></a><span class="fu">cor</span>(longley)</span></code></pre></div>
 <pre><code>##              GNP.deflator       GNP Unemployed Armed.Forces Population
 ## GNP.deflator    1.0000000 0.9915892  0.6206334    0.4647442  0.9791634
 ## GNP             0.9915892 1.0000000  0.6042609    0.4464368  0.9910901
@@ -748,8 +753,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## Year         1.0000000 0.9713295
 ## Employed     0.9713295 1.0000000</code></pre>
 <p><code>Employed</code>を応答変数、<code>GNP.deflator</code>を予測変数としたモデル（model01）と、<code>Employed</code>を応答変数、<code>GNP</code>を予測変数とした線形モデル（model02）でそれぞれ解析してみよう。</p>
-<div class="sourceCode" id="cb579"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb579-1"><a href="17-evaluation.html#cb579-1" tabindex="-1"></a>model01 <span class="ot">=</span> <span class="fu">lm</span>(<span class="at">data =</span> longley, Employed <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> GNP.deflator)</span>
-<span id="cb579-2"><a href="17-evaluation.html#cb579-2" tabindex="-1"></a><span class="fu">summary</span>(model01)</span></code></pre></div>
+<div class="sourceCode" id="cb611"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb611-1"><a href="17-evaluation.html#cb611-1" tabindex="-1"></a>model01 <span class="ot">=</span> <span class="fu">lm</span>(<span class="at">data =</span> longley, Employed <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> GNP.deflator)</span>
+<span id="cb611-2"><a href="17-evaluation.html#cb611-2" tabindex="-1"></a><span class="fu">summary</span>(model01)</span></code></pre></div>
 <pre><code>## 
 ## Call:
 ## lm(formula = Employed ~ 1 + GNP.deflator, data = longley)
@@ -768,8 +773,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## Residual standard error: 0.8706 on 14 degrees of freedom
 ## Multiple R-squared:  0.9426, Adjusted R-squared:  0.9385 
 ## F-statistic: 230.1 on 1 and 14 DF,  p-value: 4.389e-10</code></pre>
-<div class="sourceCode" id="cb581"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb581-1"><a href="17-evaluation.html#cb581-1" tabindex="-1"></a>model02 <span class="ot">=</span> <span class="fu">lm</span>(<span class="at">data =</span> longley, Employed <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> GNP)</span>
-<span id="cb581-2"><a href="17-evaluation.html#cb581-2" tabindex="-1"></a><span class="fu">summary</span>(model02)</span></code></pre></div>
+<div class="sourceCode" id="cb613"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb613-1"><a href="17-evaluation.html#cb613-1" tabindex="-1"></a>model02 <span class="ot">=</span> <span class="fu">lm</span>(<span class="at">data =</span> longley, Employed <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> GNP)</span>
+<span id="cb613-2"><a href="17-evaluation.html#cb613-2" tabindex="-1"></a><span class="fu">summary</span>(model02)</span></code></pre></div>
 <pre><code>## 
 ## Call:
 ## lm(formula = Employed ~ 1 + GNP, data = longley)
@@ -789,8 +794,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## Multiple R-squared:  0.9674, Adjusted R-squared:  0.965 
 ## F-statistic: 415.1 on 1 and 14 DF,  p-value: 8.363e-12</code></pre>
 <p>次に、<code>Employed</code>を応答変数、<code>GNP</code>と<code>GNP.deflator</code>の両方を予測変数として入れて解析をしてみよう。</p>
-<div class="sourceCode" id="cb583"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb583-1"><a href="17-evaluation.html#cb583-1" tabindex="-1"></a>model03 <span class="ot">=</span> <span class="fu">lm</span>(<span class="at">data =</span> longley, Employed <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> GNP.deflator <span class="sc">+</span> GNP)</span>
-<span id="cb583-2"><a href="17-evaluation.html#cb583-2" tabindex="-1"></a><span class="fu">summary</span>(model03)</span></code></pre></div>
+<div class="sourceCode" id="cb615"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb615-1"><a href="17-evaluation.html#cb615-1" tabindex="-1"></a>model03 <span class="ot">=</span> <span class="fu">lm</span>(<span class="at">data =</span> longley, Employed <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> GNP.deflator <span class="sc">+</span> GNP)</span>
+<span id="cb615-2"><a href="17-evaluation.html#cb615-2" tabindex="-1"></a><span class="fu">summary</span>(model03)</span></code></pre></div>
 <pre><code>## 
 ## Call:
 ## lm(formula = Employed ~ 1 + GNP.deflator + GNP, data = longley)
@@ -829,7 +834,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h3><span class="header-section-number">18.3.1</span> 多重共線性の評価<a href="17-evaluation.html#chap17_EvalMultico" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>多重共線性の評価として、<strong>VIF(variance inflation factor)</strong>という指標がよく用いられる。一般的に、<span class="math inline">\(VIF &gt; 10\)</span>の場合は、多重共線性を疑った方が良いといわれている。VIFの高い変数同士のうちどちらか一方を予測変数から除くといった対処をして、解析し直してみるのが良い。</p>
 <p><code>performance</code>パッケージの<code>check_collinearity()</code>関数を使えば、VIFを確認することができる。</p>
-<div class="sourceCode" id="cb585"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb585-1"><a href="17-evaluation.html#cb585-1" tabindex="-1"></a>performance<span class="sc">::</span><span class="fu">check_collinearity</span>(model03)</span></code></pre></div>
+<div class="sourceCode" id="cb617"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb617-1"><a href="17-evaluation.html#cb617-1" tabindex="-1"></a>performance<span class="sc">::</span><span class="fu">check_collinearity</span>(model03)</span></code></pre></div>
 <pre><code>## # Check for Multicollinearity
 ## 
 ## High Correlation
@@ -842,37 +847,37 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="chap17_Overfitting" class="section level2 hasAnchor" number="18.4">
 <h2><span class="header-section-number">18.4</span> 過学習<a href="17-evaluation.html#chap17_Overfitting" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>以下のプログラムを実行して、サンプルデータ<code>d</code>を作成しよう。</p>
-<div class="sourceCode" id="cb587"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb587-1"><a href="17-evaluation.html#cb587-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">10</span>)</span>
-<span id="cb587-2"><a href="17-evaluation.html#cb587-2" tabindex="-1"></a></span>
-<span id="cb587-3"><a href="17-evaluation.html#cb587-3" tabindex="-1"></a>N <span class="ot">=</span> <span class="dv">10</span></span>
-<span id="cb587-4"><a href="17-evaluation.html#cb587-4" tabindex="-1"></a>x <span class="ot">=</span> <span class="fu">seq</span>(<span class="dv">1</span>,N,<span class="dv">1</span>)</span>
-<span id="cb587-5"><a href="17-evaluation.html#cb587-5" tabindex="-1"></a>y <span class="ot">=</span> <span class="fu">runif</span>(N, <span class="at">min =</span> <span class="dv">1</span>, <span class="at">max =</span> <span class="dv">5</span>)</span>
-<span id="cb587-6"><a href="17-evaluation.html#cb587-6" tabindex="-1"></a>d <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="at">x =</span> x, <span class="at">y =</span> y)</span>
-<span id="cb587-7"><a href="17-evaluation.html#cb587-7" tabindex="-1"></a><span class="fu">str</span>(d)</span></code></pre></div>
+<div class="sourceCode" id="cb619"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb619-1"><a href="17-evaluation.html#cb619-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">10</span>)</span>
+<span id="cb619-2"><a href="17-evaluation.html#cb619-2" tabindex="-1"></a></span>
+<span id="cb619-3"><a href="17-evaluation.html#cb619-3" tabindex="-1"></a>N <span class="ot">=</span> <span class="dv">10</span></span>
+<span id="cb619-4"><a href="17-evaluation.html#cb619-4" tabindex="-1"></a>x <span class="ot">=</span> <span class="fu">seq</span>(<span class="dv">1</span>,N,<span class="dv">1</span>)</span>
+<span id="cb619-5"><a href="17-evaluation.html#cb619-5" tabindex="-1"></a>y <span class="ot">=</span> <span class="fu">runif</span>(N, <span class="at">min =</span> <span class="dv">1</span>, <span class="at">max =</span> <span class="dv">5</span>)</span>
+<span id="cb619-6"><a href="17-evaluation.html#cb619-6" tabindex="-1"></a>d <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="at">x =</span> x, <span class="at">y =</span> y)</span>
+<span id="cb619-7"><a href="17-evaluation.html#cb619-7" tabindex="-1"></a><span class="fu">str</span>(d)</span></code></pre></div>
 <pre><code>## &#39;data.frame&#39;:    10 obs. of  2 variables:
 ##  $ x: num  1 2 3 4 5 6 7 8 9 10
 ##  $ y: num  3.03 2.23 2.71 3.77 1.34 ...</code></pre>
-<div class="sourceCode" id="cb589"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb589-1"><a href="17-evaluation.html#cb589-1" tabindex="-1"></a>ggplot2<span class="sc">::</span><span class="fu">ggplot</span>() <span class="sc">+</span> </span>
-<span id="cb589-2"><a href="17-evaluation.html#cb589-2" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_point</span>(<span class="at">data =</span>d, <span class="fu">aes</span>(<span class="at">x=</span>x, <span class="at">y =</span> y))</span></code></pre></div>
-<p><img src="Data-Analysis-for-Psychology_files/figure-html/unnamed-chunk-331-1.png" width="672" /></p>
+<div class="sourceCode" id="cb621"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb621-1"><a href="17-evaluation.html#cb621-1" tabindex="-1"></a>ggplot2<span class="sc">::</span><span class="fu">ggplot</span>() <span class="sc">+</span> </span>
+<span id="cb621-2"><a href="17-evaluation.html#cb621-2" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_point</span>(<span class="at">data =</span>d, <span class="fu">aes</span>(<span class="at">x=</span>x, <span class="at">y =</span> y))</span></code></pre></div>
+<p><img src="Data-Analysis-for-Psychology_files/figure-html/unnamed-chunk-342-1.png" width="672" /></p>
 <p>このデータについて、以下の線形モデルを当てはめ、パラメータを推定しよう。図に線形モデルの直線及び信頼区間を図示するところまでやってみる。</p>
 <p><span class="math display">\[
 \begin{equation}
   \mu = \alpha + \beta_{1} x\\ \tag{8}
 \end{equation}
 \]</span></p>
-<div class="sourceCode" id="cb590"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb590-1"><a href="17-evaluation.html#cb590-1" tabindex="-1"></a>result_1 <span class="ot">=</span> <span class="fu">lm</span>(<span class="at">data =</span> d, y <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> x)</span>
-<span id="cb590-2"><a href="17-evaluation.html#cb590-2" tabindex="-1"></a></span>
-<span id="cb590-3"><a href="17-evaluation.html#cb590-3" tabindex="-1"></a>newdat <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="at">x =</span> x)</span>
-<span id="cb590-4"><a href="17-evaluation.html#cb590-4" tabindex="-1"></a>conf.int_1 <span class="ot">=</span> <span class="fu">predict</span>(result_1, <span class="at">newdata =</span> newdat, <span class="at">interval =</span> <span class="st">&quot;confidence&quot;</span>, <span class="at">level =</span> <span class="fl">0.95</span>)</span>
-<span id="cb590-5"><a href="17-evaluation.html#cb590-5" tabindex="-1"></a>conf_dat <span class="ot">=</span> <span class="fu">data.frame</span>(d, newdat, conf.int_1)</span>
-<span id="cb590-6"><a href="17-evaluation.html#cb590-6" tabindex="-1"></a></span>
-<span id="cb590-7"><a href="17-evaluation.html#cb590-7" tabindex="-1"></a></span>
-<span id="cb590-8"><a href="17-evaluation.html#cb590-8" tabindex="-1"></a>ggplot2<span class="sc">::</span><span class="fu">ggplot</span>() <span class="sc">+</span> </span>
-<span id="cb590-9"><a href="17-evaluation.html#cb590-9" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_point</span>(<span class="at">data =</span> conf_dat, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y))<span class="sc">+</span></span>
-<span id="cb590-10"><a href="17-evaluation.html#cb590-10" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_line</span>(<span class="at">data =</span> conf_dat, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> fit)) <span class="sc">+</span></span>
-<span id="cb590-11"><a href="17-evaluation.html#cb590-11" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_ribbon</span>(<span class="at">data =</span> conf_dat, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">ymin =</span> lwr, <span class="at">ymax =</span> upr), <span class="at">alpha =</span><span class="fl">0.2</span>)</span></code></pre></div>
-<p><img src="Data-Analysis-for-Psychology_files/figure-html/unnamed-chunk-332-1.png" width="672" /></p>
+<div class="sourceCode" id="cb622"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb622-1"><a href="17-evaluation.html#cb622-1" tabindex="-1"></a>result_1 <span class="ot">=</span> <span class="fu">lm</span>(<span class="at">data =</span> d, y <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> x)</span>
+<span id="cb622-2"><a href="17-evaluation.html#cb622-2" tabindex="-1"></a></span>
+<span id="cb622-3"><a href="17-evaluation.html#cb622-3" tabindex="-1"></a>newdat <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="at">x =</span> x)</span>
+<span id="cb622-4"><a href="17-evaluation.html#cb622-4" tabindex="-1"></a>conf.int_1 <span class="ot">=</span> <span class="fu">predict</span>(result_1, <span class="at">newdata =</span> newdat, <span class="at">interval =</span> <span class="st">&quot;confidence&quot;</span>, <span class="at">level =</span> <span class="fl">0.95</span>)</span>
+<span id="cb622-5"><a href="17-evaluation.html#cb622-5" tabindex="-1"></a>conf_dat <span class="ot">=</span> <span class="fu">data.frame</span>(d, newdat, conf.int_1)</span>
+<span id="cb622-6"><a href="17-evaluation.html#cb622-6" tabindex="-1"></a></span>
+<span id="cb622-7"><a href="17-evaluation.html#cb622-7" tabindex="-1"></a></span>
+<span id="cb622-8"><a href="17-evaluation.html#cb622-8" tabindex="-1"></a>ggplot2<span class="sc">::</span><span class="fu">ggplot</span>() <span class="sc">+</span> </span>
+<span id="cb622-9"><a href="17-evaluation.html#cb622-9" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_point</span>(<span class="at">data =</span> conf_dat, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y))<span class="sc">+</span></span>
+<span id="cb622-10"><a href="17-evaluation.html#cb622-10" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_line</span>(<span class="at">data =</span> conf_dat, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> fit)) <span class="sc">+</span></span>
+<span id="cb622-11"><a href="17-evaluation.html#cb622-11" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_ribbon</span>(<span class="at">data =</span> conf_dat, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">ymin =</span> lwr, <span class="at">ymax =</span> upr), <span class="at">alpha =</span><span class="fl">0.2</span>)</span></code></pre></div>
+<p><img src="Data-Analysis-for-Psychology_files/figure-html/unnamed-chunk-343-1.png" width="672" /></p>
 <p>直線はほとんど観測値から外れており、当てはまりが悪いようである。</p>
 <p>そこで、予測変数を増やして検討してみる。<code>lm()</code>では、予測変数<span class="math inline">\(x\)</span>のn乗を含む多項式のモデルを考慮することも可能である。例えば、以下は3次の多項式の例である。</p>
 <p><span class="math display">\[
@@ -882,32 +887,32 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 \]</span></p>
 <p>n次式のモデルは<strong>多項式回帰</strong>(polynomial regression)と呼ばれる。</p>
 <p><code>lm()</code>では、<code>I()</code>の中に書くかたちでn次の予測変数を入れることができる。</p>
-<div class="sourceCode" id="cb591"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb591-1"><a href="17-evaluation.html#cb591-1" tabindex="-1"></a>result_3 <span class="ot">=</span> <span class="fu">lm</span>(<span class="at">data =</span> d, y <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> x <span class="sc">+</span> <span class="fu">I</span>(x<span class="sc">^</span><span class="dv">2</span>) <span class="sc">+</span> <span class="fu">I</span>(x<span class="sc">^</span><span class="dv">3</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb623"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb623-1"><a href="17-evaluation.html#cb623-1" tabindex="-1"></a>result_3 <span class="ot">=</span> <span class="fu">lm</span>(<span class="at">data =</span> d, y <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> x <span class="sc">+</span> <span class="fu">I</span>(x<span class="sc">^</span><span class="dv">2</span>) <span class="sc">+</span> <span class="fu">I</span>(x<span class="sc">^</span><span class="dv">3</span>))</span></code></pre></div>
 <p>同じく、3次の多項式による予測の結果を図で確認しよう。</p>
-<div class="sourceCode" id="cb592"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb592-1"><a href="17-evaluation.html#cb592-1" tabindex="-1"></a>newdat <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="at">x =</span> x)</span>
-<span id="cb592-2"><a href="17-evaluation.html#cb592-2" tabindex="-1"></a>conf.int_3 <span class="ot">=</span> <span class="fu">predict</span>(result_3, <span class="at">newdata =</span> newdat, <span class="at">interval =</span> <span class="st">&quot;confidence&quot;</span>, <span class="at">level =</span> <span class="fl">0.95</span>)</span>
-<span id="cb592-3"><a href="17-evaluation.html#cb592-3" tabindex="-1"></a>conf_dat <span class="ot">=</span> <span class="fu">data.frame</span>(d, newdat, conf.int_3)</span>
-<span id="cb592-4"><a href="17-evaluation.html#cb592-4" tabindex="-1"></a></span>
-<span id="cb592-5"><a href="17-evaluation.html#cb592-5" tabindex="-1"></a></span>
-<span id="cb592-6"><a href="17-evaluation.html#cb592-6" tabindex="-1"></a>ggplot2<span class="sc">::</span><span class="fu">ggplot</span>() <span class="sc">+</span> </span>
-<span id="cb592-7"><a href="17-evaluation.html#cb592-7" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_point</span>(<span class="at">data =</span> conf_dat, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y))<span class="sc">+</span></span>
-<span id="cb592-8"><a href="17-evaluation.html#cb592-8" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_line</span>(<span class="at">data =</span> conf_dat, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> fit)) <span class="sc">+</span> </span>
-<span id="cb592-9"><a href="17-evaluation.html#cb592-9" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_ribbon</span>(<span class="at">data =</span> conf_dat, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">ymin =</span> lwr, <span class="at">ymax =</span> upr), <span class="at">alpha =</span><span class="fl">0.2</span>)</span></code></pre></div>
-<p><img src="Data-Analysis-for-Psychology_files/figure-html/unnamed-chunk-334-1.png" width="672" /></p>
+<div class="sourceCode" id="cb624"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb624-1"><a href="17-evaluation.html#cb624-1" tabindex="-1"></a>newdat <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="at">x =</span> x)</span>
+<span id="cb624-2"><a href="17-evaluation.html#cb624-2" tabindex="-1"></a>conf.int_3 <span class="ot">=</span> <span class="fu">predict</span>(result_3, <span class="at">newdata =</span> newdat, <span class="at">interval =</span> <span class="st">&quot;confidence&quot;</span>, <span class="at">level =</span> <span class="fl">0.95</span>)</span>
+<span id="cb624-3"><a href="17-evaluation.html#cb624-3" tabindex="-1"></a>conf_dat <span class="ot">=</span> <span class="fu">data.frame</span>(d, newdat, conf.int_3)</span>
+<span id="cb624-4"><a href="17-evaluation.html#cb624-4" tabindex="-1"></a></span>
+<span id="cb624-5"><a href="17-evaluation.html#cb624-5" tabindex="-1"></a></span>
+<span id="cb624-6"><a href="17-evaluation.html#cb624-6" tabindex="-1"></a>ggplot2<span class="sc">::</span><span class="fu">ggplot</span>() <span class="sc">+</span> </span>
+<span id="cb624-7"><a href="17-evaluation.html#cb624-7" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_point</span>(<span class="at">data =</span> conf_dat, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y))<span class="sc">+</span></span>
+<span id="cb624-8"><a href="17-evaluation.html#cb624-8" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_line</span>(<span class="at">data =</span> conf_dat, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> fit)) <span class="sc">+</span> </span>
+<span id="cb624-9"><a href="17-evaluation.html#cb624-9" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_ribbon</span>(<span class="at">data =</span> conf_dat, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">ymin =</span> lwr, <span class="at">ymax =</span> upr), <span class="at">alpha =</span><span class="fl">0.2</span>)</span></code></pre></div>
+<p><img src="Data-Analysis-for-Psychology_files/figure-html/unnamed-chunk-345-1.png" width="672" /></p>
 <p>9次の式でも推定してみよう。</p>
-<div class="sourceCode" id="cb593"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb593-1"><a href="17-evaluation.html#cb593-1" tabindex="-1"></a>result_9 <span class="ot">=</span> <span class="fu">lm</span>(<span class="at">data =</span> d, y <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> x <span class="sc">+</span> <span class="fu">I</span>(x<span class="sc">^</span><span class="dv">2</span>) <span class="sc">+</span> <span class="fu">I</span>(x<span class="sc">^</span><span class="dv">3</span>) <span class="sc">+</span> <span class="fu">I</span>(x<span class="sc">^</span><span class="dv">4</span>) <span class="sc">+</span> <span class="fu">I</span>(x<span class="sc">^</span><span class="dv">5</span>) <span class="sc">+</span> <span class="fu">I</span>(x<span class="sc">^</span><span class="dv">6</span>) <span class="sc">+</span> <span class="fu">I</span>(x<span class="sc">^</span><span class="dv">7</span>) <span class="sc">+</span> <span class="fu">I</span>(x<span class="sc">^</span><span class="dv">8</span>) <span class="sc">+</span> <span class="fu">I</span>(x<span class="sc">^</span><span class="dv">9</span>))</span>
-<span id="cb593-2"><a href="17-evaluation.html#cb593-2" tabindex="-1"></a></span>
-<span id="cb593-3"><a href="17-evaluation.html#cb593-3" tabindex="-1"></a></span>
-<span id="cb593-4"><a href="17-evaluation.html#cb593-4" tabindex="-1"></a>newdat <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="at">x =</span> x)</span>
-<span id="cb593-5"><a href="17-evaluation.html#cb593-5" tabindex="-1"></a>conf.int_9 <span class="ot">=</span> <span class="fu">predict</span>(result_9, <span class="at">newdata =</span> newdat, <span class="at">interval =</span> <span class="st">&quot;confidence&quot;</span>, <span class="at">level =</span> <span class="fl">0.95</span>)</span>
-<span id="cb593-6"><a href="17-evaluation.html#cb593-6" tabindex="-1"></a>conf_dat <span class="ot">=</span> <span class="fu">data.frame</span>(d, newdat, conf.int_9)</span>
-<span id="cb593-7"><a href="17-evaluation.html#cb593-7" tabindex="-1"></a></span>
-<span id="cb593-8"><a href="17-evaluation.html#cb593-8" tabindex="-1"></a></span>
-<span id="cb593-9"><a href="17-evaluation.html#cb593-9" tabindex="-1"></a>ggplot2<span class="sc">::</span><span class="fu">ggplot</span>() <span class="sc">+</span> </span>
-<span id="cb593-10"><a href="17-evaluation.html#cb593-10" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_point</span>(<span class="at">data =</span> conf_dat, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y))<span class="sc">+</span></span>
-<span id="cb593-11"><a href="17-evaluation.html#cb593-11" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_line</span>(<span class="at">data =</span> conf_dat, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> fit)) <span class="sc">+</span> </span>
-<span id="cb593-12"><a href="17-evaluation.html#cb593-12" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_ribbon</span>(<span class="at">data =</span> conf_dat, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">ymin =</span> lwr, <span class="at">ymax =</span> upr), <span class="at">alpha =</span><span class="fl">0.2</span>)</span></code></pre></div>
-<p><img src="Data-Analysis-for-Psychology_files/figure-html/unnamed-chunk-335-1.png" width="672" /></p>
+<div class="sourceCode" id="cb625"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb625-1"><a href="17-evaluation.html#cb625-1" tabindex="-1"></a>result_9 <span class="ot">=</span> <span class="fu">lm</span>(<span class="at">data =</span> d, y <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> x <span class="sc">+</span> <span class="fu">I</span>(x<span class="sc">^</span><span class="dv">2</span>) <span class="sc">+</span> <span class="fu">I</span>(x<span class="sc">^</span><span class="dv">3</span>) <span class="sc">+</span> <span class="fu">I</span>(x<span class="sc">^</span><span class="dv">4</span>) <span class="sc">+</span> <span class="fu">I</span>(x<span class="sc">^</span><span class="dv">5</span>) <span class="sc">+</span> <span class="fu">I</span>(x<span class="sc">^</span><span class="dv">6</span>) <span class="sc">+</span> <span class="fu">I</span>(x<span class="sc">^</span><span class="dv">7</span>) <span class="sc">+</span> <span class="fu">I</span>(x<span class="sc">^</span><span class="dv">8</span>) <span class="sc">+</span> <span class="fu">I</span>(x<span class="sc">^</span><span class="dv">9</span>))</span>
+<span id="cb625-2"><a href="17-evaluation.html#cb625-2" tabindex="-1"></a></span>
+<span id="cb625-3"><a href="17-evaluation.html#cb625-3" tabindex="-1"></a></span>
+<span id="cb625-4"><a href="17-evaluation.html#cb625-4" tabindex="-1"></a>newdat <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="at">x =</span> x)</span>
+<span id="cb625-5"><a href="17-evaluation.html#cb625-5" tabindex="-1"></a>conf.int_9 <span class="ot">=</span> <span class="fu">predict</span>(result_9, <span class="at">newdata =</span> newdat, <span class="at">interval =</span> <span class="st">&quot;confidence&quot;</span>, <span class="at">level =</span> <span class="fl">0.95</span>)</span>
+<span id="cb625-6"><a href="17-evaluation.html#cb625-6" tabindex="-1"></a>conf_dat <span class="ot">=</span> <span class="fu">data.frame</span>(d, newdat, conf.int_9)</span>
+<span id="cb625-7"><a href="17-evaluation.html#cb625-7" tabindex="-1"></a></span>
+<span id="cb625-8"><a href="17-evaluation.html#cb625-8" tabindex="-1"></a></span>
+<span id="cb625-9"><a href="17-evaluation.html#cb625-9" tabindex="-1"></a>ggplot2<span class="sc">::</span><span class="fu">ggplot</span>() <span class="sc">+</span> </span>
+<span id="cb625-10"><a href="17-evaluation.html#cb625-10" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_point</span>(<span class="at">data =</span> conf_dat, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y))<span class="sc">+</span></span>
+<span id="cb625-11"><a href="17-evaluation.html#cb625-11" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_line</span>(<span class="at">data =</span> conf_dat, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> fit)) <span class="sc">+</span> </span>
+<span id="cb625-12"><a href="17-evaluation.html#cb625-12" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_ribbon</span>(<span class="at">data =</span> conf_dat, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">ymin =</span> lwr, <span class="at">ymax =</span> upr), <span class="at">alpha =</span><span class="fl">0.2</span>)</span></code></pre></div>
+<p><img src="Data-Analysis-for-Psychology_files/figure-html/unnamed-chunk-346-1.png" width="672" /></p>
 <p>線は全てのデータ点を通っている。当然ながら、データの観測値の分だけパラメータがあれば、そのモデルはデータ点を全て通る線を引くことができる。現在のデータ点全てを予測することができる。</p>
 <p>しかし、そのモデルは現在のデータを全て当てられても、<em>将来得られる未知のデータを当てられるとは限らない</em>。予測変数を多くすると現在のデータには当てはまるが、当てはまりすぎて未知のデータの予測力が低下してしまうことを、<strong>過学習(overfitting)</strong>という。</p>
 <p>複雑なモデルが現在のデータによく当てはまるのは、ある意味当然である（単なる偶然で生じた誤差も無駄に説明してしまっている）。しかし、複雑なモデルは現在のデータに当てはまっても、未知のデータにもうまく当てはまるとは限らない。</p>
@@ -920,8 +925,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h3><span class="header-section-number">18.5.1</span> 決定係数<a href="17-evaluation.html#chap17_Rsq" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>線形モデルでは、データに対する回帰分析のモデルの予測力を表す指標として、<strong>決定係数</strong>（R-squared）がある。</p>
 <p>サンプルデータ<code>attitude</code>を例に見てみよう。</p>
-<div class="sourceCode" id="cb594"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb594-1"><a href="17-evaluation.html#cb594-1" tabindex="-1"></a>model_01 <span class="ot">=</span> <span class="fu">lm</span>(<span class="at">data=</span>attitude, rating <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> complaints <span class="sc">+</span> learning)</span>
-<span id="cb594-2"><a href="17-evaluation.html#cb594-2" tabindex="-1"></a><span class="fu">summary</span>(model_01)<span class="sc">$</span>r.squared <span class="co">#r.squaredで決定係数のみを取り出すことができる。</span></span></code></pre></div>
+<div class="sourceCode" id="cb626"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb626-1"><a href="17-evaluation.html#cb626-1" tabindex="-1"></a>model_01 <span class="ot">=</span> <span class="fu">lm</span>(<span class="at">data=</span>attitude, rating <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> complaints <span class="sc">+</span> learning)</span>
+<span id="cb626-2"><a href="17-evaluation.html#cb626-2" tabindex="-1"></a><span class="fu">summary</span>(model_01)<span class="sc">$</span>r.squared <span class="co">#r.squaredで決定係数のみを取り出すことができる。</span></span></code></pre></div>
 <pre><code>## [1] 0.7080152</code></pre>
 <p>これは、モデルから求めた予測値と実測値の分散が、実際のデータの分散に占める割合を意味する指標である。つまり、そのモデルでどれだけ全データの分散を説明できているかを意味する。</p>
 <p><span class="math display">\[
@@ -929,8 +934,8 @@ R^2 = \sum_{i=1}^{n} \frac {(y_{i}-\mu_{i})^2}{(y_{i}-\bar{y})^2} \tag{10}
 \]</span></p>
 <p>ただし、決定係数は単純に、予測変数が増えるほど大きくなる（説明できる分散の量が増える）。</p>
 <p>例えば<code>attitude</code>データ内の全ての変数を予測変数に使ってみる。</p>
-<div class="sourceCode" id="cb596"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb596-1"><a href="17-evaluation.html#cb596-1" tabindex="-1"></a>model_full <span class="ot">=</span> <span class="fu">lm</span>(<span class="at">data=</span>attitude, rating <span class="sc">~</span> .) <span class="co">#線形予測子を入力するところにドットを入力すると、そのデータに含まれる全ての変数を予測変数として扱う</span></span>
-<span id="cb596-2"><a href="17-evaluation.html#cb596-2" tabindex="-1"></a><span class="fu">summary</span>(model_full)<span class="sc">$</span>r.squared </span></code></pre></div>
+<div class="sourceCode" id="cb628"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb628-1"><a href="17-evaluation.html#cb628-1" tabindex="-1"></a>model_full <span class="ot">=</span> <span class="fu">lm</span>(<span class="at">data=</span>attitude, rating <span class="sc">~</span> .) <span class="co">#線形予測子を入力するところにドットを入力すると、そのデータに含まれる全ての変数を予測変数として扱う</span></span>
+<span id="cb628-2"><a href="17-evaluation.html#cb628-2" tabindex="-1"></a><span class="fu">summary</span>(model_full)<span class="sc">$</span>r.squared </span></code></pre></div>
 <pre><code>## [1] 0.732602</code></pre>
 <p>応答変数に影響を及ぼさない変数を含めても、決定係数は上昇してしまう。</p>
 <p>決定係数は、「予測力が高く、シンプルなモデル」を探すには常に適切な指標であるとは言えない。</p>
@@ -945,9 +950,9 @@ AIC = -2 \log L + 2k \tag{11}\\
 <p>第9章で、モデルのパラメータを推定する方法として「最尤法」を紹介した。最尤法は、モデルのもっともらしさ（データが生じる確率）を意味する「対数尤度」が最大となるときのパラメータを求める方法であった。最大対数尤度は、現在のモデルに対する当てはまりの良さを反映している。その最大対数尤度に対し、パラメータ数<span class="math inline">\(k\)</span>に応じてペナルティ(penalty term)を加える。</p>
 <p><strong>AICの値が低いほど</strong>、モデルの予測力が高いと評価する。AICは余計なパラメータが多くなる（<span class="math inline">\(k\)</span>が大きくなる）ほど大きい値を取る。つまり、データをうまく予測しつつ、かつパラメータ数を抑えてシンプルなモデルを探る目的にかなっている。</p>
 <p><code>AIC()</code>関数でモデルをカッコ内に入れると、AICを算出してくれる。さきほどの<code>attitude</code>に当てはめた2つのモデルのAICを見てみよう。</p>
-<div class="sourceCode" id="cb598"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb598-1"><a href="17-evaluation.html#cb598-1" tabindex="-1"></a><span class="fu">AIC</span>(model_full)</span></code></pre></div>
+<div class="sourceCode" id="cb630"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb630-1"><a href="17-evaluation.html#cb630-1" tabindex="-1"></a><span class="fu">AIC</span>(model_full)</span></code></pre></div>
 <pre><code>## [1] 210.4998</code></pre>
-<div class="sourceCode" id="cb600"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb600-1"><a href="17-evaluation.html#cb600-1" tabindex="-1"></a><span class="fu">AIC</span>(model_01)</span></code></pre></div>
+<div class="sourceCode" id="cb632"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb632-1"><a href="17-evaluation.html#cb632-1" tabindex="-1"></a><span class="fu">AIC</span>(model_01)</span></code></pre></div>
 <pre><code>## [1] 205.1387</code></pre>
 <p><code>model_full</code>よりも<code>model_01</code>のAICが低く、<code>model_01</code>の予想力の方が高いことを示している。</p>
 <hr />
@@ -957,16 +962,16 @@ AIC = -2 \log L + 2k \tag{11}\\
 <p><span class="math display">\[
 BIC = -2 \log L + k\log(n) \tag{12}\\
 \]</span></p>
-<div class="sourceCode" id="cb602"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb602-1"><a href="17-evaluation.html#cb602-1" tabindex="-1"></a><span class="fu">BIC</span>(model_01)</span></code></pre></div>
+<div class="sourceCode" id="cb634"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb634-1"><a href="17-evaluation.html#cb634-1" tabindex="-1"></a><span class="fu">BIC</span>(model_01)</span></code></pre></div>
 <pre><code>## [1] 210.7435</code></pre>
 </div>
 </div>
 <div id="chap17_Practice" class="section level2 hasAnchor" number="18.6">
 <h2><span class="header-section-number">18.6</span> 確認問題<a href="17-evaluation.html#chap17_Practice" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Rで標準で入っている<code>airquality</code>を使う。</p>
-<div class="sourceCode" id="cb604"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb604-1"><a href="17-evaluation.html#cb604-1" tabindex="-1"></a>prac_dat_3 <span class="ot">=</span>  <span class="fu">na.omit</span>(airquality) <span class="co">#欠損値を除き、別の名前で保存する</span></span>
-<span id="cb604-2"><a href="17-evaluation.html#cb604-2" tabindex="-1"></a></span>
-<span id="cb604-3"><a href="17-evaluation.html#cb604-3" tabindex="-1"></a><span class="fu">head</span>(prac_dat_3)</span></code></pre></div>
+<div class="sourceCode" id="cb636"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb636-1"><a href="17-evaluation.html#cb636-1" tabindex="-1"></a>prac_dat_3 <span class="ot">=</span>  <span class="fu">na.omit</span>(airquality) <span class="co">#欠損値を除き、別の名前で保存する</span></span>
+<span id="cb636-2"><a href="17-evaluation.html#cb636-2" tabindex="-1"></a></span>
+<span id="cb636-3"><a href="17-evaluation.html#cb636-3" tabindex="-1"></a><span class="fu">head</span>(prac_dat_3)</span></code></pre></div>
 <pre><code>##   Ozone Solar.R Wind Temp Month Day
 ## 1    41     190  7.4   67     5   1
 ## 2    36     118  8.0   72     5   2

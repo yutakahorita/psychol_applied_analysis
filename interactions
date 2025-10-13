@@ -1,0 +1,150 @@
+
+## 補足１：交互作用を含むモデルの予測変数の傾き{#chap11_interactions}
+
+ここで、$X$を「予測変数」、$M$を「**調整変数**」と呼ぶことにする。  
+調整変数：予測変数$X$と応答変数$Y$との関係の増減を調整する変数  
+  
+予測変数$X$と調整変数$M$の積である交互作用を含むモデルでは、予測変数の傾きが意味するのは予測変数そのものの効果ではなく、**調整変数がゼロの時に予測変数が1単位変化したときの応答変数の変化量**であった。
+このように、調整変数が特定の値を取るときの予測変数が応答変数に与える効果は**単純傾斜(simple slope)**と呼ばれ、交互作用がいかなるかたちで生じているかの解釈に用いられる。
+  
+
+## 調整変数がカテゴリカル変数、予測変数が量的変数のとき
+
+本章で交互作用の解説で用いたサンプルデータを再び例にして、単純傾斜について理解していく。
+
+set.seed(1)
+
+#男性のみのデータ
+x = round(runif(n = 20, min = 1, max = 10),0) 
+mu = 0.1 + 0.4 * x
+y = rnorm(n = 20, mean = mu, sd = 1)
+d_M = data.frame(x = x, y = y, gender = "M")
+
+#女性のみのデータ
+x = round(runif(n = 20, min = 1, max = 10),0) 
+mu = 0.3 + -0.6 * x
+y = rnorm(n = 20, mean = mu, sd = 1)
+d_F = data.frame(x = x, y = y, gender = "F")
+
+#２つを合わせたデータ
+d = rbind(d_M, d_F)
+
+head(d)
+
+性別を調整変数、$x$を予測変数として考える。  
+本章では男性（`gender == M`）ならば1，女性（`gender == F`）ならば0のダミー変数`M`を作成した。
+
+#ダミー変数の作成
+d$M = ifelse(d$gender == "M", 1, 0) #genderがMならば1, Fならば1のダミー変数を作る
+
+result_1 = lm(data = d, y ~ 1 + x*M) #F=0, M=1のダミー変数を使った場合
+round(coef(summary(result_1)), 3) #係数を確認する
+
+$x$の傾きは調整変数$M$がゼロのとき、すなわち女性の$x$の傾きを意味していた。  
+
+逆に、「女性ならば1, 男性ならば0」のダミー変数`F`を作成して、代わりに調整変数として加えてみると
+
+d$F = ifelse(d$gender == "F", 1, 0) #genderがFならば1, Mならば1のダミー変数を作る
+
+result_2 = lm(data = d, y ~ 1 + x*F) #F=1, M=0のダミー変数を使った場合
+round(coef(summary(result_2)), 3) #係数を確認する
+
+M（男性のときに1であるダミー変数）を調整変数として加えたモデルは
+
+$$
+\hat{y} = \alpha + \beta_{1} x + \beta_{2} M + \beta_{3} xM  \\ 
+$$
+
+であり、$x$の傾きである$\beta{1}$は、調整変数$M$がゼロ（すなわち、女性）のときの$x$が1単位増えたときの$y$の変化量であった。
+
+
+また、F（女性のときに1であるダミー変数）を調整変数として加えたモデルは
+
+$$
+\hat{y} = \alpha + \beta_{1} x + \beta_{2} F + \beta_{3} xF  \\ 
+$$
+
+であり、$x$の傾きである$\beta{1}$はすなわち調整変数$F$がゼロ（すなわち、男性）のときに、$x$が1単位増えたときの$y$の変化量であった。
+
+このように、ダミー変数のコーディングを逆にすれば、それぞれの調整変数別に予測変数が応答変数に及ぼす効果を推定することができる。
+
+
+`interactions`パッケージの`sim_slopew`関数を使えば、いちいちダミー変数を作り直さなくても調整変数のカテゴリごとに単純傾斜を算出することができる。
+
+library(interactions)
+interactions::sim_slopes(result_1, pred = x, modx = M) #predに連続量の予測変数、modxに調整変数（ここでは分割して傾斜を見たいカテゴリ）を入れる。
+interactions::interact_plot(result_1, pred = x, modx = M, plot.points = TRUE) #単純傾斜をプロットすることもできる
+
+また、`emmeans`パッケージの`emtrends`でも同様に推定することができる。
+emtrend_1 = emmeans::emtrends(result_1, specs = "M", var = "x") #specsに調整変数, xに予測変数を指定する。
+emtrend_1
+
+それぞれダミー変数を変えたときの$x$の傾きの値と一致していることを確認する。
+
+また、`emtrends`では単純傾斜の比較もすることができる。
+pairs(emtrend_1, adjust = "bonferroni") #男性と女性で$x$の傾きが異なるか？
+
+この結果は交互作用項の検定の結果と一致する（交互作用の傾きは調整変数が1増えたときの予測変数の変化量であり、その増え方がゼロより有意に大きいあるいは小さいかを検定している）。
+
+round(coef(summary(result_2)), 3) #係数を確認する
+
+
+なお、上述の例は、調整変数がカテゴリカル変数で予測変数が量的変数の場合だが、両者ともカテゴリカル変数の場合でも解釈は同様である（予測変数の傾きは、調整変数がゼロのときの予測変数がゼロから1に変化したときの応答変数の変化量）。
+
+## 予測変数と調整変数が量的変数のとき
+
+  
+交互作用が２つの量的変数の積である場合も、予測変数の傾きが意味することは「調整変数がゼロであるときのその予測変数傾き」という点で同じだが、これも解釈に注意が必要である。以下に例を示す。
+量的変数である2つの予測変数$x_{1}$、$x_{2}$およびそれらの交互作用から応答変数$y$を予測する。
+
+### 調整変数と予測変数が量的変数の場合
+
+サンプルデータを作成する。
+
+set.seed(1)
+m = rnorm(n = 40, mean = 1, sd = 1)
+x = rnorm(n = 40, mean = 2, sd = 1)
+mu = 0.1 + 0.3 * x + 0.2 * m - 0.2 * x * m
+y = rnorm(n = 40, mean = mu, sd = 1)
+d = data.frame(x = x, m = m, y = y)
+
+head(d)
+
+result_3 = lm(data = d, y ~ 1 + x * m)
+round(coef(summary(result_3)), 3)
+
+調整変数を$m$、予測変数を$x$とする。式で表現すると、以下の通りになる。
+
+$$
+\hat{y} = \alpha + \beta_{1} x + \beta_{2}  m + \beta_{3}  x m  \\ 
+$$
+
+すなわち、$\beta_{1}$は$m = 0$であるときの$\x$が1単位増えたときの$y$の変化量である。
+しかし、調整変数がゼロを取り得ない場合には（例として身長や体重など）、結果の解釈がしにくくなる（本章でも述べているように、変数の標準化が一つの方法である）。
+  
+そこで、調整変数が量的変数の場合には調整変数のレベルを「平均」、「平均＋1標準偏差」および「平均 - 1標準偏差」の3つに分けて、予測変数の単純傾斜を推定することが多い。
+
+ここでは、$m$が「平均」、「平均 + 1標準偏差」および「平均 - 1標準偏差」の場合に分けて、$x_{1}$が$y$に及ぼす影響を見てみよう。
+d$m_minus_SD = d$m - (mean(d$m) - sd(d$m)) # m = mean - 1SDのときにゼロになる変数を作成
+d$m_plus_SD = d$m - (mean(d$m) + sd(d$m)) # m = mean + 1SDのときにゼロになる変数を作成
+d$m_mean = d$m - mean(d$m)  # m = mean のときにゼロになる変数を作成
+
+round(coef(summary(lm(data = d, y ~ 1 + x * m_minus_SD))), 3) #係数を見る
+round(coef(summary(lm(data = d, y ~ 1 + x * m_mean))), 3) #係数を見る
+round(coef(summary(lm(data = d, y ~ 1 + x * m_plus_SD))), 3) #係数を見る
+
+それぞれのモデルの`x`の傾きは、`m_minum_SD`, `m_mean`, `m_plus_SD`がゼロのとき、調整変数がそれぞれ平均-1標準偏差, 平均、平均-1標準偏差と一致しているときの`x`の傾きを意味する。
+  
+同じくコーディングをしなくても、`interactions`パッケージの`sim_slopes`で単純傾斜を推定することができる。
+interactions::sim_slopes(result_3, pred = x, modx = m) #predに連続量の予測変数、modxに調整変数を入れる。
+interactions::interact_plot(result_3, pred = x, modx = m, plot.points = TRUE) #単純傾斜をプロットすることもできる
+
+m_minus_SD = (mean(d$m) - sd(d$m)) # x_2 = mean - 1SDのときにゼロになる変数を作成
+m_Mean = mean(d$m)  # x_2 = mean のときにゼロになる変数を作成
+m_plus_SD = (mean(d$m) + sd(d$m)) # x_2 = mean + 1SDのときにゼロになる変数を作成
+m_list = list(m = c(m_minus_SD, m_plus_SD, m_Mean))
+emmeans::emtrends(result_3, specs = "m", var = "x", at = m_list)
+
+#単純傾斜の比較
+emmeans::emtrends(result_3, pairwise ~ m, var = "x", at = m_list, adjust = "none")
+round(coef(summary(result_3)), 3) #多重比較補正をしない結果は、交互作用項のp値と一致する
