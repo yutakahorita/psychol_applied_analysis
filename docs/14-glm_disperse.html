@@ -23,7 +23,7 @@
 <meta name="author" content="帝京大学文学部心理学科　堀田結孝" />
 
 
-<meta name="date" content="2025-10-13" />
+<meta name="date" content="2025-10-14" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -379,6 +379,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="11.4" data-path="10-linear_model.html"><a href="10-linear_model.html#chap10_MLE"><i class="fa fa-check"></i><b>11.4</b> 最尤法</a>
 <ul>
 <li class="chapter" data-level="11.4.1" data-path="10-linear_model.html"><a href="10-linear_model.html#chap10_MLEsim"><i class="fa fa-check"></i><b>11.4.1</b> 最尤法によるパラメータ推定</a></li>
+<li class="chapter" data-level="11.4.2" data-path="10-linear_model.html"><a href="10-linear_model.html#chap10_mle2"><i class="fa fa-check"></i><b>11.4.2</b> 最尤法による線形モデルのパラメータ推定</a></li>
 </ul></li>
 <li class="chapter" data-level="11.5" data-path="10-linear_model.html"><a href="10-linear_model.html#chap10_Practice"><i class="fa fa-check"></i><b>11.5</b> 確認問題</a>
 <ul>
@@ -658,9 +659,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2><span class="header-section-number">15.1</span> 準備<a href="14-glm_disperse.html#chap14_Preparation" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>可視化のための<code>ggplot2</code>パッケージに加え、<code>MASS</code>、<code>pscl</code>パッケージを使う。<br />
 <code>MASS</code>パッケージは負の二項分布を用いたモデルのときに、<code>pscl</code>パッケージはゼロ過剰ポアソン回帰のときに必要になる。初めて使う際には、事前にインストールが必要なので注意。</p>
-<div class="sourceCode" id="cb514"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb514-1"><a href="14-glm_disperse.html#cb514-1" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb514-2"><a href="14-glm_disperse.html#cb514-2" tabindex="-1"></a><span class="fu">library</span>(MASS)</span>
-<span id="cb514-3"><a href="14-glm_disperse.html#cb514-3" tabindex="-1"></a><span class="fu">library</span>(pscl)</span></code></pre></div>
+<div class="sourceCode" id="cb521"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb521-1"><a href="14-glm_disperse.html#cb521-1" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb521-2"><a href="14-glm_disperse.html#cb521-2" tabindex="-1"></a><span class="fu">library</span>(MASS)</span>
+<span id="cb521-3"><a href="14-glm_disperse.html#cb521-3" tabindex="-1"></a><span class="fu">library</span>(pscl)</span></code></pre></div>
 </div>
 <div id="chap14_NegativeBinom" class="section level2 hasAnchor" number="15.2">
 <h2><span class="header-section-number">15.2</span> 負の二項回帰<a href="14-glm_disperse.html#chap14_NegativeBinom" class="anchor-section" aria-label="Anchor link to header"></a></h2>
@@ -670,7 +671,7 @@ binomial distribution)</strong>を用いる方法がよく使われる。</p>
 <div id="chap14_NegativeBinom1" class="section level3 hasAnchor" number="15.2.1">
 <h3><span class="header-section-number">15.2.1</span> 負の二項分布<a href="14-glm_disperse.html#chap14_NegativeBinom1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>例えばコインを投げて表が出る確率を0.5として、表が3回出るまで投げると決めたとする。8回投げたところで表が3回出た場合、表が3回出る確率は以下から求めることができる。</p>
-<div class="sourceCode" id="cb515"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb515-1"><a href="14-glm_disperse.html#cb515-1" tabindex="-1"></a><span class="fu">choose</span>(<span class="dv">8-1</span>, <span class="dv">3-1</span>) <span class="sc">*</span> <span class="fl">0.5</span><span class="sc">^</span><span class="dv">2</span> <span class="sc">*</span> (<span class="dv">1</span><span class="fl">-0.5</span>)<span class="sc">^</span>(<span class="dv">8-3</span>) <span class="sc">*</span> <span class="fl">0.5</span> <span class="co">#つまり、7回中表が2回、裏が5回出て、最後の１回で表が出る確率を求める。</span></span></code></pre></div>
+<div class="sourceCode" id="cb522"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb522-1"><a href="14-glm_disperse.html#cb522-1" tabindex="-1"></a><span class="fu">choose</span>(<span class="dv">8-1</span>, <span class="dv">3-1</span>) <span class="sc">*</span> <span class="fl">0.5</span><span class="sc">^</span><span class="dv">2</span> <span class="sc">*</span> (<span class="dv">1</span><span class="fl">-0.5</span>)<span class="sc">^</span>(<span class="dv">8-3</span>) <span class="sc">*</span> <span class="fl">0.5</span> <span class="co">#つまり、7回中表が2回、裏が5回出て、最後の１回で表が出る確率を求める。</span></span></code></pre></div>
 <pre><code>## [1] 0.08203125</code></pre>
 <p>これを一般化した式が以下である。成功確率を<span class="math inline">\(q\)</span>、成功回数を<span class="math inline">\(r\)</span>、全試行数（成功回数+失敗回数）を<span class="math inline">\(n\)</span>とした場合の確率<span class="math inline">\(P(n)\)</span>を表している。（上の例の場合は、<span class="math inline">\(q=0.5\)</span>,
 <span class="math inline">\(r=3\)</span>, <span class="math inline">\(n=8\)</span>である）</p>
@@ -682,25 +683,25 @@ P(n) = {}_{n-1}\mathrm{C}_{r-1} q^{r}(1-q)^{n-r}
 P(x) = {}_{x+r-1}\mathrm{C}_{r-1} q^{r}(1-q)^{x}
 \]</span></p>
 <p>Rでも<code>nbinom</code>で負の二項分布の確率を計算することができる。</p>
-<div class="sourceCode" id="cb517"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb517-1"><a href="14-glm_disperse.html#cb517-1" tabindex="-1"></a>x <span class="ot">=</span> <span class="dv">0</span><span class="sc">:</span><span class="dv">10</span></span>
-<span id="cb517-2"><a href="14-glm_disperse.html#cb517-2" tabindex="-1"></a>p_y <span class="ot">=</span> <span class="fu">dnbinom</span>(<span class="at">x =</span> x, <span class="at">size =</span> <span class="dv">3</span>, <span class="at">prob =</span> <span class="fl">0.5</span>) <span class="co">#x = 失敗回数, size = 成功回数, prob = 成功確率</span></span>
-<span id="cb517-3"><a href="14-glm_disperse.html#cb517-3" tabindex="-1"></a></span>
-<span id="cb517-4"><a href="14-glm_disperse.html#cb517-4" tabindex="-1"></a>d_plot <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="at">x =</span> x, <span class="at">p_y =</span> p_y)</span>
-<span id="cb517-5"><a href="14-glm_disperse.html#cb517-5" tabindex="-1"></a></span>
-<span id="cb517-6"><a href="14-glm_disperse.html#cb517-6" tabindex="-1"></a>ggplot2<span class="sc">::</span><span class="fu">ggplot</span>() <span class="sc">+</span> </span>
-<span id="cb517-7"><a href="14-glm_disperse.html#cb517-7" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_bar</span>(<span class="at">data =</span> d_plot, <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">factor</span>(x), <span class="at">y =</span> p_y), <span class="at">stat =</span> <span class="st">&quot;identity&quot;</span>) <span class="sc">+</span> </span>
-<span id="cb517-8"><a href="14-glm_disperse.html#cb517-8" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;number of failures&quot;</span>, <span class="at">y =</span> <span class="st">&quot;probability&quot;</span>, <span class="at">title =</span> <span class="st">&quot;number of success = 3&quot;</span>)</span></code></pre></div>
-<p><img src="Data-Analysis-for-Psychology_files/figure-html/unnamed-chunk-283-1.png" width="672" /></p>
+<div class="sourceCode" id="cb524"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb524-1"><a href="14-glm_disperse.html#cb524-1" tabindex="-1"></a>x <span class="ot">=</span> <span class="dv">0</span><span class="sc">:</span><span class="dv">10</span></span>
+<span id="cb524-2"><a href="14-glm_disperse.html#cb524-2" tabindex="-1"></a>p_y <span class="ot">=</span> <span class="fu">dnbinom</span>(<span class="at">x =</span> x, <span class="at">size =</span> <span class="dv">3</span>, <span class="at">prob =</span> <span class="fl">0.5</span>) <span class="co">#x = 失敗回数, size = 成功回数, prob = 成功確率</span></span>
+<span id="cb524-3"><a href="14-glm_disperse.html#cb524-3" tabindex="-1"></a></span>
+<span id="cb524-4"><a href="14-glm_disperse.html#cb524-4" tabindex="-1"></a>d_plot <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="at">x =</span> x, <span class="at">p_y =</span> p_y)</span>
+<span id="cb524-5"><a href="14-glm_disperse.html#cb524-5" tabindex="-1"></a></span>
+<span id="cb524-6"><a href="14-glm_disperse.html#cb524-6" tabindex="-1"></a>ggplot2<span class="sc">::</span><span class="fu">ggplot</span>() <span class="sc">+</span> </span>
+<span id="cb524-7"><a href="14-glm_disperse.html#cb524-7" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_bar</span>(<span class="at">data =</span> d_plot, <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">factor</span>(x), <span class="at">y =</span> p_y), <span class="at">stat =</span> <span class="st">&quot;identity&quot;</span>) <span class="sc">+</span> </span>
+<span id="cb524-8"><a href="14-glm_disperse.html#cb524-8" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;number of failures&quot;</span>, <span class="at">y =</span> <span class="st">&quot;probability&quot;</span>, <span class="at">title =</span> <span class="st">&quot;number of success = 3&quot;</span>)</span></code></pre></div>
+<p><img src="Data-Analysis-for-Psychology_files/figure-html/unnamed-chunk-287-1.png" width="672" /></p>
 <p>期待値<span class="math inline">\(E(x)\)</span>と分散<span class="math inline">\(Var(x)\)</span>は、以下から計算される。</p>
 <p><span class="math display">\[
 E(x) = \frac{r(1-q)}{q}\\
 Var(x) = \frac{r(1-q)}{q^2}\\
 \]</span></p>
 <p><code>dnbinom()</code>に期待値<code>mu</code>を入力しても、確率を計算してくれる。</p>
-<div class="sourceCode" id="cb518"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb518-1"><a href="14-glm_disperse.html#cb518-1" tabindex="-1"></a><span class="fu">dnbinom</span>(<span class="at">x =</span> x, <span class="at">size =</span> <span class="dv">3</span>, <span class="at">prob =</span> <span class="fl">0.5</span>) </span></code></pre></div>
+<div class="sourceCode" id="cb525"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb525-1"><a href="14-glm_disperse.html#cb525-1" tabindex="-1"></a><span class="fu">dnbinom</span>(<span class="at">x =</span> x, <span class="at">size =</span> <span class="dv">3</span>, <span class="at">prob =</span> <span class="fl">0.5</span>) </span></code></pre></div>
 <pre><code>##  [1] 0.125000000 0.187500000 0.187500000 0.156250000 0.117187500 0.082031250
 ##  [7] 0.054687500 0.035156250 0.021972656 0.013427734 0.008056641</code></pre>
-<div class="sourceCode" id="cb520"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb520-1"><a href="14-glm_disperse.html#cb520-1" tabindex="-1"></a><span class="fu">dnbinom</span>(<span class="at">x =</span> x, <span class="at">size =</span> <span class="dv">3</span>, <span class="at">mu =</span> <span class="dv">3</span><span class="sc">*</span><span class="fl">0.5</span><span class="sc">/</span>(<span class="dv">1</span><span class="fl">-0.5</span>)) </span></code></pre></div>
+<div class="sourceCode" id="cb527"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb527-1"><a href="14-glm_disperse.html#cb527-1" tabindex="-1"></a><span class="fu">dnbinom</span>(<span class="at">x =</span> x, <span class="at">size =</span> <span class="dv">3</span>, <span class="at">mu =</span> <span class="dv">3</span><span class="sc">*</span><span class="fl">0.5</span><span class="sc">/</span>(<span class="dv">1</span><span class="fl">-0.5</span>)) </span></code></pre></div>
 <pre><code>##  [1] 0.125000000 0.187500000 0.187500000 0.156250000 0.117187500 0.082031250
 ##  [7] 0.054687500 0.035156250 0.021972656 0.013427734 0.008056641</code></pre>
 <p>期待値を<span class="math inline">\(E(x)=\mu\)</span>とすると、分散は<span class="math inline">\(Var(x)=\mu + \mu^{2}/r\)</span>で、分散が期待値（平均）よりも<span class="math inline">\(\mu^{2}/r\)</span>大きい。負の二項分布によって、分散が平均よりも大きい分布を扱うことができる。</p>
@@ -708,9 +709,9 @@ Var(x) = \frac{r(1-q)}{q^2}\\
 <div id="chap14_glmnb" class="section level3 hasAnchor" number="15.2.2">
 <h3><span class="header-section-number">15.2.2</span> Rでの負の二項回帰<a href="14-glm_disperse.html#chap14_glmnb" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Rでは、<code>MASS</code>パッケージに含まれている<code>glm.nb()</code>関数で、負の二項回帰を扱うことができる。Rに入っている<code>warpbreaks</code>をサンプルデータとして、ポアソン回帰と負の二項回帰の結果を比較してみよう。</p>
-<div class="sourceCode" id="cb522"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb522-1"><a href="14-glm_disperse.html#cb522-1" tabindex="-1"></a>d <span class="ot">=</span> warpbreaks <span class="co">#別の名前(d)で保存する</span></span>
-<span id="cb522-2"><a href="14-glm_disperse.html#cb522-2" tabindex="-1"></a>d<span class="sc">$</span>A <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(d<span class="sc">$</span>wool <span class="sc">==</span> <span class="st">&quot;A&quot;</span>, <span class="dv">1</span>, <span class="dv">0</span>) <span class="co">#Aなら1, Bなら0のダミー</span></span>
-<span id="cb522-3"><a href="14-glm_disperse.html#cb522-3" tabindex="-1"></a><span class="fu">head</span>(d)</span></code></pre></div>
+<div class="sourceCode" id="cb529"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb529-1"><a href="14-glm_disperse.html#cb529-1" tabindex="-1"></a>d <span class="ot">=</span> warpbreaks <span class="co">#別の名前(d)で保存する</span></span>
+<span id="cb529-2"><a href="14-glm_disperse.html#cb529-2" tabindex="-1"></a>d<span class="sc">$</span>A <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(d<span class="sc">$</span>wool <span class="sc">==</span> <span class="st">&quot;A&quot;</span>, <span class="dv">1</span>, <span class="dv">0</span>) <span class="co">#Aなら1, Bなら0のダミー</span></span>
+<span id="cb529-3"><a href="14-glm_disperse.html#cb529-3" tabindex="-1"></a><span class="fu">head</span>(d)</span></code></pre></div>
 <pre><code>##   breaks wool tension A
 ## 1     26    A       L 1
 ## 2     30    A       L 1
@@ -718,17 +719,17 @@ Var(x) = \frac{r(1-q)}{q^2}\\
 ## 4     25    A       L 1
 ## 5     70    A       L 1
 ## 6     52    A       L 1</code></pre>
-<div class="sourceCode" id="cb524"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb524-1"><a href="14-glm_disperse.html#cb524-1" tabindex="-1"></a>ggplot2<span class="sc">::</span><span class="fu">ggplot</span>() <span class="sc">+</span> </span>
-<span id="cb524-2"><a href="14-glm_disperse.html#cb524-2" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_histogram</span>(<span class="at">data =</span> d, <span class="fu">aes</span>(<span class="at">x =</span> breaks, <span class="at">fill =</span> wool), <span class="at">binwidth =</span> <span class="dv">1</span>)</span></code></pre></div>
-<p><img src="Data-Analysis-for-Psychology_files/figure-html/unnamed-chunk-285-1.png" width="672" /></p>
+<div class="sourceCode" id="cb531"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb531-1"><a href="14-glm_disperse.html#cb531-1" tabindex="-1"></a>ggplot2<span class="sc">::</span><span class="fu">ggplot</span>() <span class="sc">+</span> </span>
+<span id="cb531-2"><a href="14-glm_disperse.html#cb531-2" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_histogram</span>(<span class="at">data =</span> d, <span class="fu">aes</span>(<span class="at">x =</span> breaks, <span class="at">fill =</span> wool), <span class="at">binwidth =</span> <span class="dv">1</span>)</span></code></pre></div>
+<p><img src="Data-Analysis-for-Psychology_files/figure-html/unnamed-chunk-289-1.png" width="672" /></p>
 <p><code>breaks</code>に対する<code>wool</code>(A or
 B)の効果を検討する。まずは、ポアソン回帰の結果を見てみる。<code>breaks</code>を<span class="math inline">\(y\)</span>、<code>A</code>を<span class="math inline">\(x\)</span>とすると、モデルは以下のように表現できる。</p>
 <p><span class="math display">\[
 \lambda = \alpha + \beta x\\
 y \sim \text{Poisson}(\lambda)
 \]</span></p>
-<div class="sourceCode" id="cb525"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb525-1"><a href="14-glm_disperse.html#cb525-1" tabindex="-1"></a>model_poisson <span class="ot">=</span> <span class="fu">glm</span>(<span class="at">data =</span> d, breaks <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> A, <span class="at">family =</span> <span class="fu">poisson</span>(<span class="at">link =</span> <span class="st">&quot;log&quot;</span>))</span>
-<span id="cb525-2"><a href="14-glm_disperse.html#cb525-2" tabindex="-1"></a><span class="fu">summary</span>(model_poisson)</span></code></pre></div>
+<div class="sourceCode" id="cb532"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb532-1"><a href="14-glm_disperse.html#cb532-1" tabindex="-1"></a>model_poisson <span class="ot">=</span> <span class="fu">glm</span>(<span class="at">data =</span> d, breaks <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> A, <span class="at">family =</span> <span class="fu">poisson</span>(<span class="at">link =</span> <span class="st">&quot;log&quot;</span>))</span>
+<span id="cb532-2"><a href="14-glm_disperse.html#cb532-2" tabindex="-1"></a><span class="fu">summary</span>(model_poisson)</span></code></pre></div>
 <pre><code>## 
 ## Call:
 ## glm(formula = breaks ~ 1 + A, family = poisson(link = &quot;log&quot;), 
@@ -748,9 +749,9 @@ y \sim \text{Poisson}(\lambda)
 ## AIC: 560
 ## 
 ## Number of Fisher Scoring iterations: 4</code></pre>
-<div class="sourceCode" id="cb527"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb527-1"><a href="14-glm_disperse.html#cb527-1" tabindex="-1"></a><span class="fu">mean</span>(d<span class="sc">$</span>breaks)</span></code></pre></div>
+<div class="sourceCode" id="cb534"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb534-1"><a href="14-glm_disperse.html#cb534-1" tabindex="-1"></a><span class="fu">mean</span>(d<span class="sc">$</span>breaks)</span></code></pre></div>
 <pre><code>## [1] 28.14815</code></pre>
-<div class="sourceCode" id="cb529"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb529-1"><a href="14-glm_disperse.html#cb529-1" tabindex="-1"></a><span class="fu">var</span>(d<span class="sc">$</span>breaks)</span></code></pre></div>
+<div class="sourceCode" id="cb536"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb536-1"><a href="14-glm_disperse.html#cb536-1" tabindex="-1"></a><span class="fu">var</span>(d<span class="sc">$</span>breaks)</span></code></pre></div>
 <pre><code>## [1] 174.2041</code></pre>
 <p><code>A</code>に係る傾きの推定値について、かなり小さいp値が推定されている。</p>
 <p>次に、負の二項回帰の結果と比較してみよう。</p>
@@ -759,8 +760,8 @@ y \sim \text{Poisson}(\lambda)
 y \sim \text{NegativeBinom}(\mu, r)
 \]</span></p>
 <p><code>MASS</code>パッケージの<code>glm.nb()</code>を使う。</p>
-<div class="sourceCode" id="cb531"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb531-1"><a href="14-glm_disperse.html#cb531-1" tabindex="-1"></a>model_nb <span class="ot">=</span> MASS<span class="sc">::</span><span class="fu">glm.nb</span>(<span class="at">data =</span> d, breaks <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> A) <span class="co">#lm関数と同じ要領で、線形の式を入力する。確率分布はオプションで指定しないで良い。</span></span>
-<span id="cb531-2"><a href="14-glm_disperse.html#cb531-2" tabindex="-1"></a><span class="fu">summary</span>(model_nb)</span></code></pre></div>
+<div class="sourceCode" id="cb538"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb538-1"><a href="14-glm_disperse.html#cb538-1" tabindex="-1"></a>model_nb <span class="ot">=</span> MASS<span class="sc">::</span><span class="fu">glm.nb</span>(<span class="at">data =</span> d, breaks <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> A) <span class="co">#lm関数と同じ要領で、線形の式を入力する。確率分布はオプションで指定しないで良い。</span></span>
+<span id="cb538-2"><a href="14-glm_disperse.html#cb538-2" tabindex="-1"></a><span class="fu">summary</span>(model_nb)</span></code></pre></div>
 <pre><code>## 
 ## Call:
 ## MASS::glm.nb(formula = breaks ~ 1 + A, data = d, init.theta = 6.960797279, 
@@ -798,21 +799,21 @@ model)</strong>は、データにゼロが多いカウントデータに適用�
 <p>夏休みの間に毎日、カブトムシを採りに森に出かけた。カブトムシが何匹か見つかる日もあれば、全く見つからない日もある。その日の天気や気温などがカブトムシが見つかる確率に影響を及ぼしていたかを検討する。
 以下のプログラムを実行し、サンプルデータを作成する。<code>y</code>がその日見つかったカブトムシの数、<code>Rain</code>がその日に雨が降っていたか（1=雨,
 0=雨ではない）、<code>Humidity</code>と<code>Temperature</code>はそれぞれ湿度と気温とする。</p>
-<div class="sourceCode" id="cb533"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb533-1"><a href="14-glm_disperse.html#cb533-1" tabindex="-1"></a>y <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">2</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, </span>
-<span id="cb533-2"><a href="14-glm_disperse.html#cb533-2" tabindex="-1"></a>      <span class="dv">0</span>, <span class="dv">3</span>, <span class="dv">0</span>, <span class="dv">4</span>, <span class="dv">4</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">3</span>, <span class="dv">0</span>, </span>
-<span id="cb533-3"><a href="14-glm_disperse.html#cb533-3" tabindex="-1"></a>      <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">7</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">5</span>, <span class="dv">1</span>, <span class="dv">4</span>, <span class="dv">0</span>, <span class="dv">2</span>)</span>
-<span id="cb533-4"><a href="14-glm_disperse.html#cb533-4" tabindex="-1"></a>Rain <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>, </span>
-<span id="cb533-5"><a href="14-glm_disperse.html#cb533-5" tabindex="-1"></a>         <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>, </span>
-<span id="cb533-6"><a href="14-glm_disperse.html#cb533-6" tabindex="-1"></a>         <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>)</span>
-<span id="cb533-7"><a href="14-glm_disperse.html#cb533-7" tabindex="-1"></a>Humidity <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">50</span>, <span class="dv">50</span>, <span class="dv">59</span>, <span class="dv">58</span>, <span class="dv">56</span>, <span class="dv">59</span>, <span class="dv">58</span>, <span class="dv">51</span>, <span class="dv">30</span>, <span class="dv">56</span>, </span>
-<span id="cb533-8"><a href="14-glm_disperse.html#cb533-8" tabindex="-1"></a>             <span class="dv">49</span>, <span class="dv">48</span>, <span class="dv">35</span>, <span class="dv">45</span>, <span class="dv">54</span>, <span class="dv">64</span>, <span class="dv">49</span>, <span class="dv">54</span>, <span class="dv">49</span>, <span class="dv">36</span>, </span>
-<span id="cb533-9"><a href="14-glm_disperse.html#cb533-9" tabindex="-1"></a>             <span class="dv">46</span>, <span class="dv">46</span>, <span class="dv">49</span>, <span class="dv">61</span>, <span class="dv">58</span>, <span class="dv">48</span>, <span class="dv">47</span>, <span class="dv">57</span>, <span class="dv">56</span>, <span class="dv">43</span>)</span>
-<span id="cb533-10"><a href="14-glm_disperse.html#cb533-10" tabindex="-1"></a>Temperature <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">29</span>, <span class="dv">30</span>, <span class="dv">31</span>, <span class="dv">30</span>, <span class="dv">31</span>, <span class="dv">30</span>, <span class="dv">29</span>, <span class="dv">30</span>, <span class="dv">29</span>, <span class="dv">31</span>,</span>
-<span id="cb533-11"><a href="14-glm_disperse.html#cb533-11" tabindex="-1"></a>                <span class="dv">32</span>, <span class="dv">30</span>, <span class="dv">29</span>, <span class="dv">31</span>, <span class="dv">30</span>, <span class="dv">32</span>, <span class="dv">30</span>, <span class="dv">31</span>, <span class="dv">30</span>, <span class="dv">29</span>,</span>
-<span id="cb533-12"><a href="14-glm_disperse.html#cb533-12" tabindex="-1"></a>                <span class="dv">30</span>, <span class="dv">28</span>, <span class="dv">31</span>, <span class="dv">30</span>, <span class="dv">32</span>, <span class="dv">30</span>, <span class="dv">29</span>, <span class="dv">31</span>, <span class="dv">29</span>, <span class="dv">29</span>)</span>
-<span id="cb533-13"><a href="14-glm_disperse.html#cb533-13" tabindex="-1"></a></span>
-<span id="cb533-14"><a href="14-glm_disperse.html#cb533-14" tabindex="-1"></a>d_zip <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="at">y =</span> y, <span class="at">Rain =</span> Rain, <span class="at">Humidity =</span> Humidity, <span class="at">Temperature =</span> Temperature)</span>
-<span id="cb533-15"><a href="14-glm_disperse.html#cb533-15" tabindex="-1"></a><span class="fu">head</span>(d_zip)</span></code></pre></div>
+<div class="sourceCode" id="cb540"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb540-1"><a href="14-glm_disperse.html#cb540-1" tabindex="-1"></a>y <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">2</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, </span>
+<span id="cb540-2"><a href="14-glm_disperse.html#cb540-2" tabindex="-1"></a>      <span class="dv">0</span>, <span class="dv">3</span>, <span class="dv">0</span>, <span class="dv">4</span>, <span class="dv">4</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">3</span>, <span class="dv">0</span>, </span>
+<span id="cb540-3"><a href="14-glm_disperse.html#cb540-3" tabindex="-1"></a>      <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">7</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">5</span>, <span class="dv">1</span>, <span class="dv">4</span>, <span class="dv">0</span>, <span class="dv">2</span>)</span>
+<span id="cb540-4"><a href="14-glm_disperse.html#cb540-4" tabindex="-1"></a>Rain <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>, </span>
+<span id="cb540-5"><a href="14-glm_disperse.html#cb540-5" tabindex="-1"></a>         <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>, </span>
+<span id="cb540-6"><a href="14-glm_disperse.html#cb540-6" tabindex="-1"></a>         <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>)</span>
+<span id="cb540-7"><a href="14-glm_disperse.html#cb540-7" tabindex="-1"></a>Humidity <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">50</span>, <span class="dv">50</span>, <span class="dv">59</span>, <span class="dv">58</span>, <span class="dv">56</span>, <span class="dv">59</span>, <span class="dv">58</span>, <span class="dv">51</span>, <span class="dv">30</span>, <span class="dv">56</span>, </span>
+<span id="cb540-8"><a href="14-glm_disperse.html#cb540-8" tabindex="-1"></a>             <span class="dv">49</span>, <span class="dv">48</span>, <span class="dv">35</span>, <span class="dv">45</span>, <span class="dv">54</span>, <span class="dv">64</span>, <span class="dv">49</span>, <span class="dv">54</span>, <span class="dv">49</span>, <span class="dv">36</span>, </span>
+<span id="cb540-9"><a href="14-glm_disperse.html#cb540-9" tabindex="-1"></a>             <span class="dv">46</span>, <span class="dv">46</span>, <span class="dv">49</span>, <span class="dv">61</span>, <span class="dv">58</span>, <span class="dv">48</span>, <span class="dv">47</span>, <span class="dv">57</span>, <span class="dv">56</span>, <span class="dv">43</span>)</span>
+<span id="cb540-10"><a href="14-glm_disperse.html#cb540-10" tabindex="-1"></a>Temperature <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">29</span>, <span class="dv">30</span>, <span class="dv">31</span>, <span class="dv">30</span>, <span class="dv">31</span>, <span class="dv">30</span>, <span class="dv">29</span>, <span class="dv">30</span>, <span class="dv">29</span>, <span class="dv">31</span>,</span>
+<span id="cb540-11"><a href="14-glm_disperse.html#cb540-11" tabindex="-1"></a>                <span class="dv">32</span>, <span class="dv">30</span>, <span class="dv">29</span>, <span class="dv">31</span>, <span class="dv">30</span>, <span class="dv">32</span>, <span class="dv">30</span>, <span class="dv">31</span>, <span class="dv">30</span>, <span class="dv">29</span>,</span>
+<span id="cb540-12"><a href="14-glm_disperse.html#cb540-12" tabindex="-1"></a>                <span class="dv">30</span>, <span class="dv">28</span>, <span class="dv">31</span>, <span class="dv">30</span>, <span class="dv">32</span>, <span class="dv">30</span>, <span class="dv">29</span>, <span class="dv">31</span>, <span class="dv">29</span>, <span class="dv">29</span>)</span>
+<span id="cb540-13"><a href="14-glm_disperse.html#cb540-13" tabindex="-1"></a></span>
+<span id="cb540-14"><a href="14-glm_disperse.html#cb540-14" tabindex="-1"></a>d_zip <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="at">y =</span> y, <span class="at">Rain =</span> Rain, <span class="at">Humidity =</span> Humidity, <span class="at">Temperature =</span> Temperature)</span>
+<span id="cb540-15"><a href="14-glm_disperse.html#cb540-15" tabindex="-1"></a><span class="fu">head</span>(d_zip)</span></code></pre></div>
 <pre><code>##   y Rain Humidity Temperature
 ## 1 1    0       50          29
 ## 2 2    0       50          30
@@ -821,9 +822,9 @@ model)</strong>は、データにゼロが多いカウントデータに適用�
 ## 5 2    0       56          31
 ## 6 0    1       59          30</code></pre>
 <p>ヒストグラムでデータの頻度を確認する。このデータにはゼロが非常に多く、ほとんどの日でカブトムシが見つからなかったことがわかる。</p>
-<div class="sourceCode" id="cb535"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb535-1"><a href="14-glm_disperse.html#cb535-1" tabindex="-1"></a>ggplot2<span class="sc">::</span><span class="fu">ggplot</span>() <span class="sc">+</span> </span>
-<span id="cb535-2"><a href="14-glm_disperse.html#cb535-2" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_histogram</span>(<span class="at">data =</span> d_zip, <span class="fu">aes</span>(<span class="at">x =</span> y), <span class="at">binwidth =</span> <span class="dv">1</span>, <span class="at">fill =</span> <span class="st">&quot;white&quot;</span>, <span class="at">color=</span><span class="st">&quot;black&quot;</span>)  <span class="sc">+</span> <span class="fu">theme_classic</span>()</span></code></pre></div>
-<p><img src="Data-Analysis-for-Psychology_files/figure-html/unnamed-chunk-290-1.png" width="672" /></p>
+<div class="sourceCode" id="cb542"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb542-1"><a href="14-glm_disperse.html#cb542-1" tabindex="-1"></a>ggplot2<span class="sc">::</span><span class="fu">ggplot</span>() <span class="sc">+</span> </span>
+<span id="cb542-2"><a href="14-glm_disperse.html#cb542-2" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_histogram</span>(<span class="at">data =</span> d_zip, <span class="fu">aes</span>(<span class="at">x =</span> y), <span class="at">binwidth =</span> <span class="dv">1</span>, <span class="at">fill =</span> <span class="st">&quot;white&quot;</span>, <span class="at">color=</span><span class="st">&quot;black&quot;</span>)  <span class="sc">+</span> <span class="fu">theme_classic</span>()</span></code></pre></div>
+<p><img src="Data-Analysis-for-Psychology_files/figure-html/unnamed-chunk-294-1.png" width="672" /></p>
 </div>
 </div>
 <div id="chap14_ZIP1" class="section level2 hasAnchor" number="15.4">
@@ -844,9 +845,9 @@ Pr(y|q,\lambda) = (1-q)\frac{\lambda^y\exp(-\lambda)}{y!}\
 <h3><span class="header-section-number">15.4.1</span> Rでのゼロ過剰ポアソンモデル<a href="14-glm_disperse.html#chap14_zeroinfl" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p><code>pscl</code>パッケージの<code>zeroinfl()</code>関数でゼロ過剰ポアソンモデルの当てはめをすることができる。
 ここでは、過剰なゼロを予測する変数として天気（<code>Rain</code>）を想定し、湿度（<code>Humidity</code>）と温度（<code>Temperature</code>）でカブトムシの数を推定する。</p>
-<div class="sourceCode" id="cb536"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb536-1"><a href="14-glm_disperse.html#cb536-1" tabindex="-1"></a><span class="fu">library</span>(pscl)</span>
-<span id="cb536-2"><a href="14-glm_disperse.html#cb536-2" tabindex="-1"></a>model_zeroinfl <span class="ot">=</span> pscl<span class="sc">::</span><span class="fu">zeroinfl</span>(<span class="at">data =</span> d_zip, y <span class="sc">~</span> Humidity <span class="sc">+</span> Temperature <span class="sc">|</span> Rain)</span>
-<span id="cb536-3"><a href="14-glm_disperse.html#cb536-3" tabindex="-1"></a><span class="fu">summary</span>(model_zeroinfl)</span></code></pre></div>
+<div class="sourceCode" id="cb543"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb543-1"><a href="14-glm_disperse.html#cb543-1" tabindex="-1"></a><span class="fu">library</span>(pscl)</span>
+<span id="cb543-2"><a href="14-glm_disperse.html#cb543-2" tabindex="-1"></a>model_zeroinfl <span class="ot">=</span> pscl<span class="sc">::</span><span class="fu">zeroinfl</span>(<span class="at">data =</span> d_zip, y <span class="sc">~</span> Humidity <span class="sc">+</span> Temperature <span class="sc">|</span> Rain)</span>
+<span id="cb543-3"><a href="14-glm_disperse.html#cb543-3" tabindex="-1"></a><span class="fu">summary</span>(model_zeroinfl)</span></code></pre></div>
 <pre><code>## 
 ## Call:
 ## pscl::zeroinfl(formula = y ~ Humidity + Temperature | Rain, data = d_zip)
@@ -875,8 +876,8 @@ model）とポアソン回帰からカウントデータを予測するモデル
 model）の2種類の推定結果が出力される。</p>
 <hr />
 <p>カウントデータが従う確率分布として、ポアソン分布以外の確率分布を設定することもできる。以下は負の二項分布に変えた場合である。</p>
-<div class="sourceCode" id="cb538"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb538-1"><a href="14-glm_disperse.html#cb538-1" tabindex="-1"></a>model_zeroinfl_2 <span class="ot">=</span> pscl<span class="sc">::</span><span class="fu">zeroinfl</span>(<span class="at">data =</span> d_zip, y <span class="sc">~</span> Humidity <span class="sc">+</span> Temperature <span class="sc">|</span> Rain, <span class="at">dist =</span> <span class="st">&quot;negbin&quot;</span>) <span class="co">#distで指定する</span></span>
-<span id="cb538-2"><a href="14-glm_disperse.html#cb538-2" tabindex="-1"></a><span class="fu">summary</span>(model_zeroinfl_2)</span></code></pre></div>
+<div class="sourceCode" id="cb545"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb545-1"><a href="14-glm_disperse.html#cb545-1" tabindex="-1"></a>model_zeroinfl_2 <span class="ot">=</span> pscl<span class="sc">::</span><span class="fu">zeroinfl</span>(<span class="at">data =</span> d_zip, y <span class="sc">~</span> Humidity <span class="sc">+</span> Temperature <span class="sc">|</span> Rain, <span class="at">dist =</span> <span class="st">&quot;negbin&quot;</span>) <span class="co">#distで指定する</span></span>
+<span id="cb545-2"><a href="14-glm_disperse.html#cb545-2" tabindex="-1"></a><span class="fu">summary</span>(model_zeroinfl_2)</span></code></pre></div>
 <pre><code>## 
 ## Call:
 ## pscl::zeroinfl(formula = y ~ Humidity + Temperature | Rain, data = d_zip, 
@@ -909,8 +910,8 @@ model）の2種類の推定結果が出力される。</p>
 <p>ゼロ過剰ポアソンモデルはベルヌーイ分布からだけではなくポアソン分布からもゼロが予測されるが、ゼロが生成されるモデルと1以上の正の整数が生成されるモデルを分けた<strong>ハードルモデル(Hurdle
 model)</strong>というものもある。</p>
 <p><code>pscl</code>パッケージにある<code>hurdle</code>関数で実行することができる。</p>
-<div class="sourceCode" id="cb540"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb540-1"><a href="14-glm_disperse.html#cb540-1" tabindex="-1"></a>model_hurdle <span class="ot">=</span> pscl<span class="sc">::</span><span class="fu">hurdle</span>(<span class="at">data =</span> d_zip, y <span class="sc">~</span> Humidity <span class="sc">+</span> Temperature <span class="sc">|</span> Rain)</span>
-<span id="cb540-2"><a href="14-glm_disperse.html#cb540-2" tabindex="-1"></a><span class="fu">summary</span>(model_hurdle)</span></code></pre></div>
+<div class="sourceCode" id="cb547"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb547-1"><a href="14-glm_disperse.html#cb547-1" tabindex="-1"></a>model_hurdle <span class="ot">=</span> pscl<span class="sc">::</span><span class="fu">hurdle</span>(<span class="at">data =</span> d_zip, y <span class="sc">~</span> Humidity <span class="sc">+</span> Temperature <span class="sc">|</span> Rain)</span>
+<span id="cb547-2"><a href="14-glm_disperse.html#cb547-2" tabindex="-1"></a><span class="fu">summary</span>(model_hurdle)</span></code></pre></div>
 <pre><code>## 
 ## Call:
 ## pscl::hurdle(formula = y ~ Humidity + Temperature | Rain, data = d_zip)
@@ -938,10 +939,10 @@ model)</strong>というものもある。</p>
 <div id="chap14_Practice" class="section level2 hasAnchor" number="15.5">
 <h2><span class="header-section-number">15.5</span> 確認問題<a href="14-glm_disperse.html#chap14_Practice" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p><code>MASS</code>パッケージに入っているサンプルデータ、<code>housing</code>を使って練習をする。</p>
-<div class="sourceCode" id="cb542"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb542-1"><a href="14-glm_disperse.html#cb542-1" tabindex="-1"></a>d <span class="ot">=</span> housing <span class="co">#dという名前で保存する</span></span>
-<span id="cb542-2"><a href="14-glm_disperse.html#cb542-2" tabindex="-1"></a>d<span class="sc">$</span>ID <span class="ot">=</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(d)</span>
-<span id="cb542-3"><a href="14-glm_disperse.html#cb542-3" tabindex="-1"></a></span>
-<span id="cb542-4"><a href="14-glm_disperse.html#cb542-4" tabindex="-1"></a><span class="fu">head</span>(d)</span></code></pre></div>
+<div class="sourceCode" id="cb549"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb549-1"><a href="14-glm_disperse.html#cb549-1" tabindex="-1"></a>d <span class="ot">=</span> housing <span class="co">#dという名前で保存する</span></span>
+<span id="cb549-2"><a href="14-glm_disperse.html#cb549-2" tabindex="-1"></a>d<span class="sc">$</span>ID <span class="ot">=</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(d)</span>
+<span id="cb549-3"><a href="14-glm_disperse.html#cb549-3" tabindex="-1"></a></span>
+<span id="cb549-4"><a href="14-glm_disperse.html#cb549-4" tabindex="-1"></a><span class="fu">head</span>(d)</span></code></pre></div>
 <pre><code>##      Sat   Infl  Type Cont Freq ID
 ## 1    Low    Low Tower  Low   21  1
 ## 2 Medium    Low Tower  Low   21  2

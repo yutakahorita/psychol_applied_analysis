@@ -23,7 +23,7 @@
 <meta name="author" content="帝京大学文学部心理学科　堀田結孝" />
 
 
-<meta name="date" content="2025-10-13" />
+<meta name="date" content="2025-10-14" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -379,6 +379,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="11.4" data-path="10-linear_model.html"><a href="10-linear_model.html#chap10_MLE"><i class="fa fa-check"></i><b>11.4</b> 最尤法</a>
 <ul>
 <li class="chapter" data-level="11.4.1" data-path="10-linear_model.html"><a href="10-linear_model.html#chap10_MLEsim"><i class="fa fa-check"></i><b>11.4.1</b> 最尤法によるパラメータ推定</a></li>
+<li class="chapter" data-level="11.4.2" data-path="10-linear_model.html"><a href="10-linear_model.html#chap10_mle2"><i class="fa fa-check"></i><b>11.4.2</b> 最尤法による線形モデルのパラメータ推定</a></li>
 </ul></li>
 <li class="chapter" data-level="11.5" data-path="10-linear_model.html"><a href="10-linear_model.html#chap10_Practice"><i class="fa fa-check"></i><b>11.5</b> 確認問題</a>
 <ul>
@@ -734,9 +735,9 @@ Pr(\theta|x) \propto Pr(x|\theta) Pr(\theta)
 <p><span class="math display">\[
 Pr(\theta) = 1
 \]</span></p>
-<div class="sourceCode" id="cb638"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb638-1"><a href="18-Bayese.html#cb638-1" tabindex="-1"></a>theta_seq <span class="ot">=</span> <span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="fl">0.01</span>) <span class="co">#0から1までの範囲で0.01刻みでベクトルを作る</span></span>
-<span id="cb638-2"><a href="18-Bayese.html#cb638-2" tabindex="-1"></a>theta_prior <span class="ot">=</span> <span class="fu">rep</span>(<span class="dv">1</span>, <span class="fu">length</span>(theta_seq))</span></code></pre></div>
-<p><img src="Data-Analysis-for-Psychology_files/figure-html/unnamed-chunk-357-1.png" width="672" /></p>
+<div class="sourceCode" id="cb645"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb645-1"><a href="18-Bayese.html#cb645-1" tabindex="-1"></a>theta_seq <span class="ot">=</span> <span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="fl">0.01</span>) <span class="co">#0から1までの範囲で0.01刻みでベクトルを作る</span></span>
+<span id="cb645-2"><a href="18-Bayese.html#cb645-2" tabindex="-1"></a>theta_prior <span class="ot">=</span> <span class="fu">rep</span>(<span class="dv">1</span>, <span class="fu">length</span>(theta_seq))</span></code></pre></div>
+<p><img src="Data-Analysis-for-Psychology_files/figure-html/unnamed-chunk-361-1.png" width="672" /></p>
 <hr />
 <p>もちろん事前確率について仮説がある場合は、範囲を定めた一様分布あるいは別の確率分布を事前確率を設定しても良い。例えば、身長の分布を推定するときは、0cm ~ 250cmの範囲の一様分布を事前分布として設定するのは妥当であるといえる。</p>
 <hr />
@@ -747,8 +748,8 @@ Pr(\theta) = 1
 <p><span class="math display">\[
 Pr(x|\theta) = {}_n\mathrm{C}_h\theta^{h}(1-\theta)^{(n-h)}
 \]</span></p>
-<div class="sourceCode" id="cb639"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb639-1"><a href="18-Bayese.html#cb639-1" tabindex="-1"></a>theta_likelihood <span class="ot">=</span> <span class="fu">dbinom</span>(<span class="at">x=</span><span class="dv">6</span>, <span class="at">size=</span><span class="dv">10</span>, <span class="at">prob =</span> theta_seq)</span></code></pre></div>
-<p><img src="Data-Analysis-for-Psychology_files/figure-html/unnamed-chunk-359-1.png" width="672" /></p>
+<div class="sourceCode" id="cb646"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb646-1"><a href="18-Bayese.html#cb646-1" tabindex="-1"></a>theta_likelihood <span class="ot">=</span> <span class="fu">dbinom</span>(<span class="at">x=</span><span class="dv">6</span>, <span class="at">size=</span><span class="dv">10</span>, <span class="at">prob =</span> theta_seq)</span></code></pre></div>
+<p><img src="Data-Analysis-for-Psychology_files/figure-html/unnamed-chunk-363-1.png" width="672" /></p>
 </div>
 <div id="chap18_Posterior" class="section level3 hasAnchor" number="19.3.3">
 <h3><span class="header-section-number">19.3.3</span> 事後分布<a href="18-Bayese.html#chap18_Posterior" class="anchor-section" aria-label="Anchor link to header"></a></h3>
@@ -757,9 +758,9 @@ Pr(x|\theta) = {}_n\mathrm{C}_h\theta^{h}(1-\theta)^{(n-h)}
 Pr(\theta|x) \propto Pr(x|\theta) Pr(\theta)
 \]</span></p>
 <p>尤度と事前分布をかけて事後分布を求める（正確には、更に基準化定数<span class="math inline">\(Pr(x)\)</span>で割る）。</p>
-<div class="sourceCode" id="cb640"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb640-1"><a href="18-Bayese.html#cb640-1" tabindex="-1"></a>theta_posterior <span class="ot">=</span> theta_likelihood <span class="sc">*</span> theta_prior</span>
-<span id="cb640-2"><a href="18-Bayese.html#cb640-2" tabindex="-1"></a>theta_posterior_std <span class="ot">=</span> theta_posterior<span class="sc">/</span><span class="fu">sum</span>(theta_posterior) </span></code></pre></div>
-<p><img src="Data-Analysis-for-Psychology_files/figure-html/unnamed-chunk-361-1.png" width="672" /></p>
+<div class="sourceCode" id="cb647"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb647-1"><a href="18-Bayese.html#cb647-1" tabindex="-1"></a>theta_posterior <span class="ot">=</span> theta_likelihood <span class="sc">*</span> theta_prior</span>
+<span id="cb647-2"><a href="18-Bayese.html#cb647-2" tabindex="-1"></a>theta_posterior_std <span class="ot">=</span> theta_posterior<span class="sc">/</span><span class="fu">sum</span>(theta_posterior) </span></code></pre></div>
+<p><img src="Data-Analysis-for-Psychology_files/figure-html/unnamed-chunk-365-1.png" width="672" /></p>
 </div>
 </div>
 <div id="chap18_MCMC" class="section level2 hasAnchor" number="19.4">

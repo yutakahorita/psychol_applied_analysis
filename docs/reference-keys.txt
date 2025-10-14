@@ -141,6 +141,7 @@ chap10_Summary
 chap10_lm
 chap10_MLE
 chap10_MLEsim
+chap10_mle2
 chap10_Practice
 chap11_lmmodels
 chap11_preparation

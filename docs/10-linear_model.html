@@ -23,7 +23,7 @@
 <meta name="author" content="帝京大学文学部心理学科　堀田結孝" />
 
 
-<meta name="date" content="2025-10-13" />
+<meta name="date" content="2025-10-14" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -379,6 +379,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="11.4" data-path="10-linear_model.html"><a href="10-linear_model.html#chap10_MLE"><i class="fa fa-check"></i><b>11.4</b> 最尤法</a>
 <ul>
 <li class="chapter" data-level="11.4.1" data-path="10-linear_model.html"><a href="10-linear_model.html#chap10_MLEsim"><i class="fa fa-check"></i><b>11.4.1</b> 最尤法によるパラメータ推定</a></li>
+<li class="chapter" data-level="11.4.2" data-path="10-linear_model.html"><a href="10-linear_model.html#chap10_mle2"><i class="fa fa-check"></i><b>11.4.2</b> 最尤法による線形モデルのパラメータ推定</a></li>
 </ul></li>
 <li class="chapter" data-level="11.5" data-path="10-linear_model.html"><a href="10-linear_model.html#chap10_Practice"><i class="fa fa-check"></i><b>11.5</b> 確認問題</a>
 <ul>
@@ -663,20 +664,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <hr />
 <p><span class="math display">\[
 \begin{equation}
-  \hat{y} = \alpha + \beta x  \tag{1}\\
-  y \sim \text{Normal}(\hat{y}, \sigma)
+  \mu = \alpha + \beta x  \tag{1}\\
+  y \sim \text{Normal}(\mu, \sigma)
 \end{equation}
 \]</span></p>
-<p>1番目の式の右側に<span class="math inline">\(\alpha + \beta x\)</span>という線形の式がある。この式は、<strong>線形予測子(linear predictor)</strong>と呼ばれる。変数<span class="math inline">\(x\)</span>に係る<span class="math inline">\(\beta\)</span>は予測変数に係る<strong>傾き(slope)</strong>、<span class="math inline">\(\alpha\)</span>は<strong>切片(intercept)</strong>である。1番目の式は、変数<span class="math inline">\(x\)</span>の持つ効果（傾き）及びそれ以外の効果（切片）と変数<span class="math inline">\(y\)</span>の予測値（<span class="math inline">\(\hat{y}\)</span>）との関係を示している。</p>
+<p>1番目の式の右側に<span class="math inline">\(\alpha + \beta x\)</span>という線形の式がある。この式は、<strong>線形予測子(linear predictor)</strong>と呼ばれる。変数<span class="math inline">\(x\)</span>に係る<span class="math inline">\(\beta\)</span>は予測変数に係る<strong>傾き(slope)</strong>、<span class="math inline">\(\alpha\)</span>は<strong>切片(intercept)</strong>である。1番目の式は、変数<span class="math inline">\(x\)</span>の持つ効果（傾き）及びそれ以外の効果（切片）と変数<span class="math inline">\(y\)</span>の予測値（<span class="math inline">\(\mu\)</span>）との関係を示している。</p>
 <hr />
 <p>予測変数は2個以上でも構わない。予測変数の個数を<span class="math inline">\(K\)</span>とすると、(1)の1番目の式は以下のように表現できる。</p>
 <p><span class="math display">\[
 \begin{equation}
-  \hat{y} = \alpha + \sum_{k=1}^{K} \beta_{k} x_{k} \\ \tag{2}
+  \mu = \alpha + \sum_{k=1}^{K} \beta_{k} x_{k} \\ \tag{2}
 \end{equation}
 \]</span></p>
 <hr />
-<p><span class="math inline">\(y \sim \text{Normal}(\hat{y}, \sigma)\)</span>は、「応答変数<span class="math inline">\(y\)</span>が、予測値<span class="math inline">\(\hat{y}\)</span>を平均、<span class="math inline">\(\sigma\)</span>を標準偏差とする正規分布に従う」ことを示している。つまり、線形予測子から予測された値<span class="math inline">\(\hat{y}\)</span>と誤差<span class="math inline">\(\sigma\)</span>から、実際の値<span class="math inline">\(y\)</span>が推定されるプロセスを表現している。</p>
+<p><span class="math inline">\(y \sim \text{Normal}(\mu, \sigma)\)</span>は、「応答変数<span class="math inline">\(y\)</span>が、<span class="math inline">\(\mu\)</span>を平均、<span class="math inline">\(\sigma\)</span>を標準偏差とする正規分布に従う」ことを示している。つまり、線形予測子から予測された値<span class="math inline">\(\mu\)</span>と誤差<span class="math inline">\(\sigma\)</span>から、実際の値<span class="math inline">\(y\)</span>が推定されるプロセスを表現している。</p>
 <p>応答変数が正規分布に従うという前提をおいたモデルのことを、一般的に<strong>線形モデル(linear model)</strong>と呼ぶ。</p>
 <p>線形モデルは、基本的に心理統計でも学んだ「<strong>回帰分析(regression analysis)</strong>」と同じである。</p>
 <p>応答変数<span class="math inline">\(y\)</span>を決定づける変数、<span class="math inline">\(\alpha\)</span>, <span class="math inline">\(\beta\)</span>、及び <span class="math inline">\(\sigma\)</span>は<strong>パラメータ(parameter)</strong>と呼ばれる。このパラメータを、既知の変数である<span class="math inline">\(x\)</span>と<span class="math inline">\(y\)</span>から推定する。</p>
@@ -769,7 +770,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 L = (1-\theta)^3 \theta^2 \tag{4}
 \]</span></p>
 <p><span class="math inline">\(L\)</span>のことを<strong>尤度</strong>(likelihood)と呼ぶ（”ゆうど”と読む）。</p>
-<p>尤度とは「もっともらしさ」を示す概念である。イメージとしては、「今回の観測結果が得られる確率」である。今回の観測データに対して最も当てはまりが良くなる、すなわち尤度が最も高くなるときのパラメータを求めるのが、最尤法 (maximum likelihood method)と呼ばれる手法である。</p>
+<p>尤度とは「もっともらしさ」を示す概念である。イメージとしては、「今回の観測結果が得られる確率」である。今回の観測データに対して最も当てはまりが良くなる、すなわち尤度が最も高くなるときのパラメータを求めるのが、最尤法 と呼ばれる手法である。</p>
 <p>掛け算を扱う尤度は計算が困難なので、実際のパラメータ推定の際には対数化して足し算を扱う。対数化した尤度を<strong>対数尤度(log-likelihood)</strong>と呼ぶ。対数尤度が最大となるパラメータ<span class="math inline">\(\theta\)</span>を求める。</p>
 <p><span class="math display">\[
 \log L = \log(1-\theta)+\log(1-\theta)+\log(1-\theta)+\log(\theta)+\log(\theta) \tag{5}
@@ -778,56 +779,148 @@ L = (1-\theta)^3 \theta^2 \tag{4}
 <div class="sourceCode" id="cb367"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb367-1"><a href="10-linear_model.html#cb367-1" tabindex="-1"></a>D <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>) <span class="co">#観測データのベクトル：1=表、0=裏とする</span></span>
 <span id="cb367-2"><a href="10-linear_model.html#cb367-2" tabindex="-1"></a></span>
 <span id="cb367-3"><a href="10-linear_model.html#cb367-3" tabindex="-1"></a><span class="co">#対数尤度を求める関数</span></span>
-<span id="cb367-4"><a href="10-linear_model.html#cb367-4" tabindex="-1"></a>LogLikelihood <span class="ot">=</span> <span class="cf">function</span>(x){</span>
-<span id="cb367-5"><a href="10-linear_model.html#cb367-5" tabindex="-1"></a>  <span class="fu">return</span>(<span class="cf">function</span>(theta){</span>
-<span id="cb367-6"><a href="10-linear_model.html#cb367-6" tabindex="-1"></a>    L <span class="ot">=</span> <span class="dv">1</span></span>
-<span id="cb367-7"><a href="10-linear_model.html#cb367-7" tabindex="-1"></a>    <span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(x)){</span>
-<span id="cb367-8"><a href="10-linear_model.html#cb367-8" tabindex="-1"></a>      L <span class="ot">=</span> L <span class="sc">*</span> theta<span class="sc">^</span>(x[i]) <span class="sc">*</span> (<span class="dv">1</span><span class="sc">-</span>theta)<span class="sc">^</span>(<span class="dv">1</span><span class="sc">-</span>x[i])</span>
-<span id="cb367-9"><a href="10-linear_model.html#cb367-9" tabindex="-1"></a>    }</span>
-<span id="cb367-10"><a href="10-linear_model.html#cb367-10" tabindex="-1"></a>    <span class="fu">return</span>(<span class="fu">log</span>(L))</span>
-<span id="cb367-11"><a href="10-linear_model.html#cb367-11" tabindex="-1"></a>  })</span>
+<span id="cb367-4"><a href="10-linear_model.html#cb367-4" tabindex="-1"></a>LogLikelihood <span class="ot">=</span> <span class="cf">function</span>(par) {</span>
+<span id="cb367-5"><a href="10-linear_model.html#cb367-5" tabindex="-1"></a>  theta <span class="ot">=</span> par</span>
+<span id="cb367-6"><a href="10-linear_model.html#cb367-6" tabindex="-1"></a></span>
+<span id="cb367-7"><a href="10-linear_model.html#cb367-7" tabindex="-1"></a>  <span class="co">#確率の制約（0 &lt; theta_2 &lt; 1）</span></span>
+<span id="cb367-8"><a href="10-linear_model.html#cb367-8" tabindex="-1"></a>  theta_2 <span class="ot">=</span> <span class="fu">min</span>(<span class="fu">max</span>(theta, <span class="fl">1e-10</span>), <span class="dv">1</span> <span class="sc">-</span> <span class="fl">1e-10</span>)</span>
+<span id="cb367-9"><a href="10-linear_model.html#cb367-9" tabindex="-1"></a>  </span>
+<span id="cb367-10"><a href="10-linear_model.html#cb367-10" tabindex="-1"></a>  ll <span class="ot">&lt;-</span> <span class="fu">sum</span>(D <span class="sc">*</span> <span class="fu">log</span>(theta_2) <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">-</span> D) <span class="sc">*</span> <span class="fu">log</span>(<span class="dv">1</span> <span class="sc">-</span> theta_2))</span>
+<span id="cb367-11"><a href="10-linear_model.html#cb367-11" tabindex="-1"></a>  <span class="fu">return</span>(ll)</span>
 <span id="cb367-12"><a href="10-linear_model.html#cb367-12" tabindex="-1"></a>}</span>
 <span id="cb367-13"><a href="10-linear_model.html#cb367-13" tabindex="-1"></a></span>
-<span id="cb367-14"><a href="10-linear_model.html#cb367-14" tabindex="-1"></a><span class="co">#optimize関数で、対数尤度が最も高くなるパラメータthetaを推定する</span></span>
-<span id="cb367-15"><a href="10-linear_model.html#cb367-15" tabindex="-1"></a>result_mlm <span class="ot">=</span> <span class="fu">optimize</span>(<span class="at">f =</span> <span class="fu">LogLikelihood</span>(D), <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="at">maximum=</span><span class="cn">TRUE</span>) </span>
-<span id="cb367-16"><a href="10-linear_model.html#cb367-16" tabindex="-1"></a></span>
-<span id="cb367-17"><a href="10-linear_model.html#cb367-17" tabindex="-1"></a>result_mlm</span></code></pre></div>
-<pre><code>## $maximum
-## [1] 0.4000015
-## 
-## $objective
-## [1] -3.365058</code></pre>
+<span id="cb367-14"><a href="10-linear_model.html#cb367-14" tabindex="-1"></a></span>
+<span id="cb367-15"><a href="10-linear_model.html#cb367-15" tabindex="-1"></a><span class="co">#対数尤度が最も大きいときのパラメータ(theta)を推定する</span></span>
+<span id="cb367-16"><a href="10-linear_model.html#cb367-16" tabindex="-1"></a><span class="co">#optimは最小化の最適化関数なので、対数尤度を負にして最適化する</span></span>
+<span id="cb367-17"><a href="10-linear_model.html#cb367-17" tabindex="-1"></a>int <span class="ot">=</span> <span class="dv">0</span>  <span class="co"># パラメータの初期値</span></span>
+<span id="cb367-18"><a href="10-linear_model.html#cb367-18" tabindex="-1"></a>result_mlm <span class="ot">=</span> <span class="fu">optim</span>(<span class="at">par =</span> int, </span>
+<span id="cb367-19"><a href="10-linear_model.html#cb367-19" tabindex="-1"></a>                <span class="at">fn =</span> <span class="cf">function</span>(p) <span class="sc">-</span> <span class="fu">LogLikelihood</span>(p),</span>
+<span id="cb367-20"><a href="10-linear_model.html#cb367-20" tabindex="-1"></a>                <span class="at">method =</span> <span class="st">&quot;L-BFGS-B&quot;</span>,</span>
+<span id="cb367-21"><a href="10-linear_model.html#cb367-21" tabindex="-1"></a>                <span class="at">hessian =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb367-22"><a href="10-linear_model.html#cb367-22" tabindex="-1"></a></span>
+<span id="cb367-23"><a href="10-linear_model.html#cb367-23" tabindex="-1"></a>result_mlm<span class="sc">$</span>par <span class="co">#推定されたパラメータ</span></span></code></pre></div>
+<pre><code>## [1] 0.4000003</code></pre>
+<p>推定された「表が出る確率」は、実験で表が出た回数の割合と一致している。</p>
+<div class="sourceCode" id="cb369"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb369-1"><a href="10-linear_model.html#cb369-1" tabindex="-1"></a><span class="fu">mean</span>(D)</span></code></pre></div>
+<pre><code>## [1] 0.4</code></pre>
 <p>パラメータ<span class="math inline">\(\theta\)</span>と対数尤度<span class="math inline">\(\log L\)</span>との関係を以下に示す。</p>
-<div class="sourceCode" id="cb369"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb369-1"><a href="10-linear_model.html#cb369-1" tabindex="-1"></a><span class="co">#図示する</span></span>
-<span id="cb369-2"><a href="10-linear_model.html#cb369-2" tabindex="-1"></a>theta <span class="ot">=</span> <span class="fu">seq</span>(<span class="fl">0.01</span>,<span class="fl">0.99</span>,<span class="fl">0.01</span>)</span>
-<span id="cb369-3"><a href="10-linear_model.html#cb369-3" tabindex="-1"></a>logL <span class="ot">=</span> <span class="fu">log</span>(theta)<span class="sc">+</span><span class="fu">log</span>(<span class="dv">1</span><span class="sc">-</span>theta)<span class="sc">+</span><span class="fu">log</span>(theta)<span class="sc">+</span><span class="fu">log</span>(<span class="dv">1</span><span class="sc">-</span>theta) <span class="sc">+</span> <span class="fu">log</span>(<span class="dv">1</span><span class="sc">-</span>theta)</span>
-<span id="cb369-4"><a href="10-linear_model.html#cb369-4" tabindex="-1"></a></span>
-<span id="cb369-5"><a href="10-linear_model.html#cb369-5" tabindex="-1"></a>data_mlm <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="at">x=</span>theta, <span class="at">y=</span>logL)</span>
-<span id="cb369-6"><a href="10-linear_model.html#cb369-6" tabindex="-1"></a></span>
-<span id="cb369-7"><a href="10-linear_model.html#cb369-7" tabindex="-1"></a>ggplot2<span class="sc">::</span><span class="fu">ggplot</span>() <span class="sc">+</span></span>
-<span id="cb369-8"><a href="10-linear_model.html#cb369-8" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_line</span>(<span class="at">data=</span>data_mlm, <span class="fu">aes</span>(<span class="at">x=</span>x, <span class="at">y=</span> y), <span class="at">size=</span><span class="dv">1</span>) <span class="sc">+</span> </span>
-<span id="cb369-9"><a href="10-linear_model.html#cb369-9" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_vline</span>(<span class="at">xintercept =</span> result_mlm<span class="sc">$</span>maximum, <span class="at">linetype=</span><span class="st">&quot;dashed&quot;</span>, <span class="at">colour=</span><span class="st">&quot;red&quot;</span>, <span class="at">size=</span><span class="dv">1</span>) <span class="sc">+</span></span>
-<span id="cb369-10"><a href="10-linear_model.html#cb369-10" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">labs</span>(<span class="at">x =</span><span class="st">&quot;theta&quot;</span>, <span class="at">y=</span> <span class="st">&quot;log L&quot;</span>) </span></code></pre></div>
-<pre><code>## Warning: Using `size` aesthetic for lines
-## was deprecated in ggplot2 3.4.0.
-## ℹ Please use `linewidth` instead.
-## This warning is displayed once
-## every 8 hours.
-## Call
-## `lifecycle::last_lifecycle_warnings()`
-## to see where this warning was
-## generated.</code></pre>
-<p><img src="Data-Analysis-for-Psychology_files/figure-html/unnamed-chunk-196-1.png" width="672" /></p>
-<p>対数尤度が最も大きくなるのは、<span class="math inline">\(\theta=\)</span> 0.4のときである（表が出た割合である2/5と一致）。</p>
-<p>ここではわかりやすくパラメータを1つのみ使って説明しているが、線形モデルの傾きや切片の推定も同じである。上の例の<span class="math inline">\(\theta\)</span>を線形予測子に置き換えて同様の計算をする。</p>
+<div class="sourceCode" id="cb371"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb371-1"><a href="10-linear_model.html#cb371-1" tabindex="-1"></a><span class="co">#図示する</span></span>
+<span id="cb371-2"><a href="10-linear_model.html#cb371-2" tabindex="-1"></a>theta <span class="ot">=</span> <span class="fu">seq</span>(<span class="fl">0.01</span>,<span class="fl">0.99</span>,<span class="fl">0.01</span>)</span>
+<span id="cb371-3"><a href="10-linear_model.html#cb371-3" tabindex="-1"></a>logL <span class="ot">=</span> <span class="fu">log</span>(theta)<span class="sc">+</span><span class="fu">log</span>(<span class="dv">1</span><span class="sc">-</span>theta)<span class="sc">+</span><span class="fu">log</span>(theta)<span class="sc">+</span><span class="fu">log</span>(<span class="dv">1</span><span class="sc">-</span>theta) <span class="sc">+</span> <span class="fu">log</span>(<span class="dv">1</span><span class="sc">-</span>theta)</span>
+<span id="cb371-4"><a href="10-linear_model.html#cb371-4" tabindex="-1"></a></span>
+<span id="cb371-5"><a href="10-linear_model.html#cb371-5" tabindex="-1"></a>data_mlm <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="at">x=</span>theta, <span class="at">y=</span>logL)</span>
+<span id="cb371-6"><a href="10-linear_model.html#cb371-6" tabindex="-1"></a></span>
+<span id="cb371-7"><a href="10-linear_model.html#cb371-7" tabindex="-1"></a>ggplot2<span class="sc">::</span><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb371-8"><a href="10-linear_model.html#cb371-8" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_line</span>(<span class="at">data =</span> data_mlm, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y), <span class="at">linewidth =</span> <span class="dv">1</span>) <span class="sc">+</span> </span>
+<span id="cb371-9"><a href="10-linear_model.html#cb371-9" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_vline</span>(<span class="at">xintercept =</span> result_mlm<span class="sc">$</span>par, <span class="at">linetype =</span> <span class="st">&quot;dashed&quot;</span>, <span class="at">colour =</span> <span class="st">&quot;red&quot;</span>, <span class="at">size =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb371-10"><a href="10-linear_model.html#cb371-10" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">labs</span>(<span class="at">x =</span><span class="st">&quot;theta&quot;</span>, <span class="at">y =</span> <span class="st">&quot;log L&quot;</span>) </span></code></pre></div>
+<p><img src="Data-Analysis-for-Psychology_files/figure-html/unnamed-chunk-197-1.png" width="672" /></p>
+<p>対数尤度が最も大きくなるのは、<span class="math inline">\(\theta=\)</span> 0.4のときである。</p>
+</div>
+<div id="chap10_mle2" class="section level3 hasAnchor" number="11.4.2">
+<h3><span class="header-section-number">11.4.2</span> 最尤法による線形モデルのパラメータ推定<a href="10-linear_model.html#chap10_mle2" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>先ほどの例ではわかりやすいように、パラメータを1つのみ使って説明をした。線形モデルの傾きや切片を推定する場合も同様である。上の例の<span class="math inline">\(\theta\)</span>を、線形予測子に置き換えて同様の計算をする。</p>
+<p>まずは、<code>x</code>と<code>y</code>の２つの変数からなるデータを作成し、<code>x</code>を予測変数、<code>y</code>を応答変数とした線形モデルを行う。傾き及び切片も任意のものに指定する。</p>
+<div class="sourceCode" id="cb372"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb372-1"><a href="10-linear_model.html#cb372-1" tabindex="-1"></a><span class="co">#データの作成</span></span>
+<span id="cb372-2"><a href="10-linear_model.html#cb372-2" tabindex="-1"></a>n <span class="ot">=</span> <span class="dv">100</span> <span class="co">#データ数</span></span>
+<span id="cb372-3"><a href="10-linear_model.html#cb372-3" tabindex="-1"></a>x <span class="ot">=</span> <span class="fu">runif</span>(n, <span class="dv">0</span>, <span class="dv">1</span>) <span class="co">#予測変数（一様分布から乱数を生成）</span></span>
+<span id="cb372-4"><a href="10-linear_model.html#cb372-4" tabindex="-1"></a></span>
+<span id="cb372-5"><a href="10-linear_model.html#cb372-5" tabindex="-1"></a><span class="co">#線形モデルのパラメータを指定する</span></span>
+<span id="cb372-6"><a href="10-linear_model.html#cb372-6" tabindex="-1"></a>alpha <span class="ot">=</span> <span class="fl">2.5</span> <span class="co">#切片</span></span>
+<span id="cb372-7"><a href="10-linear_model.html#cb372-7" tabindex="-1"></a>beta <span class="ot">=</span> <span class="fl">0.8</span> <span class="co">#傾き</span></span>
+<span id="cb372-8"><a href="10-linear_model.html#cb372-8" tabindex="-1"></a>sigma <span class="ot">=</span> <span class="dv">1</span> <span class="co">#正規分布の標準偏差</span></span>
+<span id="cb372-9"><a href="10-linear_model.html#cb372-9" tabindex="-1"></a></span>
+<span id="cb372-10"><a href="10-linear_model.html#cb372-10" tabindex="-1"></a>mu <span class="ot">=</span> alpha <span class="sc">+</span> beta <span class="sc">*</span> x</span>
+<span id="cb372-11"><a href="10-linear_model.html#cb372-11" tabindex="-1"></a>y <span class="ot">=</span> <span class="fu">rnorm</span>(n, mu, sigma) <span class="co">#応答変数</span></span>
+<span id="cb372-12"><a href="10-linear_model.html#cb372-12" tabindex="-1"></a></span>
+<span id="cb372-13"><a href="10-linear_model.html#cb372-13" tabindex="-1"></a>d <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="at">x =</span> x, <span class="at">y =</span> y)</span>
+<span id="cb372-14"><a href="10-linear_model.html#cb372-14" tabindex="-1"></a><span class="fu">head</span>(d)</span></code></pre></div>
+<pre><code>##           x        y
+## 1 0.2655087 3.110513
+## 2 0.3721239 2.185673
+## 3 0.5728534 3.299402
+## 4 0.9082078 2.097203
+## 5 0.2016819 4.094369
+## 6 0.8983897 5.199112</code></pre>
+<p>対数尤度を求め、対数尤度が最大となるパラメータを推定する。</p>
+<div class="sourceCode" id="cb374"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb374-1"><a href="10-linear_model.html#cb374-1" tabindex="-1"></a><span class="co">#対数尤度関数の定義</span></span>
+<span id="cb374-2"><a href="10-linear_model.html#cb374-2" tabindex="-1"></a>log_likelihood <span class="ot">=</span> <span class="cf">function</span>(params) {</span>
+<span id="cb374-3"><a href="10-linear_model.html#cb374-3" tabindex="-1"></a>  alpha <span class="ot">=</span> params[<span class="dv">1</span>]</span>
+<span id="cb374-4"><a href="10-linear_model.html#cb374-4" tabindex="-1"></a>  beta <span class="ot">=</span> params[<span class="dv">2</span>]</span>
+<span id="cb374-5"><a href="10-linear_model.html#cb374-5" tabindex="-1"></a>  sigma <span class="ot">=</span> params[<span class="dv">3</span>]</span>
+<span id="cb374-6"><a href="10-linear_model.html#cb374-6" tabindex="-1"></a>  </span>
+<span id="cb374-7"><a href="10-linear_model.html#cb374-7" tabindex="-1"></a>  mu <span class="ot">=</span> alpha <span class="sc">+</span> beta <span class="sc">*</span> d<span class="sc">$</span>x</span>
+<span id="cb374-8"><a href="10-linear_model.html#cb374-8" tabindex="-1"></a>  ll <span class="ot">=</span> <span class="fu">sum</span>(<span class="fu">dnorm</span>(d<span class="sc">$</span>y, <span class="at">mean =</span> mu, <span class="at">sd =</span> sigma, <span class="at">log =</span> <span class="cn">TRUE</span>)) <span class="co">#確率密度の対数の和</span></span>
+<span id="cb374-9"><a href="10-linear_model.html#cb374-9" tabindex="-1"></a>  <span class="fu">return</span>(ll)</span>
+<span id="cb374-10"><a href="10-linear_model.html#cb374-10" tabindex="-1"></a>}</span>
+<span id="cb374-11"><a href="10-linear_model.html#cb374-11" tabindex="-1"></a></span>
+<span id="cb374-12"><a href="10-linear_model.html#cb374-12" tabindex="-1"></a></span>
+<span id="cb374-13"><a href="10-linear_model.html#cb374-13" tabindex="-1"></a><span class="co">#対数尤度が最も大きいときのパラメータ(par)を推定する</span></span>
+<span id="cb374-14"><a href="10-linear_model.html#cb374-14" tabindex="-1"></a><span class="co">#optimは最小化の最適化関数なので、対数尤度を負にして最適化する</span></span>
+<span id="cb374-15"><a href="10-linear_model.html#cb374-15" tabindex="-1"></a>int <span class="ot">=</span> <span class="fu">c</span>(<span class="at">alpha =</span> <span class="dv">0</span>, <span class="at">beta =</span> <span class="dv">1</span>, <span class="at">sigma =</span> <span class="dv">2</span>) <span class="co">#パラメータの初期値の指定</span></span>
+<span id="cb374-16"><a href="10-linear_model.html#cb374-16" tabindex="-1"></a>result_mle <span class="ot">=</span> <span class="fu">optim</span>(<span class="at">par =</span> int, </span>
+<span id="cb374-17"><a href="10-linear_model.html#cb374-17" tabindex="-1"></a>                <span class="at">fn =</span> <span class="cf">function</span>(p) <span class="sc">-</span> <span class="fu">log_likelihood</span>(p),</span>
+<span id="cb374-18"><a href="10-linear_model.html#cb374-18" tabindex="-1"></a>                <span class="at">method =</span> <span class="st">&quot;L-BFGS-B&quot;</span>,</span>
+<span id="cb374-19"><a href="10-linear_model.html#cb374-19" tabindex="-1"></a>                <span class="at">lower =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="cn">Inf</span>, <span class="sc">-</span><span class="cn">Inf</span>, <span class="fl">1e-10</span>))</span>
+<span id="cb374-20"><a href="10-linear_model.html#cb374-20" tabindex="-1"></a></span>
+<span id="cb374-21"><a href="10-linear_model.html#cb374-21" tabindex="-1"></a>result_mle<span class="sc">$</span>par</span></code></pre></div>
+<pre><code>##     alpha      beta     sigma 
+## 2.3206740 1.1123416 0.9316027</code></pre>
+<p><code>lm()</code>で推定されたパラメータと一致することを確認する。</p>
+<div class="sourceCode" id="cb376"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb376-1"><a href="10-linear_model.html#cb376-1" tabindex="-1"></a>result <span class="ot">=</span> <span class="fu">lm</span>(<span class="at">data =</span> d, y <span class="sc">~</span> x)</span>
+<span id="cb376-2"><a href="10-linear_model.html#cb376-2" tabindex="-1"></a><span class="fu">summary</span>(result)</span></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = y ~ x, data = d)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -1.84978 -0.56222 -0.08707  0.52427  2.51661 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)   2.3207     0.2058  11.276  &lt; 2e-16 ***
+## x             1.1123     0.3535   3.147  0.00219 ** 
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.9411 on 98 degrees of freedom
+## Multiple R-squared:  0.09178,    Adjusted R-squared:  0.08252 
+## F-statistic: 9.904 on 1 and 98 DF,  p-value: 0.002185</code></pre>
 <hr />
-<p>線形モデルのパラメータ推定には、<strong>最小二乗法</strong>と呼ばれる別の推定方法もある。ただし、最小二乗法を使っても最尤法を使っても、線形モデルの傾きや切片の推定値は同じになる。</p>
+<p>線形モデルのパラメータ推定には、<strong>最小二乗法</strong>という方法もある。最小二乗法は、応答変数の実測値と予測値の差の絶対値の合計（残差）が最小になるときの切片及び傾きを求める方法である。ただし、最小二乗法でも最尤法でも、線形モデルの傾きや切片の推定値は同じになる。</p>
+<p>例えば、以下の線形モデルの切片及び傾きのパラメータを推定するとする。</p>
+<p><span class="math display">\[
+  \mu = \alpha + \beta x\\
+  y \sim \text{Normal}(\mu, \sigma)
+\]</span>
+データを<span class="math inline">\(y_{1}, y_{2}, ..., y_{n}\)</span>とすると、正規分布の確率密度関数より、</p>
+<p><span class="math display">\[
+f(y_{i}) = \frac{1}{\sqrt{2\pi\sigma^2}}\exp\left(-\frac{(y_i-\mu_{i})^2}{2\sigma^2}\right)
+\]</span></p>
+<p>尤度関数Lは、</p>
+<p><span class="math display">\[
+L = \prod_{i=1}^{n} f(y_{i}) \\
+= \prod_{i=1}^{n} \frac{1}{\sqrt{2\pi\sigma^2}}\exp\left(-\frac{(y_{i}-\mu_{i})^2}{2\sigma^2}\right)
+\]</span></p>
+<p>となる。第7章でも解説しているように連続量の場合は個々のデータの確率を求めることはできないので、尤度は確率密度をかけ合わせたものを用いる。</p>
+<p>対数尤度は</p>
+<p><span class="math display">\[
+\log L = \sum_{i=1}^{n}-\frac{1}{2} \log(2\pi\sigma^2) - \sum_{i=1}^{n}\frac{{(y_{i}-\mu_{i})^2}}{2 \sigma^2}\\
+= -\frac{n}{2} \log(2\pi\sigma^2) - \frac{1}{2 \sigma ^2}\sum_{i=1}^{n} (y_{i}-\mu_{i})^2
+\]</span></p>
+<p>となる。<span class="math inline">\(\mu_{i} = \alpha + \beta x_{i}\)</span>を代入すると</p>
+<p><span class="math display">\[
+\log L = -\frac{n}{2} \log(2\pi\sigma^2) - \frac{1}{2 \sigma ^2}\sum_{i=1}^{n} (y_{i}-(\alpha + \beta x_{i}))^2
+\]</span>
+となる。<span class="math inline">\(\alpha\)</span>と<span class="math inline">\(\beta\)</span>の値によって決まるのは2つ目の項である。
+つまり、対数尤度<span class="math inline">\(\log L\)</span>を最大にする<span class="math inline">\(\alpha\)</span>と<span class="math inline">\(\beta\)</span>を求めることは、<span class="math inline">\(\sum_{i=1}^{n}(y_{i} - (\alpha + \beta x_{i}))^2\)</span>を最小化する<span class="math inline">\(\alpha\)</span>と<span class="math inline">\(\beta\)</span>を推定することと同じである。そのため、最小二乗法と最尤法で推定される結果は同じになる。</p>
 </div>
 </div>
 <div id="chap10_Practice" class="section level2 hasAnchor" number="11.5">
 <h2><span class="header-section-number">11.5</span> 確認問題<a href="10-linear_model.html#chap10_Practice" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Rに入っているサンプルデータ<code>trees</code>を使って、線形モデルの結果の解釈の仕方と<code>lm()</code>関数の扱い方を復習をする。</p>
-<div class="sourceCode" id="cb371"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb371-1"><a href="10-linear_model.html#cb371-1" tabindex="-1"></a><span class="fu">head</span>(trees)</span></code></pre></div>
+<div class="sourceCode" id="cb378"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb378-1"><a href="10-linear_model.html#cb378-1" tabindex="-1"></a><span class="fu">head</span>(trees)</span></code></pre></div>
 <pre><code>##   Girth Height Volume
 ## 1   8.3     70   10.3
 ## 2   8.6     65   10.3

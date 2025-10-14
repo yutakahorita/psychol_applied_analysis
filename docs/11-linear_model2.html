@@ -23,7 +23,7 @@
 <meta name="author" content="帝京大学文学部心理学科　堀田結孝" />
 
 
-<meta name="date" content="2025-10-13" />
+<meta name="date" content="2025-10-14" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -379,6 +379,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="11.4" data-path="10-linear_model.html"><a href="10-linear_model.html#chap10_MLE"><i class="fa fa-check"></i><b>11.4</b> 最尤法</a>
 <ul>
 <li class="chapter" data-level="11.4.1" data-path="10-linear_model.html"><a href="10-linear_model.html#chap10_MLEsim"><i class="fa fa-check"></i><b>11.4.1</b> 最尤法によるパラメータ推定</a></li>
+<li class="chapter" data-level="11.4.2" data-path="10-linear_model.html"><a href="10-linear_model.html#chap10_mle2"><i class="fa fa-check"></i><b>11.4.2</b> 最尤法による線形モデルのパラメータ推定</a></li>
 </ul></li>
 <li class="chapter" data-level="11.5" data-path="10-linear_model.html"><a href="10-linear_model.html#chap10_Practice"><i class="fa fa-check"></i><b>11.5</b> 確認問題</a>
 <ul>
@@ -662,8 +663,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="chap11_preparation" class="section level2 hasAnchor" number="12.1">
 <h2><span class="header-section-number">12.1</span> 準備<a href="11-linear_model2.html#chap11_preparation" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>必要なパッケージをロードする。</p>
-<div class="sourceCode" id="cb373"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb373-1"><a href="11-linear_model2.html#cb373-1" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb373-2"><a href="11-linear_model2.html#cb373-2" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span></code></pre></div>
+<div class="sourceCode" id="cb380"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb380-1"><a href="11-linear_model2.html#cb380-1" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb380-2"><a href="11-linear_model2.html#cb380-2" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span></code></pre></div>
 </div>
 <div id="chap11_lmgroup" class="section level2 hasAnchor" number="12.2">
 <h2><span class="header-section-number">12.2</span> 線形モデルに含まれる統計解析<a href="11-linear_model2.html#chap11_lmgroup" class="anchor-section" aria-label="Anchor link to header"></a></h2>
@@ -715,9 +716,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2><span class="header-section-number">12.3</span> 変数の標準化<a href="11-linear_model2.html#chap11_scaling" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>解析の演習に入る前に、<strong>標準化(standardizing)</strong>について確認しておこう。標準化とは、元の値を「ゼロが平均値、1が標準偏差」と等しくなるように値を変換する処理のことをいう。変数を標準化しておくと、線形モデルの係数の解釈が直感的に理解しやすくなる事が多い。</p>
 <p>例えば、前の章では<code>iris</code>データを使って単回帰分析を行った。</p>
-<div class="sourceCode" id="cb374"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb374-1"><a href="11-linear_model2.html#cb374-1" tabindex="-1"></a>dat <span class="ot">=</span> iris <span class="co">#ここではirisを別の名前（dat）に変えて練習に用いる</span></span>
-<span id="cb374-2"><a href="11-linear_model2.html#cb374-2" tabindex="-1"></a>result <span class="ot">=</span> <span class="fu">lm</span>(<span class="at">data =</span> dat, Petal.Length <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> Sepal.Length)</span>
-<span id="cb374-3"><a href="11-linear_model2.html#cb374-3" tabindex="-1"></a><span class="fu">summary</span>(result)</span></code></pre></div>
+<div class="sourceCode" id="cb381"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb381-1"><a href="11-linear_model2.html#cb381-1" tabindex="-1"></a>dat <span class="ot">=</span> iris <span class="co">#ここではirisを別の名前（dat）に変えて練習に用いる</span></span>
+<span id="cb381-2"><a href="11-linear_model2.html#cb381-2" tabindex="-1"></a>result <span class="ot">=</span> <span class="fu">lm</span>(<span class="at">data =</span> dat, Petal.Length <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> Sepal.Length)</span>
+<span id="cb381-3"><a href="11-linear_model2.html#cb381-3" tabindex="-1"></a><span class="fu">summary</span>(result)</span></code></pre></div>
 <pre><code>## 
 ## Call:
 ## lm(formula = Petal.Length ~ 1 + Sepal.Length, data = dat)
@@ -738,10 +739,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## F-statistic: 468.6 on 1 and 148 DF,  p-value: &lt; 2.2e-16</code></pre>
 <p>切片の値は<code>Sepal.Length</code>がゼロのときの<code>Petal.Length</code>の予測値である。しかし、アヤメの花弁の長さがマイナスやゼロの値を取るというのはありえない。また、切片は予測変数がゼロのときの応答変数の値であるが、このデータも予測変数（すなわちがくの長さ）がゼロの場合も論理的には有り得ない。このように、元の値をそのまま使っても係数の解釈にこまる場面がある。</p>
 <p>応答変数及び予測変数を標準化したものを使って同じ解析をして、結果を比較してみよう。具体的には、元の得点から<strong>平均値を引いて</strong>差の得点を求め、その差の得点を<strong>標準偏差で割る</strong>。</p>
-<div class="sourceCode" id="cb376"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb376-1"><a href="11-linear_model2.html#cb376-1" tabindex="-1"></a>dat <span class="ot">=</span> dat <span class="sc">|&gt;</span> dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">Petal.Length_std =</span> (Petal.Length <span class="sc">-</span> <span class="fu">mean</span>(Petal.Length))<span class="sc">/</span><span class="fu">sd</span>(Petal.Length),</span>
-<span id="cb376-2"><a href="11-linear_model2.html#cb376-2" tabindex="-1"></a>                           <span class="at">Sepal.Length_std =</span> (Sepal.Length <span class="sc">-</span> <span class="fu">mean</span>(Sepal.Length))<span class="sc">/</span><span class="fu">sd</span>(Sepal.Length))</span>
-<span id="cb376-3"><a href="11-linear_model2.html#cb376-3" tabindex="-1"></a></span>
-<span id="cb376-4"><a href="11-linear_model2.html#cb376-4" tabindex="-1"></a><span class="fu">head</span>(dat)</span></code></pre></div>
+<div class="sourceCode" id="cb383"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb383-1"><a href="11-linear_model2.html#cb383-1" tabindex="-1"></a>dat <span class="ot">=</span> dat <span class="sc">|&gt;</span> dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">Petal.Length_std =</span> (Petal.Length <span class="sc">-</span> <span class="fu">mean</span>(Petal.Length))<span class="sc">/</span><span class="fu">sd</span>(Petal.Length),</span>
+<span id="cb383-2"><a href="11-linear_model2.html#cb383-2" tabindex="-1"></a>                           <span class="at">Sepal.Length_std =</span> (Sepal.Length <span class="sc">-</span> <span class="fu">mean</span>(Sepal.Length))<span class="sc">/</span><span class="fu">sd</span>(Sepal.Length))</span>
+<span id="cb383-3"><a href="11-linear_model2.html#cb383-3" tabindex="-1"></a></span>
+<span id="cb383-4"><a href="11-linear_model2.html#cb383-4" tabindex="-1"></a><span class="fu">head</span>(dat)</span></code></pre></div>
 <pre><code>##   Sepal.Length Sepal.Width Petal.Length Petal.Width Species Petal.Length_std
 ## 1          5.1         3.5          1.4         0.2  setosa        -1.335752
 ## 2          4.9         3.0          1.4         0.2  setosa        -1.335752
@@ -757,8 +758,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## 5       -1.0184372
 ## 6       -0.5353840</code></pre>
 <p>標準化した得点を用いて線形モデルで解析を行う。</p>
-<div class="sourceCode" id="cb378"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb378-1"><a href="11-linear_model2.html#cb378-1" tabindex="-1"></a>result_std <span class="ot">=</span> <span class="fu">lm</span>(<span class="at">data =</span> dat, Petal.Length_std <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> Sepal.Length_std)</span>
-<span id="cb378-2"><a href="11-linear_model2.html#cb378-2" tabindex="-1"></a><span class="fu">summary</span>(result_std)</span></code></pre></div>
+<div class="sourceCode" id="cb385"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb385-1"><a href="11-linear_model2.html#cb385-1" tabindex="-1"></a>result_std <span class="ot">=</span> <span class="fu">lm</span>(<span class="at">data =</span> dat, Petal.Length_std <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> Sepal.Length_std)</span>
+<span id="cb385-2"><a href="11-linear_model2.html#cb385-2" tabindex="-1"></a><span class="fu">summary</span>(result_std)</span></code></pre></div>
 <pre><code>## 
 ## Call:
 ## lm(formula = Petal.Length_std ~ 1 + Sepal.Length_std, data = dat)
@@ -782,9 +783,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>このように、標準化することで算出された係数の解釈がしやすくなることが多い。以降の線形モデルを扱う分析の例でも、応答変数は標準化したものを用いる。</p>
 <hr />
 <p>Rには標準化を行うための関数も用意されている。<code>scale()</code>を用いる。</p>
-<div class="sourceCode" id="cb380"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb380-1"><a href="11-linear_model2.html#cb380-1" tabindex="-1"></a>dat <span class="ot">=</span> iris <span class="sc">|&gt;</span> dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">Petal.Length_std =</span> <span class="fu">scale</span>(Petal.Length)) </span>
-<span id="cb380-2"><a href="11-linear_model2.html#cb380-2" tabindex="-1"></a></span>
-<span id="cb380-3"><a href="11-linear_model2.html#cb380-3" tabindex="-1"></a><span class="fu">head</span>(dat)</span></code></pre></div>
+<div class="sourceCode" id="cb387"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb387-1"><a href="11-linear_model2.html#cb387-1" tabindex="-1"></a>dat <span class="ot">=</span> iris <span class="sc">|&gt;</span> dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">Petal.Length_std =</span> <span class="fu">scale</span>(Petal.Length)) </span>
+<span id="cb387-2"><a href="11-linear_model2.html#cb387-2" tabindex="-1"></a></span>
+<span id="cb387-3"><a href="11-linear_model2.html#cb387-3" tabindex="-1"></a><span class="fu">head</span>(dat)</span></code></pre></div>
 <pre><code>##   Sepal.Length Sepal.Width Petal.Length Petal.Width Species Petal.Length_std
 ## 1          5.1         3.5          1.4         0.2  setosa        -1.335752
 ## 2          4.9         3.0          1.4         0.2  setosa        -1.335752
@@ -797,9 +798,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2><span class="header-section-number">12.4</span> 予測変数がカテゴリカル変数の場合（ダミー変数）<a href="11-linear_model2.html#chap11_dummy" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>予測変数はカテゴリカル変数（質的変数）でも構わない。ただし、予測変数を0か1のどちらかの値を取る<strong>ダミー変数</strong>(dummy variable)に変換する必要がある。</p>
 <p>Rに入っている<code>sleep</code>データを少し変えたもの使って、カテゴリカル変数を予測変数に含む線形モデルの解析をしてみよう。</p>
-<div class="sourceCode" id="cb382"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb382-1"><a href="11-linear_model2.html#cb382-1" tabindex="-1"></a>sleep_1 <span class="ot">=</span> sleep <span class="sc">|&gt;</span> dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span>ID) <span class="sc">|&gt;</span> </span>
-<span id="cb382-2"><a href="11-linear_model2.html#cb382-2" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">group =</span> <span class="fu">ifelse</span>(group <span class="sc">==</span> <span class="dv">1</span>, <span class="st">&quot;control&quot;</span>, <span class="st">&quot;treatment&quot;</span>))</span>
-<span id="cb382-3"><a href="11-linear_model2.html#cb382-3" tabindex="-1"></a>sleep_1</span></code></pre></div>
+<div class="sourceCode" id="cb389"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb389-1"><a href="11-linear_model2.html#cb389-1" tabindex="-1"></a>sleep_1 <span class="ot">=</span> sleep <span class="sc">|&gt;</span> dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span>ID) <span class="sc">|&gt;</span> </span>
+<span id="cb389-2"><a href="11-linear_model2.html#cb389-2" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">group =</span> <span class="fu">ifelse</span>(group <span class="sc">==</span> <span class="dv">1</span>, <span class="st">&quot;control&quot;</span>, <span class="st">&quot;treatment&quot;</span>))</span>
+<span id="cb389-3"><a href="11-linear_model2.html#cb389-3" tabindex="-1"></a>sleep_1</span></code></pre></div>
 <pre><code>##    extra     group
 ## 1    0.7   control
 ## 2   -1.6   control
@@ -822,8 +823,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## 19   4.6 treatment
 ## 20   3.4 treatment</code></pre>
 <p><code>group</code>はグループを意味する変数である（統制群<code>control</code>もしくは実験群<code>treatment</code>）。まずこれを、「<code>treatment</code>なら1、<code>control</code>なら0」とする新たな変数<code>dgroup</code>を作る。</p>
-<div class="sourceCode" id="cb384"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb384-1"><a href="11-linear_model2.html#cb384-1" tabindex="-1"></a>sleep_1 <span class="ot">=</span> sleep_1 <span class="sc">|&gt;</span> dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">dgroup =</span> <span class="fu">ifelse</span>(group <span class="sc">==</span> <span class="st">&quot;treatment&quot;</span>, <span class="dv">1</span>, <span class="dv">0</span>))</span>
-<span id="cb384-2"><a href="11-linear_model2.html#cb384-2" tabindex="-1"></a>sleep_1</span></code></pre></div>
+<div class="sourceCode" id="cb391"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb391-1"><a href="11-linear_model2.html#cb391-1" tabindex="-1"></a>sleep_1 <span class="ot">=</span> sleep_1 <span class="sc">|&gt;</span> dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">dgroup =</span> <span class="fu">ifelse</span>(group <span class="sc">==</span> <span class="st">&quot;treatment&quot;</span>, <span class="dv">1</span>, <span class="dv">0</span>))</span>
+<span id="cb391-2"><a href="11-linear_model2.html#cb391-2" tabindex="-1"></a>sleep_1</span></code></pre></div>
 <pre><code>##    extra     group dgroup
 ## 1    0.7   control      0
 ## 2   -1.6   control      0
@@ -856,10 +857,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 \]</span></p>
 <p><span class="math inline">\(dgroup\)</span>は0か1のどちらかを取る変数で、<span class="math inline">\(dgroup = 0\)</span>のとき、つまり統制群のとき、応答変数の予測値は<span class="math inline">\(\mu = \alpha\)</span>となる。<span class="math inline">\(dgroup = 1\)</span>のとき、つまり実験群のとき、応答変数の予測値は<span class="math inline">\(\mu = \alpha + \beta\)</span>となる。すなわち、切片<span class="math inline">\(\alpha\)</span>は統制群のときの効果、傾き<span class="math inline">\(\beta\)</span>は実験群の時に加わる実験群特有の効果を意味する。</p>
 <p><code>lm()</code>を使って、上のモデル式のパラメータの推定をしよう。</p>
-<div class="sourceCode" id="cb386"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb386-1"><a href="11-linear_model2.html#cb386-1" tabindex="-1"></a>sleep_1 <span class="ot">=</span> sleep_1 <span class="sc">|&gt;</span> dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">extra_std =</span> <span class="fu">scale</span>(extra)) <span class="co">#応答変数を標準化したものを用いる</span></span>
-<span id="cb386-2"><a href="11-linear_model2.html#cb386-2" tabindex="-1"></a></span>
-<span id="cb386-3"><a href="11-linear_model2.html#cb386-3" tabindex="-1"></a>result <span class="ot">=</span> <span class="fu">lm</span>(<span class="at">data =</span> sleep_1, extra_std <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> dgroup)</span>
-<span id="cb386-4"><a href="11-linear_model2.html#cb386-4" tabindex="-1"></a><span class="fu">summary</span>(result)</span></code></pre></div>
+<div class="sourceCode" id="cb393"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb393-1"><a href="11-linear_model2.html#cb393-1" tabindex="-1"></a>sleep_1 <span class="ot">=</span> sleep_1 <span class="sc">|&gt;</span> dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">extra_std =</span> <span class="fu">scale</span>(extra)) <span class="co">#応答変数を標準化したものを用いる</span></span>
+<span id="cb393-2"><a href="11-linear_model2.html#cb393-2" tabindex="-1"></a></span>
+<span id="cb393-3"><a href="11-linear_model2.html#cb393-3" tabindex="-1"></a>result <span class="ot">=</span> <span class="fu">lm</span>(<span class="at">data =</span> sleep_1, extra_std <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> dgroup)</span>
+<span id="cb393-4"><a href="11-linear_model2.html#cb393-4" tabindex="-1"></a><span class="fu">summary</span>(result)</span></code></pre></div>
 <pre><code>## 
 ## Call:
 ## lm(formula = extra_std ~ 1 + dgroup, data = sleep_1)
@@ -879,7 +880,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## Multiple R-squared:  0.1613, Adjusted R-squared:  0.1147 
 ## F-statistic: 3.463 on 1 and 18 DF,  p-value: 0.07919</code></pre>
 <p>2つの群間で平均値を比較するときにはt検定がよく使われる。<code>t.test()</code>関数を使って<span class="math inline">\(dgroup=0\)</span>と<span class="math inline">\(dgroup=1\)</span>との間で<span class="math inline">\(y\)</span>の値の平均値を比較したときのt値及びp値の結果が、<code>lm()</code>の傾きのt値及びp値と一致することを確認しよう。</p>
-<div class="sourceCode" id="cb388"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb388-1"><a href="11-linear_model2.html#cb388-1" tabindex="-1"></a><span class="fu">t.test</span>(<span class="at">data =</span> sleep_1, extra_std <span class="sc">~</span> dgroup)</span></code></pre></div>
+<div class="sourceCode" id="cb395"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb395-1"><a href="11-linear_model2.html#cb395-1" tabindex="-1"></a><span class="fu">t.test</span>(<span class="at">data =</span> sleep_1, extra_std <span class="sc">~</span> dgroup)</span></code></pre></div>
 <pre><code>## 
 ##  Welch Two Sample t-test
 ## 
@@ -898,11 +899,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2><span class="header-section-number">12.5</span> グループが複数ある場合（一要因の分散分析）<a href="11-linear_model2.html#chap11_onewayANOVA" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>先ほどの例は、統制群と実験群の二つのグループの場合であった。例えば実験で統制群、実験群1、実験群2といったように三つ以上のグループを設定した場合は、どうダミー変数を作成すればよいのか？</p>
 <p>Rに入っている<code>PlantGrowth</code>を例として見ていこう。以下のプログラムを実行して、データを作ろう。</p>
-<div class="sourceCode" id="cb390"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb390-1"><a href="11-linear_model2.html#cb390-1" tabindex="-1"></a>dat <span class="ot">=</span> PlantGrowth <span class="sc">|&gt;</span></span>
-<span id="cb390-2"><a href="11-linear_model2.html#cb390-2" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">t1 =</span> <span class="fu">ifelse</span>(group <span class="sc">==</span> <span class="st">&quot;trt1&quot;</span>, <span class="dv">1</span>, <span class="dv">0</span>),</span>
-<span id="cb390-3"><a href="11-linear_model2.html#cb390-3" tabindex="-1"></a>                <span class="at">t2 =</span> <span class="fu">ifelse</span>(group <span class="sc">==</span> <span class="st">&quot;trt2&quot;</span>, <span class="dv">1</span>, <span class="dv">0</span>)</span>
-<span id="cb390-4"><a href="11-linear_model2.html#cb390-4" tabindex="-1"></a>                )</span>
-<span id="cb390-5"><a href="11-linear_model2.html#cb390-5" tabindex="-1"></a>dat</span></code></pre></div>
+<div class="sourceCode" id="cb397"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb397-1"><a href="11-linear_model2.html#cb397-1" tabindex="-1"></a>dat <span class="ot">=</span> PlantGrowth <span class="sc">|&gt;</span></span>
+<span id="cb397-2"><a href="11-linear_model2.html#cb397-2" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">t1 =</span> <span class="fu">ifelse</span>(group <span class="sc">==</span> <span class="st">&quot;trt1&quot;</span>, <span class="dv">1</span>, <span class="dv">0</span>),</span>
+<span id="cb397-3"><a href="11-linear_model2.html#cb397-3" tabindex="-1"></a>                <span class="at">t2 =</span> <span class="fu">ifelse</span>(group <span class="sc">==</span> <span class="st">&quot;trt2&quot;</span>, <span class="dv">1</span>, <span class="dv">0</span>)</span>
+<span id="cb397-4"><a href="11-linear_model2.html#cb397-4" tabindex="-1"></a>                )</span>
+<span id="cb397-5"><a href="11-linear_model2.html#cb397-5" tabindex="-1"></a>dat</span></code></pre></div>
 <pre><code>##    weight group t1 t2
 ## 1    4.17  ctrl  0  0
 ## 2    5.58  ctrl  0  0
@@ -946,9 +947,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 傾き<span class="math inline">\(\beta_{t2}\)</span>は「<code>t1</code> = 0, <code>t2</code> = 1（すなわち、<code>trt2</code>のとき）」の<span class="math inline">\(\hat{y}\)</span>の値と等しい。</p>
 <p>このように、グループの数が<span class="math inline">\(K\)</span>個ある場合には、ダミー変数を<span class="math inline">\(K-1\)</span>個作れば全てのグループの予測値<span class="math inline">\(\hat{y}\)</span>を線形予測子で表すことができる。</p>
 <p><code>lm()</code>で傾き及び切片のパラメータを推定しよう。</p>
-<div class="sourceCode" id="cb392"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb392-1"><a href="11-linear_model2.html#cb392-1" tabindex="-1"></a>dat <span class="ot">=</span> dat <span class="sc">|&gt;</span> dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">weight_std =</span> <span class="fu">scale</span>(weight)) <span class="co">#応答変数を標準化したものを用いる</span></span>
-<span id="cb392-2"><a href="11-linear_model2.html#cb392-2" tabindex="-1"></a>result <span class="ot">=</span> <span class="fu">lm</span>(<span class="at">data =</span> dat, weight_std <span class="sc">~</span> t1 <span class="sc">+</span> t2 <span class="sc">+</span> <span class="dv">1</span>) </span>
-<span id="cb392-3"><a href="11-linear_model2.html#cb392-3" tabindex="-1"></a><span class="fu">summary</span>(result)</span></code></pre></div>
+<div class="sourceCode" id="cb399"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb399-1"><a href="11-linear_model2.html#cb399-1" tabindex="-1"></a>dat <span class="ot">=</span> dat <span class="sc">|&gt;</span> dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">weight_std =</span> <span class="fu">scale</span>(weight)) <span class="co">#応答変数を標準化したものを用いる</span></span>
+<span id="cb399-2"><a href="11-linear_model2.html#cb399-2" tabindex="-1"></a>result <span class="ot">=</span> <span class="fu">lm</span>(<span class="at">data =</span> dat, weight_std <span class="sc">~</span> t1 <span class="sc">+</span> t2 <span class="sc">+</span> <span class="dv">1</span>) </span>
+<span id="cb399-3"><a href="11-linear_model2.html#cb399-3" tabindex="-1"></a><span class="fu">summary</span>(result)</span></code></pre></div>
 <pre><code>## 
 ## Call:
 ## lm(formula = weight_std ~ t1 + t2 + 1, data = dat)
@@ -971,15 +972,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>式（3）より、切片の推定値は<span class="math inline">\(t_1=0\)</span>かつ<span class="math inline">\(t_2=0\)</span>のときの<span class="math inline">\(\mu\)</span>、つまり統制群(ctrl)のときの応答変数<code>weight_std</code>の推定値を意味している。各ダミー変数の係数（傾き）は、切片に加わる各条件の効果を意味している。例えば、<code>t2</code>の係数は0.7であるが、これは<span class="math inline">\(t_2\)</span>のとき（つまりtrt2のとき）の応答変数の予測値は、 0.65(= 切片 + <code>t2</code>の傾き)となることを示している。</p>
 <p>係数の意味することは、基準となるグループ（どのダミー変数も0となるグループ）と比べての効果ということになる。</p>
 <p>図でも条件別に<code>weight_std</code>の分布を確認してみよう。分布を見ても同様の傾向があるが、線形モデルの解析の結果その効果が有意であることが確認できた。</p>
-<div class="sourceCode" id="cb394"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb394-1"><a href="11-linear_model2.html#cb394-1" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span> </span>
-<span id="cb394-2"><a href="11-linear_model2.html#cb394-2" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">data =</span> dat, <span class="fu">aes</span>(<span class="at">x =</span> group, <span class="at">y =</span> weight_std))</span></code></pre></div>
-<p><img src="Data-Analysis-for-Psychology_files/figure-html/unnamed-chunk-213-1.png" width="672" /></p>
+<div class="sourceCode" id="cb401"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb401-1"><a href="11-linear_model2.html#cb401-1" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span> </span>
+<span id="cb401-2"><a href="11-linear_model2.html#cb401-2" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">data =</span> dat, <span class="fu">aes</span>(<span class="at">x =</span> group, <span class="at">y =</span> weight_std))</span></code></pre></div>
+<p><img src="Data-Analysis-for-Psychology_files/figure-html/unnamed-chunk-217-1.png" width="672" /></p>
 <p>モデル（式）を確認しながら、係数が何を意味しているのかを常に意識するようにしよう。</p>
 <hr />
 <p>このテキストでは練習のためにダミー変数を自分でプログラムを書いて作っているが、<code>lm()</code>関数にカテゴリカル変数をそのまま入れても結果を出力してくれる。カテゴリのうちアルファベット順で最初に出てくるカテゴリ(以下の<code>PlantGrowth</code>の例では<code>ctrl</code>)を基準として、残りのダミー変数を自動で作ってくれている。</p>
-<div class="sourceCode" id="cb395"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb395-1"><a href="11-linear_model2.html#cb395-1" tabindex="-1"></a>dat <span class="ot">=</span> PlantGrowth <span class="sc">|&gt;</span> dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">weight_std =</span> <span class="fu">scale</span>(weight)) <span class="co">#応答変数を標準化したものを用いる</span></span>
-<span id="cb395-2"><a href="11-linear_model2.html#cb395-2" tabindex="-1"></a>result <span class="ot">=</span> <span class="fu">lm</span>(<span class="at">data =</span> dat, weight_std <span class="sc">~</span> group) </span>
-<span id="cb395-3"><a href="11-linear_model2.html#cb395-3" tabindex="-1"></a><span class="fu">summary</span>(result)</span></code></pre></div>
+<div class="sourceCode" id="cb402"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb402-1"><a href="11-linear_model2.html#cb402-1" tabindex="-1"></a>dat <span class="ot">=</span> PlantGrowth <span class="sc">|&gt;</span> dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">weight_std =</span> <span class="fu">scale</span>(weight)) <span class="co">#応答変数を標準化したものを用いる</span></span>
+<span id="cb402-2"><a href="11-linear_model2.html#cb402-2" tabindex="-1"></a>result <span class="ot">=</span> <span class="fu">lm</span>(<span class="at">data =</span> dat, weight_std <span class="sc">~</span> group) </span>
+<span id="cb402-3"><a href="11-linear_model2.html#cb402-3" tabindex="-1"></a><span class="fu">summary</span>(result)</span></code></pre></div>
 <pre><code>## 
 ## Call:
 ## lm(formula = weight_std ~ group, data = dat)
@@ -1004,20 +1005,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2><span class="header-section-number">12.6</span> 交互作用（2要因の分散分析）<a href="11-linear_model2.html#chap11_interaction" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>次は、線形モデルで<strong>交互作用</strong>を扱う方法について確認する。2要因以上の分散分析と同様のことを線形モデルで行う。</p>
 <p>以下のプログラムを実行して、サンプルデータ<code>d</code>を作ろう。</p>
-<div class="sourceCode" id="cb397"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb397-1"><a href="11-linear_model2.html#cb397-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
-<span id="cb397-2"><a href="11-linear_model2.html#cb397-2" tabindex="-1"></a>x <span class="ot">=</span> <span class="fu">round</span>(<span class="fu">runif</span>(<span class="at">n =</span> <span class="dv">20</span>, <span class="at">min =</span> <span class="dv">1</span>, <span class="at">max =</span> <span class="dv">10</span>),<span class="dv">0</span>) </span>
-<span id="cb397-3"><a href="11-linear_model2.html#cb397-3" tabindex="-1"></a>mu <span class="ot">=</span> <span class="fl">0.1</span> <span class="sc">+</span> <span class="fl">0.4</span> <span class="sc">*</span> x</span>
-<span id="cb397-4"><a href="11-linear_model2.html#cb397-4" tabindex="-1"></a>y <span class="ot">=</span> <span class="fu">rnorm</span>(<span class="at">n =</span> <span class="dv">20</span>, <span class="at">mean =</span> mu, <span class="at">sd =</span> <span class="dv">1</span>)</span>
-<span id="cb397-5"><a href="11-linear_model2.html#cb397-5" tabindex="-1"></a>d_M <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="at">x =</span> x, <span class="at">y =</span> y, <span class="at">gender =</span> <span class="st">&quot;M&quot;</span>)</span>
-<span id="cb397-6"><a href="11-linear_model2.html#cb397-6" tabindex="-1"></a></span>
-<span id="cb397-7"><a href="11-linear_model2.html#cb397-7" tabindex="-1"></a>x <span class="ot">=</span> <span class="fu">round</span>(<span class="fu">runif</span>(<span class="at">n =</span> <span class="dv">20</span>, <span class="at">min =</span> <span class="dv">1</span>, <span class="at">max =</span> <span class="dv">10</span>),<span class="dv">0</span>) </span>
-<span id="cb397-8"><a href="11-linear_model2.html#cb397-8" tabindex="-1"></a>mu <span class="ot">=</span> <span class="fl">0.3</span> <span class="sc">+</span> <span class="sc">-</span><span class="fl">0.6</span> <span class="sc">*</span> x</span>
-<span id="cb397-9"><a href="11-linear_model2.html#cb397-9" tabindex="-1"></a>y <span class="ot">=</span> <span class="fu">rnorm</span>(<span class="at">n =</span> <span class="dv">20</span>, <span class="at">mean =</span> mu, <span class="at">sd =</span> <span class="dv">1</span>)</span>
-<span id="cb397-10"><a href="11-linear_model2.html#cb397-10" tabindex="-1"></a>d_F <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="at">x =</span> x, <span class="at">y =</span> y, <span class="at">gender =</span> <span class="st">&quot;F&quot;</span>)</span>
-<span id="cb397-11"><a href="11-linear_model2.html#cb397-11" tabindex="-1"></a></span>
-<span id="cb397-12"><a href="11-linear_model2.html#cb397-12" tabindex="-1"></a>d <span class="ot">=</span> <span class="fu">rbind</span>(d_M, d_F)</span>
-<span id="cb397-13"><a href="11-linear_model2.html#cb397-13" tabindex="-1"></a></span>
-<span id="cb397-14"><a href="11-linear_model2.html#cb397-14" tabindex="-1"></a><span class="fu">head</span>(d)</span></code></pre></div>
+<div class="sourceCode" id="cb404"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb404-1"><a href="11-linear_model2.html#cb404-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
+<span id="cb404-2"><a href="11-linear_model2.html#cb404-2" tabindex="-1"></a>x <span class="ot">=</span> <span class="fu">round</span>(<span class="fu">runif</span>(<span class="at">n =</span> <span class="dv">20</span>, <span class="at">min =</span> <span class="dv">1</span>, <span class="at">max =</span> <span class="dv">10</span>),<span class="dv">0</span>) </span>
+<span id="cb404-3"><a href="11-linear_model2.html#cb404-3" tabindex="-1"></a>mu <span class="ot">=</span> <span class="fl">0.1</span> <span class="sc">+</span> <span class="fl">0.4</span> <span class="sc">*</span> x</span>
+<span id="cb404-4"><a href="11-linear_model2.html#cb404-4" tabindex="-1"></a>y <span class="ot">=</span> <span class="fu">rnorm</span>(<span class="at">n =</span> <span class="dv">20</span>, <span class="at">mean =</span> mu, <span class="at">sd =</span> <span class="dv">1</span>)</span>
+<span id="cb404-5"><a href="11-linear_model2.html#cb404-5" tabindex="-1"></a>d_M <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="at">x =</span> x, <span class="at">y =</span> y, <span class="at">gender =</span> <span class="st">&quot;M&quot;</span>)</span>
+<span id="cb404-6"><a href="11-linear_model2.html#cb404-6" tabindex="-1"></a></span>
+<span id="cb404-7"><a href="11-linear_model2.html#cb404-7" tabindex="-1"></a>x <span class="ot">=</span> <span class="fu">round</span>(<span class="fu">runif</span>(<span class="at">n =</span> <span class="dv">20</span>, <span class="at">min =</span> <span class="dv">1</span>, <span class="at">max =</span> <span class="dv">10</span>),<span class="dv">0</span>) </span>
+<span id="cb404-8"><a href="11-linear_model2.html#cb404-8" tabindex="-1"></a>mu <span class="ot">=</span> <span class="fl">0.3</span> <span class="sc">+</span> <span class="sc">-</span><span class="fl">0.6</span> <span class="sc">*</span> x</span>
+<span id="cb404-9"><a href="11-linear_model2.html#cb404-9" tabindex="-1"></a>y <span class="ot">=</span> <span class="fu">rnorm</span>(<span class="at">n =</span> <span class="dv">20</span>, <span class="at">mean =</span> mu, <span class="at">sd =</span> <span class="dv">1</span>)</span>
+<span id="cb404-10"><a href="11-linear_model2.html#cb404-10" tabindex="-1"></a>d_F <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="at">x =</span> x, <span class="at">y =</span> y, <span class="at">gender =</span> <span class="st">&quot;F&quot;</span>)</span>
+<span id="cb404-11"><a href="11-linear_model2.html#cb404-11" tabindex="-1"></a></span>
+<span id="cb404-12"><a href="11-linear_model2.html#cb404-12" tabindex="-1"></a>d <span class="ot">=</span> <span class="fu">rbind</span>(d_M, d_F)</span>
+<span id="cb404-13"><a href="11-linear_model2.html#cb404-13" tabindex="-1"></a></span>
+<span id="cb404-14"><a href="11-linear_model2.html#cb404-14" tabindex="-1"></a><span class="fu">head</span>(d)</span></code></pre></div>
 <pre><code>##   x        y gender
 ## 1 3 2.811781      M
 ## 2 4 2.089843      M
@@ -1034,8 +1035,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 \end{equation}
 \]</span></p>
 <p><code>lm()</code>関数を使って推定しよう（<span class="math inline">\(x\)</span>と<span class="math inline">\(y\)</span>の散布図及び係数の信頼区間も図示する）。</p>
-<div class="sourceCode" id="cb399"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb399-1"><a href="11-linear_model2.html#cb399-1" tabindex="-1"></a>result <span class="ot">=</span> <span class="fu">lm</span>(<span class="at">data =</span> d, y <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> x)</span>
-<span id="cb399-2"><a href="11-linear_model2.html#cb399-2" tabindex="-1"></a><span class="fu">summary</span>(result)</span></code></pre></div>
+<div class="sourceCode" id="cb406"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb406-1"><a href="11-linear_model2.html#cb406-1" tabindex="-1"></a>result <span class="ot">=</span> <span class="fu">lm</span>(<span class="at">data =</span> d, y <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> x)</span>
+<span id="cb406-2"><a href="11-linear_model2.html#cb406-2" tabindex="-1"></a><span class="fu">summary</span>(result)</span></code></pre></div>
 <pre><code>## 
 ## Call:
 ## lm(formula = y ~ 1 + x, data = d)
@@ -1052,20 +1053,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## Residual standard error: 3.231 on 38 degrees of freedom
 ## Multiple R-squared:  0.01993,    Adjusted R-squared:  -0.005863 
 ## F-statistic: 0.7727 on 1 and 38 DF,  p-value: 0.3849</code></pre>
-<div class="sourceCode" id="cb401"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb401-1"><a href="11-linear_model2.html#cb401-1" tabindex="-1"></a>newdat <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="at">x =</span> <span class="fu">seq</span>(<span class="dv">1</span>,<span class="dv">10</span>,<span class="fl">0.1</span>))</span>
-<span id="cb401-2"><a href="11-linear_model2.html#cb401-2" tabindex="-1"></a>result_conf <span class="ot">=</span> <span class="fu">predict</span>(result, <span class="at">new =</span> newdat, <span class="at">interval =</span> <span class="st">&quot;confidence&quot;</span>, <span class="at">level =</span> <span class="fl">0.95</span>)</span>
-<span id="cb401-3"><a href="11-linear_model2.html#cb401-3" tabindex="-1"></a>plot_conf <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="at">x =</span> <span class="fu">seq</span>(<span class="dv">1</span>,<span class="dv">10</span>,<span class="fl">0.1</span>), result_conf)</span>
-<span id="cb401-4"><a href="11-linear_model2.html#cb401-4" tabindex="-1"></a></span>
-<span id="cb401-5"><a href="11-linear_model2.html#cb401-5" tabindex="-1"></a>ggplot2<span class="sc">::</span><span class="fu">ggplot</span>() <span class="sc">+</span> </span>
-<span id="cb401-6"><a href="11-linear_model2.html#cb401-6" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_point</span>(<span class="at">data =</span> d, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y), <span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span> </span>
-<span id="cb401-7"><a href="11-linear_model2.html#cb401-7" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_line</span>(<span class="at">data =</span> plot_conf, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> fit)) <span class="sc">+</span> </span>
-<span id="cb401-8"><a href="11-linear_model2.html#cb401-8" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_ribbon</span>(<span class="at">data =</span> plot_conf, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">ymax =</span> upr, <span class="at">ymin =</span> lwr), <span class="at">alpha =</span> <span class="fl">0.4</span>) </span></code></pre></div>
-<p><img src="Data-Analysis-for-Psychology_files/figure-html/unnamed-chunk-216-1.png" width="672" /></p>
+<div class="sourceCode" id="cb408"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb408-1"><a href="11-linear_model2.html#cb408-1" tabindex="-1"></a>newdat <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="at">x =</span> <span class="fu">seq</span>(<span class="dv">1</span>,<span class="dv">10</span>,<span class="fl">0.1</span>))</span>
+<span id="cb408-2"><a href="11-linear_model2.html#cb408-2" tabindex="-1"></a>result_conf <span class="ot">=</span> <span class="fu">predict</span>(result, <span class="at">new =</span> newdat, <span class="at">interval =</span> <span class="st">&quot;confidence&quot;</span>, <span class="at">level =</span> <span class="fl">0.95</span>)</span>
+<span id="cb408-3"><a href="11-linear_model2.html#cb408-3" tabindex="-1"></a>plot_conf <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="at">x =</span> <span class="fu">seq</span>(<span class="dv">1</span>,<span class="dv">10</span>,<span class="fl">0.1</span>), result_conf)</span>
+<span id="cb408-4"><a href="11-linear_model2.html#cb408-4" tabindex="-1"></a></span>
+<span id="cb408-5"><a href="11-linear_model2.html#cb408-5" tabindex="-1"></a>ggplot2<span class="sc">::</span><span class="fu">ggplot</span>() <span class="sc">+</span> </span>
+<span id="cb408-6"><a href="11-linear_model2.html#cb408-6" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_point</span>(<span class="at">data =</span> d, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y), <span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span> </span>
+<span id="cb408-7"><a href="11-linear_model2.html#cb408-7" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_line</span>(<span class="at">data =</span> plot_conf, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> fit)) <span class="sc">+</span> </span>
+<span id="cb408-8"><a href="11-linear_model2.html#cb408-8" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_ribbon</span>(<span class="at">data =</span> plot_conf, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">ymax =</span> upr, <span class="at">ymin =</span> lwr), <span class="at">alpha =</span> <span class="fl">0.4</span>) </span></code></pre></div>
+<p><img src="Data-Analysis-for-Psychology_files/figure-html/unnamed-chunk-220-1.png" width="672" /></p>
 <p>予測変数<code>x</code>の傾きはほぼフラットで、<code>y</code>に対してあまり効果がないようにみえる。</p>
 <p>しかし、このデータ<code>d</code>にはもう一つ性別を意味する<code>gender</code>という変数が含まれていた。<code>gender</code>を区別して、また<code>x</code>と<code>y</code>の散布図を見てみよう。</p>
-<div class="sourceCode" id="cb402"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb402-1"><a href="11-linear_model2.html#cb402-1" tabindex="-1"></a>ggplot2<span class="sc">::</span><span class="fu">ggplot</span>() <span class="sc">+</span> </span>
-<span id="cb402-2"><a href="11-linear_model2.html#cb402-2" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_point</span>(<span class="at">data =</span> d, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y, <span class="at">shape =</span> gender, <span class="at">color=</span>gender), <span class="at">size =</span> <span class="dv">3</span>) </span></code></pre></div>
-<p><img src="Data-Analysis-for-Psychology_files/figure-html/unnamed-chunk-217-1.png" width="672" /></p>
+<div class="sourceCode" id="cb409"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb409-1"><a href="11-linear_model2.html#cb409-1" tabindex="-1"></a>ggplot2<span class="sc">::</span><span class="fu">ggplot</span>() <span class="sc">+</span> </span>
+<span id="cb409-2"><a href="11-linear_model2.html#cb409-2" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_point</span>(<span class="at">data =</span> d, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y, <span class="at">shape =</span> gender, <span class="at">color=</span>gender), <span class="at">size =</span> <span class="dv">3</span>) </span></code></pre></div>
+<p><img src="Data-Analysis-for-Psychology_files/figure-html/unnamed-chunk-221-1.png" width="672" /></p>
 <p>性別が女性（F）か男性（M）かで、<code>x</code>と<code>y</code>の関係が違うようである。<br />
 このように、別の変数との組み合わせにより、変数間の関係が変化することを<strong>交互作用(interaction)</strong>という。このデータでも、応答変数<code>y</code>に対して性別<code>gender</code>と<code>x</code>の交互作用がありそうである。</p>
 <p>交互作用のあるモデルは、以下のように表現する。</p>
@@ -1098,9 +1099,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>となる。つまり、<span class="math inline">\(x\)</span>に係る傾きである<span class="math inline">\(\beta_{1}\)</span>が女性の時の<span class="math inline">\(x\)</span>の効果を意味する。</p>
 <p>言い換えると、交互作用項にかかる傾き<span class="math inline">\(\beta_{3}\)</span>は、男性のときに女性の<span class="math inline">\(x\)</span>の効果に追加分でかかる<span class="math inline">\(x\)</span>の傾きの変化量を意味することになる。</p>
 <p>このように、交互作用を考慮する予測変数の積をモデルに加えることで、男性か女性かで切片及び傾きが変化することを表現できる。</p>
-<div class="sourceCode" id="cb403"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb403-1"><a href="11-linear_model2.html#cb403-1" tabindex="-1"></a>d<span class="sc">$</span>M <span class="ot">=</span> <span class="fu">ifelse</span>(d<span class="sc">$</span>gender <span class="sc">==</span> <span class="st">&quot;M&quot;</span>, <span class="dv">1</span>, <span class="dv">0</span>) <span class="co">#genderがMならば1, Fならば1のダミー変数を作る</span></span>
-<span id="cb403-2"><a href="11-linear_model2.html#cb403-2" tabindex="-1"></a>result <span class="ot">=</span> <span class="fu">lm</span>(<span class="at">data =</span> d, y <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> x<span class="sc">*</span>M)</span>
-<span id="cb403-3"><a href="11-linear_model2.html#cb403-3" tabindex="-1"></a><span class="fu">summary</span>(result)</span></code></pre></div>
+<div class="sourceCode" id="cb410"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb410-1"><a href="11-linear_model2.html#cb410-1" tabindex="-1"></a>d<span class="sc">$</span>M <span class="ot">=</span> <span class="fu">ifelse</span>(d<span class="sc">$</span>gender <span class="sc">==</span> <span class="st">&quot;M&quot;</span>, <span class="dv">1</span>, <span class="dv">0</span>) <span class="co">#genderがMならば1, Fならば1のダミー変数を作る</span></span>
+<span id="cb410-2"><a href="11-linear_model2.html#cb410-2" tabindex="-1"></a>result <span class="ot">=</span> <span class="fu">lm</span>(<span class="at">data =</span> d, y <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> x<span class="sc">*</span>M)</span>
+<span id="cb410-3"><a href="11-linear_model2.html#cb410-3" tabindex="-1"></a><span class="fu">summary</span>(result)</span></code></pre></div>
 <pre><code>## 
 ## Call:
 ## lm(formula = y ~ 1 + x * M, data = d)
@@ -1123,17 +1124,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## F-statistic: 161.1 on 3 and 36 DF,  p-value: &lt; 2.2e-16</code></pre>
 <p>2つの予測変数の積の傾き（<span class="math inline">\(\beta_{3}\)</span>）は、<code>x:M</code>である。p値も小さく、有意な効果を持っているようである。</p>
 <p>サンプルデータについて、推定されたパラメータを元に、男女別に線形モデルの直線の信頼区間を図示したのが以下の図である。</p>
-<div class="sourceCode" id="cb405"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb405-1"><a href="11-linear_model2.html#cb405-1" tabindex="-1"></a>new_x <span class="ot">=</span> <span class="fu">seq</span>(<span class="dv">1</span>,<span class="dv">10</span>,<span class="fl">0.1</span>)</span>
-<span id="cb405-2"><a href="11-linear_model2.html#cb405-2" tabindex="-1"></a>newdat <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="at">x =</span> <span class="fu">rep</span>(new_x,<span class="dv">2</span>), <span class="at">M =</span> <span class="fu">c</span>(<span class="fu">rep</span>(<span class="dv">0</span>,<span class="fu">length</span>(new_x)), <span class="fu">rep</span>(<span class="dv">1</span>,<span class="fu">length</span>(new_x))))</span>
-<span id="cb405-3"><a href="11-linear_model2.html#cb405-3" tabindex="-1"></a>result_conf <span class="ot">=</span> <span class="fu">predict</span>(result, <span class="at">new =</span> newdat, <span class="at">interval =</span> <span class="st">&quot;confidence&quot;</span>, <span class="at">level =</span> <span class="fl">0.95</span>)</span>
-<span id="cb405-4"><a href="11-linear_model2.html#cb405-4" tabindex="-1"></a>plot_conf <span class="ot">=</span> <span class="fu">data.frame</span>(newdat, result_conf)</span>
-<span id="cb405-5"><a href="11-linear_model2.html#cb405-5" tabindex="-1"></a>plot_conf<span class="sc">$</span>gender <span class="ot">=</span> <span class="fu">ifelse</span>(plot_conf<span class="sc">$</span>M <span class="sc">==</span> <span class="dv">1</span>, <span class="st">&quot;M&quot;</span>, <span class="st">&quot;F&quot;</span>)</span>
-<span id="cb405-6"><a href="11-linear_model2.html#cb405-6" tabindex="-1"></a></span>
-<span id="cb405-7"><a href="11-linear_model2.html#cb405-7" tabindex="-1"></a>ggplot2<span class="sc">::</span><span class="fu">ggplot</span>() <span class="sc">+</span> </span>
-<span id="cb405-8"><a href="11-linear_model2.html#cb405-8" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_point</span>(<span class="at">data =</span> d, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y, <span class="at">shape =</span> gender, <span class="at">color=</span>gender), <span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span> </span>
-<span id="cb405-9"><a href="11-linear_model2.html#cb405-9" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_line</span>(<span class="at">data =</span> plot_conf, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> fit, <span class="at">color=</span>gender)) <span class="sc">+</span> </span>
-<span id="cb405-10"><a href="11-linear_model2.html#cb405-10" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_ribbon</span>(<span class="at">data =</span> plot_conf, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">ymax =</span> upr, <span class="at">ymin =</span> lwr, <span class="at">color =</span>gender), <span class="at">alpha =</span> <span class="fl">0.4</span>) </span></code></pre></div>
-<p><img src="Data-Analysis-for-Psychology_files/figure-html/unnamed-chunk-219-1.png" width="672" /></p>
+<div class="sourceCode" id="cb412"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb412-1"><a href="11-linear_model2.html#cb412-1" tabindex="-1"></a>new_x <span class="ot">=</span> <span class="fu">seq</span>(<span class="dv">1</span>,<span class="dv">10</span>,<span class="fl">0.1</span>)</span>
+<span id="cb412-2"><a href="11-linear_model2.html#cb412-2" tabindex="-1"></a>newdat <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="at">x =</span> <span class="fu">rep</span>(new_x,<span class="dv">2</span>), <span class="at">M =</span> <span class="fu">c</span>(<span class="fu">rep</span>(<span class="dv">0</span>,<span class="fu">length</span>(new_x)), <span class="fu">rep</span>(<span class="dv">1</span>,<span class="fu">length</span>(new_x))))</span>
+<span id="cb412-3"><a href="11-linear_model2.html#cb412-3" tabindex="-1"></a>result_conf <span class="ot">=</span> <span class="fu">predict</span>(result, <span class="at">new =</span> newdat, <span class="at">interval =</span> <span class="st">&quot;confidence&quot;</span>, <span class="at">level =</span> <span class="fl">0.95</span>)</span>
+<span id="cb412-4"><a href="11-linear_model2.html#cb412-4" tabindex="-1"></a>plot_conf <span class="ot">=</span> <span class="fu">data.frame</span>(newdat, result_conf)</span>
+<span id="cb412-5"><a href="11-linear_model2.html#cb412-5" tabindex="-1"></a>plot_conf<span class="sc">$</span>gender <span class="ot">=</span> <span class="fu">ifelse</span>(plot_conf<span class="sc">$</span>M <span class="sc">==</span> <span class="dv">1</span>, <span class="st">&quot;M&quot;</span>, <span class="st">&quot;F&quot;</span>)</span>
+<span id="cb412-6"><a href="11-linear_model2.html#cb412-6" tabindex="-1"></a></span>
+<span id="cb412-7"><a href="11-linear_model2.html#cb412-7" tabindex="-1"></a>ggplot2<span class="sc">::</span><span class="fu">ggplot</span>() <span class="sc">+</span> </span>
+<span id="cb412-8"><a href="11-linear_model2.html#cb412-8" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_point</span>(<span class="at">data =</span> d, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y, <span class="at">shape =</span> gender, <span class="at">color=</span>gender), <span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span> </span>
+<span id="cb412-9"><a href="11-linear_model2.html#cb412-9" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_line</span>(<span class="at">data =</span> plot_conf, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> fit, <span class="at">color=</span>gender)) <span class="sc">+</span> </span>
+<span id="cb412-10"><a href="11-linear_model2.html#cb412-10" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_ribbon</span>(<span class="at">data =</span> plot_conf, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">ymax =</span> upr, <span class="at">ymin =</span> lwr, <span class="at">color =</span>gender), <span class="at">alpha =</span> <span class="fl">0.4</span>) </span></code></pre></div>
+<p><img src="Data-Analysis-for-Psychology_files/figure-html/unnamed-chunk-223-1.png" width="672" /></p>
 <div id="chap11_NotingInteraction" class="section level3 hasAnchor" number="12.6.1">
 <h3><span class="header-section-number">12.6.1</span> 交互作用を扱うモデルの解釈<a href="11-linear_model2.html#chap11_NotingInteraction" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>2要因以上の分散分析と同様に、線形モデルでも交互作用の有無を検討することができる。しかし、ここで注意が必要なのは、交互作用を含む線形モデルは解釈が複雑になることである。<br />
@@ -1154,7 +1155,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h3><span class="header-section-number">12.7.1</span> 変数の効果の統制<a href="11-linear_model2.html#chap11_Controlling" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>予測変数を複数加えた線形モデルの解析のメリットは、ある予測変数について他の予測変数の効果を<strong>統制(control)</strong>したときの効果を検討できることにある。</p>
 <p>Rで標準で入っている<code>attitude</code>データを使って、予測変数が複数ある場合の線形モデルの解析の結果を確認してみよう。</p>
-<div class="sourceCode" id="cb406"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb406-1"><a href="11-linear_model2.html#cb406-1" tabindex="-1"></a><span class="fu">head</span>(attitude)</span></code></pre></div>
+<div class="sourceCode" id="cb413"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb413-1"><a href="11-linear_model2.html#cb413-1" tabindex="-1"></a><span class="fu">head</span>(attitude)</span></code></pre></div>
 <pre><code>##   rating complaints privileges learning raises critical advance
 ## 1     43         51         30       39     61       92      45
 ## 2     63         64         51       54     63       73      47
@@ -1163,15 +1164,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## 5     81         78         56       66     71       83      47
 ## 6     43         55         49       44     54       49      34</code></pre>
 <p>以下のように、<code>complaints</code>, <code>privileges</code>, <code>learning</code>, <code>raises</code>の4つを予測変数として、<code>rating</code>の値の推定を行ってみよう。</p>
-<div class="sourceCode" id="cb408"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb408-1"><a href="11-linear_model2.html#cb408-1" tabindex="-1"></a>dat <span class="ot">=</span> attitude <span class="sc">|&gt;</span> dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">rating_std =</span> <span class="fu">scale</span>(rating),</span>
-<span id="cb408-2"><a href="11-linear_model2.html#cb408-2" tabindex="-1"></a>                                <span class="at">complaints_std =</span> <span class="fu">scale</span>(complaints),</span>
-<span id="cb408-3"><a href="11-linear_model2.html#cb408-3" tabindex="-1"></a>                                <span class="at">privileges_std =</span> <span class="fu">scale</span>(privileges),</span>
-<span id="cb408-4"><a href="11-linear_model2.html#cb408-4" tabindex="-1"></a>                                <span class="at">learning_std =</span> <span class="fu">scale</span>(learning),</span>
-<span id="cb408-5"><a href="11-linear_model2.html#cb408-5" tabindex="-1"></a>                                <span class="at">raises_std =</span> <span class="fu">scale</span>(raises)</span>
-<span id="cb408-6"><a href="11-linear_model2.html#cb408-6" tabindex="-1"></a>                                ) <span class="co">#変数を標準化したものを使う</span></span>
-<span id="cb408-7"><a href="11-linear_model2.html#cb408-7" tabindex="-1"></a></span>
-<span id="cb408-8"><a href="11-linear_model2.html#cb408-8" tabindex="-1"></a>result <span class="ot">=</span> <span class="fu">lm</span>(<span class="at">data =</span> dat, rating_std <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> complaints_std <span class="sc">+</span> privileges_std <span class="sc">+</span> learning_std <span class="sc">+</span> raises_std)</span>
-<span id="cb408-9"><a href="11-linear_model2.html#cb408-9" tabindex="-1"></a><span class="fu">summary</span>(result)</span></code></pre></div>
+<div class="sourceCode" id="cb415"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb415-1"><a href="11-linear_model2.html#cb415-1" tabindex="-1"></a>dat <span class="ot">=</span> attitude <span class="sc">|&gt;</span> dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">rating_std =</span> <span class="fu">scale</span>(rating),</span>
+<span id="cb415-2"><a href="11-linear_model2.html#cb415-2" tabindex="-1"></a>                                <span class="at">complaints_std =</span> <span class="fu">scale</span>(complaints),</span>
+<span id="cb415-3"><a href="11-linear_model2.html#cb415-3" tabindex="-1"></a>                                <span class="at">privileges_std =</span> <span class="fu">scale</span>(privileges),</span>
+<span id="cb415-4"><a href="11-linear_model2.html#cb415-4" tabindex="-1"></a>                                <span class="at">learning_std =</span> <span class="fu">scale</span>(learning),</span>
+<span id="cb415-5"><a href="11-linear_model2.html#cb415-5" tabindex="-1"></a>                                <span class="at">raises_std =</span> <span class="fu">scale</span>(raises)</span>
+<span id="cb415-6"><a href="11-linear_model2.html#cb415-6" tabindex="-1"></a>                                ) <span class="co">#変数を標準化したものを使う</span></span>
+<span id="cb415-7"><a href="11-linear_model2.html#cb415-7" tabindex="-1"></a></span>
+<span id="cb415-8"><a href="11-linear_model2.html#cb415-8" tabindex="-1"></a>result <span class="ot">=</span> <span class="fu">lm</span>(<span class="at">data =</span> dat, rating_std <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> complaints_std <span class="sc">+</span> privileges_std <span class="sc">+</span> learning_std <span class="sc">+</span> raises_std)</span>
+<span id="cb415-9"><a href="11-linear_model2.html#cb415-9" tabindex="-1"></a><span class="fu">summary</span>(result)</span></code></pre></div>
 <pre><code>## 
 ## Call:
 ## lm(formula = rating_std ~ 1 + complaints_std + privileges_std + 
@@ -1199,23 +1200,23 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>このように複数の予測変数を入れたモデルで推定される係数は、他の予測変数の効果を統制した上での予測変数が応答変数に及ぼす効果を意味する。</p>
 <hr />
 <p>交互作用を含むモデルの場合も、（ダミー変数も含めて）予測変数を標準化すると係数を解釈しやすくなる。</p>
-<div class="sourceCode" id="cb410"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb410-1"><a href="11-linear_model2.html#cb410-1" tabindex="-1"></a><span class="co">#データを再度作成する。</span></span>
-<span id="cb410-2"><a href="11-linear_model2.html#cb410-2" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
-<span id="cb410-3"><a href="11-linear_model2.html#cb410-3" tabindex="-1"></a>x <span class="ot">=</span> <span class="fu">round</span>(<span class="fu">runif</span>(<span class="at">n =</span> <span class="dv">20</span>, <span class="at">min =</span> <span class="dv">1</span>, <span class="at">max =</span> <span class="dv">10</span>),<span class="dv">0</span>) </span>
-<span id="cb410-4"><a href="11-linear_model2.html#cb410-4" tabindex="-1"></a>mu <span class="ot">=</span> <span class="fl">0.1</span> <span class="sc">+</span> <span class="fl">0.4</span> <span class="sc">*</span> x</span>
-<span id="cb410-5"><a href="11-linear_model2.html#cb410-5" tabindex="-1"></a>y <span class="ot">=</span> <span class="fu">rnorm</span>(<span class="at">n =</span> <span class="dv">20</span>, <span class="at">mean =</span> mu, <span class="at">sd =</span> <span class="dv">1</span>)</span>
-<span id="cb410-6"><a href="11-linear_model2.html#cb410-6" tabindex="-1"></a>d_M <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="at">x =</span> x, <span class="at">y =</span> y, <span class="at">gender =</span> <span class="st">&quot;M&quot;</span>)</span>
-<span id="cb410-7"><a href="11-linear_model2.html#cb410-7" tabindex="-1"></a></span>
-<span id="cb410-8"><a href="11-linear_model2.html#cb410-8" tabindex="-1"></a>x <span class="ot">=</span> <span class="fu">round</span>(<span class="fu">runif</span>(<span class="at">n =</span> <span class="dv">20</span>, <span class="at">min =</span> <span class="dv">1</span>, <span class="at">max =</span> <span class="dv">10</span>),<span class="dv">0</span>) </span>
-<span id="cb410-9"><a href="11-linear_model2.html#cb410-9" tabindex="-1"></a>mu <span class="ot">=</span> <span class="fl">0.3</span> <span class="sc">+</span> <span class="sc">-</span><span class="fl">0.6</span> <span class="sc">*</span> x</span>
-<span id="cb410-10"><a href="11-linear_model2.html#cb410-10" tabindex="-1"></a>y <span class="ot">=</span> <span class="fu">rnorm</span>(<span class="at">n =</span> <span class="dv">20</span>, <span class="at">mean =</span> mu, <span class="at">sd =</span> <span class="dv">1</span>)</span>
-<span id="cb410-11"><a href="11-linear_model2.html#cb410-11" tabindex="-1"></a>d_F <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="at">x =</span> x, <span class="at">y =</span> y, <span class="at">gender =</span> <span class="st">&quot;F&quot;</span>)</span>
-<span id="cb410-12"><a href="11-linear_model2.html#cb410-12" tabindex="-1"></a></span>
-<span id="cb410-13"><a href="11-linear_model2.html#cb410-13" tabindex="-1"></a>d <span class="ot">=</span> <span class="fu">rbind</span>(d_M, d_F)</span>
-<span id="cb410-14"><a href="11-linear_model2.html#cb410-14" tabindex="-1"></a>d<span class="sc">$</span>M <span class="ot">=</span> <span class="fu">ifelse</span>(d<span class="sc">$</span>gender <span class="sc">==</span> <span class="st">&quot;M&quot;</span>, <span class="dv">1</span>, <span class="dv">0</span>) <span class="co">#genderがMならば1, Fならば1のダミー変数を作る</span></span></code></pre></div>
-<div class="sourceCode" id="cb411"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb411-1"><a href="11-linear_model2.html#cb411-1" tabindex="-1"></a><span class="co">#標準化する前の結果</span></span>
-<span id="cb411-2"><a href="11-linear_model2.html#cb411-2" tabindex="-1"></a>result <span class="ot">=</span> <span class="fu">lm</span>(<span class="at">data =</span> d, y <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> x<span class="sc">*</span>M)</span>
-<span id="cb411-3"><a href="11-linear_model2.html#cb411-3" tabindex="-1"></a><span class="fu">summary</span>(result)</span></code></pre></div>
+<div class="sourceCode" id="cb417"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb417-1"><a href="11-linear_model2.html#cb417-1" tabindex="-1"></a><span class="co">#データを再度作成する。</span></span>
+<span id="cb417-2"><a href="11-linear_model2.html#cb417-2" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
+<span id="cb417-3"><a href="11-linear_model2.html#cb417-3" tabindex="-1"></a>x <span class="ot">=</span> <span class="fu">round</span>(<span class="fu">runif</span>(<span class="at">n =</span> <span class="dv">20</span>, <span class="at">min =</span> <span class="dv">1</span>, <span class="at">max =</span> <span class="dv">10</span>),<span class="dv">0</span>) </span>
+<span id="cb417-4"><a href="11-linear_model2.html#cb417-4" tabindex="-1"></a>mu <span class="ot">=</span> <span class="fl">0.1</span> <span class="sc">+</span> <span class="fl">0.4</span> <span class="sc">*</span> x</span>
+<span id="cb417-5"><a href="11-linear_model2.html#cb417-5" tabindex="-1"></a>y <span class="ot">=</span> <span class="fu">rnorm</span>(<span class="at">n =</span> <span class="dv">20</span>, <span class="at">mean =</span> mu, <span class="at">sd =</span> <span class="dv">1</span>)</span>
+<span id="cb417-6"><a href="11-linear_model2.html#cb417-6" tabindex="-1"></a>d_M <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="at">x =</span> x, <span class="at">y =</span> y, <span class="at">gender =</span> <span class="st">&quot;M&quot;</span>)</span>
+<span id="cb417-7"><a href="11-linear_model2.html#cb417-7" tabindex="-1"></a></span>
+<span id="cb417-8"><a href="11-linear_model2.html#cb417-8" tabindex="-1"></a>x <span class="ot">=</span> <span class="fu">round</span>(<span class="fu">runif</span>(<span class="at">n =</span> <span class="dv">20</span>, <span class="at">min =</span> <span class="dv">1</span>, <span class="at">max =</span> <span class="dv">10</span>),<span class="dv">0</span>) </span>
+<span id="cb417-9"><a href="11-linear_model2.html#cb417-9" tabindex="-1"></a>mu <span class="ot">=</span> <span class="fl">0.3</span> <span class="sc">+</span> <span class="sc">-</span><span class="fl">0.6</span> <span class="sc">*</span> x</span>
+<span id="cb417-10"><a href="11-linear_model2.html#cb417-10" tabindex="-1"></a>y <span class="ot">=</span> <span class="fu">rnorm</span>(<span class="at">n =</span> <span class="dv">20</span>, <span class="at">mean =</span> mu, <span class="at">sd =</span> <span class="dv">1</span>)</span>
+<span id="cb417-11"><a href="11-linear_model2.html#cb417-11" tabindex="-1"></a>d_F <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="at">x =</span> x, <span class="at">y =</span> y, <span class="at">gender =</span> <span class="st">&quot;F&quot;</span>)</span>
+<span id="cb417-12"><a href="11-linear_model2.html#cb417-12" tabindex="-1"></a></span>
+<span id="cb417-13"><a href="11-linear_model2.html#cb417-13" tabindex="-1"></a>d <span class="ot">=</span> <span class="fu">rbind</span>(d_M, d_F)</span>
+<span id="cb417-14"><a href="11-linear_model2.html#cb417-14" tabindex="-1"></a>d<span class="sc">$</span>M <span class="ot">=</span> <span class="fu">ifelse</span>(d<span class="sc">$</span>gender <span class="sc">==</span> <span class="st">&quot;M&quot;</span>, <span class="dv">1</span>, <span class="dv">0</span>) <span class="co">#genderがMならば1, Fならば1のダミー変数を作る</span></span></code></pre></div>
+<div class="sourceCode" id="cb418"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb418-1"><a href="11-linear_model2.html#cb418-1" tabindex="-1"></a><span class="co">#標準化する前の結果</span></span>
+<span id="cb418-2"><a href="11-linear_model2.html#cb418-2" tabindex="-1"></a>result <span class="ot">=</span> <span class="fu">lm</span>(<span class="at">data =</span> d, y <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> x<span class="sc">*</span>M)</span>
+<span id="cb418-3"><a href="11-linear_model2.html#cb418-3" tabindex="-1"></a><span class="fu">summary</span>(result)</span></code></pre></div>
 <pre><code>## 
 ## Call:
 ## lm(formula = y ~ 1 + x * M, data = d)
@@ -1237,12 +1238,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## Multiple R-squared:  0.9307, Adjusted R-squared:  0.9249 
 ## F-statistic: 161.1 on 3 and 36 DF,  p-value: &lt; 2.2e-16</code></pre>
 <p>応答変数と予測変数を標準化する。ダミー変数も標準化する。</p>
-<div class="sourceCode" id="cb413"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb413-1"><a href="11-linear_model2.html#cb413-1" tabindex="-1"></a><span class="co">#変数を標準化</span></span>
-<span id="cb413-2"><a href="11-linear_model2.html#cb413-2" tabindex="-1"></a>d <span class="ot">=</span> d <span class="sc">|&gt;</span> dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">y_std =</span> <span class="fu">scale</span>(y),</span>
-<span id="cb413-3"><a href="11-linear_model2.html#cb413-3" tabindex="-1"></a>                       <span class="at">x_std =</span> <span class="fu">scale</span>(x),</span>
-<span id="cb413-4"><a href="11-linear_model2.html#cb413-4" tabindex="-1"></a>                       <span class="at">M_std =</span> <span class="fu">scale</span>(M)</span>
-<span id="cb413-5"><a href="11-linear_model2.html#cb413-5" tabindex="-1"></a>                       )</span>
-<span id="cb413-6"><a href="11-linear_model2.html#cb413-6" tabindex="-1"></a><span class="fu">head</span>(d)</span></code></pre></div>
+<div class="sourceCode" id="cb420"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb420-1"><a href="11-linear_model2.html#cb420-1" tabindex="-1"></a><span class="co">#変数を標準化</span></span>
+<span id="cb420-2"><a href="11-linear_model2.html#cb420-2" tabindex="-1"></a>d <span class="ot">=</span> d <span class="sc">|&gt;</span> dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">y_std =</span> <span class="fu">scale</span>(y),</span>
+<span id="cb420-3"><a href="11-linear_model2.html#cb420-3" tabindex="-1"></a>                       <span class="at">x_std =</span> <span class="fu">scale</span>(x),</span>
+<span id="cb420-4"><a href="11-linear_model2.html#cb420-4" tabindex="-1"></a>                       <span class="at">M_std =</span> <span class="fu">scale</span>(M)</span>
+<span id="cb420-5"><a href="11-linear_model2.html#cb420-5" tabindex="-1"></a>                       )</span>
+<span id="cb420-6"><a href="11-linear_model2.html#cb420-6" tabindex="-1"></a><span class="fu">head</span>(d)</span></code></pre></div>
 <pre><code>##   x        y gender M     y_std       x_std     M_std
 ## 1 3 2.811781      M 1 0.9835716 -1.21465482 0.9874209
 ## 2 4 2.089843      M 1 0.7594727 -0.81640734 0.9874209
@@ -1250,8 +1251,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## 4 9 1.485300      M 1 0.5718146  1.17483007 0.9874209
 ## 5 3 2.424931      M 1 0.8634883 -1.21465482 0.9874209
 ## 6 9 3.655066      M 1 1.2453383  1.17483007 0.9874209</code></pre>
-<div class="sourceCode" id="cb415"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb415-1"><a href="11-linear_model2.html#cb415-1" tabindex="-1"></a>result <span class="ot">=</span> <span class="fu">lm</span>(<span class="at">data =</span> d, y_std <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> x_std<span class="sc">*</span>M_std)</span>
-<span id="cb415-2"><a href="11-linear_model2.html#cb415-2" tabindex="-1"></a><span class="fu">summary</span>(result)</span></code></pre></div>
+<div class="sourceCode" id="cb422"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb422-1"><a href="11-linear_model2.html#cb422-1" tabindex="-1"></a>result <span class="ot">=</span> <span class="fu">lm</span>(<span class="at">data =</span> d, y_std <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> x_std<span class="sc">*</span>M_std)</span>
+<span id="cb422-2"><a href="11-linear_model2.html#cb422-2" tabindex="-1"></a><span class="fu">summary</span>(result)</span></code></pre></div>
 <pre><code>## 
 ## Call:
 ## lm(formula = y_std ~ 1 + x_std * M_std, data = d)
@@ -1298,9 +1299,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="問1" class="section level3 unnumbered hasAnchor">
 <h3>問1<a href="#%E5%95%8F1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Rで標準で入っているデータ<code>warpbreaks</code>を使って練習をする。</p>
-<div class="sourceCode" id="cb417"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb417-1"><a href="11-linear_model2.html#cb417-1" tabindex="-1"></a>prac_dat_1 <span class="ot">=</span> warpbreaks <span class="co">#別の名前で保存する</span></span>
-<span id="cb417-2"><a href="11-linear_model2.html#cb417-2" tabindex="-1"></a></span>
-<span id="cb417-3"><a href="11-linear_model2.html#cb417-3" tabindex="-1"></a><span class="fu">head</span>(prac_dat_1)</span></code></pre></div>
+<div class="sourceCode" id="cb424"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb424-1"><a href="11-linear_model2.html#cb424-1" tabindex="-1"></a>prac_dat_1 <span class="ot">=</span> warpbreaks <span class="co">#別の名前で保存する</span></span>
+<span id="cb424-2"><a href="11-linear_model2.html#cb424-2" tabindex="-1"></a></span>
+<span id="cb424-3"><a href="11-linear_model2.html#cb424-3" tabindex="-1"></a><span class="fu">head</span>(prac_dat_1)</span></code></pre></div>
 <pre><code>##   breaks wool tension
 ## 1     26    A       L
 ## 2     30    A       L
@@ -1308,12 +1309,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## 4     25    A       L
 ## 5     70    A       L
 ## 6     52    A       L</code></pre>
-<div class="sourceCode" id="cb419"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb419-1"><a href="11-linear_model2.html#cb419-1" tabindex="-1"></a>ggplot2<span class="sc">::</span><span class="fu">ggplot</span>() <span class="sc">+</span> </span>
-<span id="cb419-2"><a href="11-linear_model2.html#cb419-2" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_boxplot</span>(<span class="at">data =</span> prac_dat_1, <span class="fu">aes</span>(<span class="at">x =</span> wool, <span class="at">y =</span> breaks))</span></code></pre></div>
-<p><img src="Data-Analysis-for-Psychology_files/figure-html/unnamed-chunk-225-1.png" width="672" /></p>
-<div class="sourceCode" id="cb420"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb420-1"><a href="11-linear_model2.html#cb420-1" tabindex="-1"></a>ggplot2<span class="sc">::</span><span class="fu">ggplot</span>() <span class="sc">+</span> </span>
-<span id="cb420-2"><a href="11-linear_model2.html#cb420-2" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_boxplot</span>(<span class="at">data =</span> prac_dat_1, <span class="fu">aes</span>(<span class="at">x =</span> tension, <span class="at">y =</span> breaks))</span></code></pre></div>
-<p><img src="Data-Analysis-for-Psychology_files/figure-html/unnamed-chunk-225-2.png" width="672" /></p>
+<div class="sourceCode" id="cb426"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb426-1"><a href="11-linear_model2.html#cb426-1" tabindex="-1"></a>ggplot2<span class="sc">::</span><span class="fu">ggplot</span>() <span class="sc">+</span> </span>
+<span id="cb426-2"><a href="11-linear_model2.html#cb426-2" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_boxplot</span>(<span class="at">data =</span> prac_dat_1, <span class="fu">aes</span>(<span class="at">x =</span> wool, <span class="at">y =</span> breaks))</span></code></pre></div>
+<p><img src="Data-Analysis-for-Psychology_files/figure-html/unnamed-chunk-229-1.png" width="672" /></p>
+<div class="sourceCode" id="cb427"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb427-1"><a href="11-linear_model2.html#cb427-1" tabindex="-1"></a>ggplot2<span class="sc">::</span><span class="fu">ggplot</span>() <span class="sc">+</span> </span>
+<span id="cb427-2"><a href="11-linear_model2.html#cb427-2" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_boxplot</span>(<span class="at">data =</span> prac_dat_1, <span class="fu">aes</span>(<span class="at">x =</span> tension, <span class="at">y =</span> breaks))</span></code></pre></div>
+<p><img src="Data-Analysis-for-Psychology_files/figure-html/unnamed-chunk-229-2.png" width="672" /></p>
 <div id="section" class="section level4 unnumbered hasAnchor">
 <h4>1-1<a href="11-linear_model2.html#section" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>変数<code>wool</code>について, 「<code>A</code>を1, それ以外を0」としたダミー変数を作成し、そのダミー変数を予測変数、<code>breaks</code>を応答変数として線形モデルを行い、切片及びダミー変数に係る傾きの推定値を報告せよ。</p>
@@ -1335,9 +1336,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="問2" class="section level3 unnumbered hasAnchor">
 <h3>問2<a href="#%E5%95%8F2" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>問1に引き続き、Rで標準で入っているデータ<code>warpbreaks</code>を使って練習をする。ただし、<code>tension</code>が<code>H</code>の部分を除いたデータを用いる。</p>
-<div class="sourceCode" id="cb421"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb421-1"><a href="11-linear_model2.html#cb421-1" tabindex="-1"></a>prac_dat_2 <span class="ot">=</span> <span class="fu">subset</span>(warpbreaks, tension <span class="sc">!=</span> <span class="st">&quot;H&quot;</span>) <span class="co">#tension == Hは除き、別の名前で保存する</span></span>
-<span id="cb421-2"><a href="11-linear_model2.html#cb421-2" tabindex="-1"></a></span>
-<span id="cb421-3"><a href="11-linear_model2.html#cb421-3" tabindex="-1"></a><span class="fu">head</span>(prac_dat_2)</span></code></pre></div>
+<div class="sourceCode" id="cb428"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb428-1"><a href="11-linear_model2.html#cb428-1" tabindex="-1"></a>prac_dat_2 <span class="ot">=</span> <span class="fu">subset</span>(warpbreaks, tension <span class="sc">!=</span> <span class="st">&quot;H&quot;</span>) <span class="co">#tension == Hは除き、別の名前で保存する</span></span>
+<span id="cb428-2"><a href="11-linear_model2.html#cb428-2" tabindex="-1"></a></span>
+<span id="cb428-3"><a href="11-linear_model2.html#cb428-3" tabindex="-1"></a><span class="fu">head</span>(prac_dat_2)</span></code></pre></div>
 <pre><code>##   breaks wool tension
 ## 1     26    A       L
 ## 2     30    A       L
@@ -1345,9 +1346,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## 4     25    A       L
 ## 5     70    A       L
 ## 6     52    A       L</code></pre>
-<div class="sourceCode" id="cb423"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb423-1"><a href="11-linear_model2.html#cb423-1" tabindex="-1"></a>ggplot2<span class="sc">::</span><span class="fu">ggplot</span>() <span class="sc">+</span> </span>
-<span id="cb423-2"><a href="11-linear_model2.html#cb423-2" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_boxplot</span>(<span class="at">data =</span> prac_dat_2, <span class="fu">aes</span>(<span class="at">x =</span> wool, <span class="at">y =</span> breaks, <span class="at">fill =</span> tension))</span></code></pre></div>
-<p><img src="Data-Analysis-for-Psychology_files/figure-html/unnamed-chunk-230-1.png" width="672" /></p>
+<div class="sourceCode" id="cb430"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb430-1"><a href="11-linear_model2.html#cb430-1" tabindex="-1"></a>ggplot2<span class="sc">::</span><span class="fu">ggplot</span>() <span class="sc">+</span> </span>
+<span id="cb430-2"><a href="11-linear_model2.html#cb430-2" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_boxplot</span>(<span class="at">data =</span> prac_dat_2, <span class="fu">aes</span>(<span class="at">x =</span> wool, <span class="at">y =</span> breaks, <span class="at">fill =</span> tension))</span></code></pre></div>
+<p><img src="Data-Analysis-for-Psychology_files/figure-html/unnamed-chunk-234-1.png" width="672" /></p>
 <p>breaksを応答変数、wool, tension, wool及びtensionの交互作用項を予測変数とした線形モデルを行い、切片、woolの傾き、tensionの傾き、交互作用項の推定値を報告せよ。</p>
 </div>
 </div>
@@ -1355,21 +1356,21 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2><span class="header-section-number">12.10</span> 補足１(emmeans)<a href="11-linear_model2.html#chap11_emmeans" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>この章では、ダミー変数を複数加えたモデル及び交互作用を加えたモデルで一要因の分散分析や二要因の分散分析と同様のことができることを学んできた。ただし、分散分析では条件の効果が有意だった場合には、どの条件間で差があるかを多重比較補正をした上で比較するプロセスが必要となる。</p>
 <p>ここでは、<code>emmeans</code>パッケージを用いて<code>lm()</code>関数で多重比較補正を行う手順を紹介する（詳細は<code>emmeans</code>パッケージのヘルプを参照のこと）。</p>
-<div class="sourceCode" id="cb424"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb424-1"><a href="11-linear_model2.html#cb424-1" tabindex="-1"></a><span class="fu">library</span>(emmeans)</span></code></pre></div>
+<div class="sourceCode" id="cb431"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb431-1"><a href="11-linear_model2.html#cb431-1" tabindex="-1"></a><span class="fu">library</span>(emmeans)</span></code></pre></div>
 <div id="chap11_emmeans1" class="section level3 hasAnchor" number="12.10.1">
 <h3><span class="header-section-number">12.10.1</span> 一要因の分散分析における多重比較<a href="11-linear_model2.html#chap11_emmeans1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<div class="sourceCode" id="cb425"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb425-1"><a href="11-linear_model2.html#cb425-1" tabindex="-1"></a>dat <span class="ot">=</span> PlantGrowth <span class="sc">|&gt;</span> dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">weight_std =</span> <span class="fu">scale</span>(weight))</span>
-<span id="cb425-2"><a href="11-linear_model2.html#cb425-2" tabindex="-1"></a>result <span class="ot">=</span> <span class="fu">lm</span>(<span class="at">data =</span> dat, weight_std <span class="sc">~</span> group) </span>
-<span id="cb425-3"><a href="11-linear_model2.html#cb425-3" tabindex="-1"></a></span>
-<span id="cb425-4"><a href="11-linear_model2.html#cb425-4" tabindex="-1"></a>emm <span class="ot">=</span> emmeans<span class="sc">::</span><span class="fu">emmeans</span>(result, <span class="sc">~</span> group) <span class="co">#モデルから推定された各カテゴリのmarginal mean(emmeans)を算出する</span></span>
-<span id="cb425-5"><a href="11-linear_model2.html#cb425-5" tabindex="-1"></a>emm</span></code></pre></div>
+<div class="sourceCode" id="cb432"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb432-1"><a href="11-linear_model2.html#cb432-1" tabindex="-1"></a>dat <span class="ot">=</span> PlantGrowth <span class="sc">|&gt;</span> dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">weight_std =</span> <span class="fu">scale</span>(weight))</span>
+<span id="cb432-2"><a href="11-linear_model2.html#cb432-2" tabindex="-1"></a>result <span class="ot">=</span> <span class="fu">lm</span>(<span class="at">data =</span> dat, weight_std <span class="sc">~</span> group) </span>
+<span id="cb432-3"><a href="11-linear_model2.html#cb432-3" tabindex="-1"></a></span>
+<span id="cb432-4"><a href="11-linear_model2.html#cb432-4" tabindex="-1"></a>emm <span class="ot">=</span> emmeans<span class="sc">::</span><span class="fu">emmeans</span>(result, <span class="sc">~</span> group) <span class="co">#モデルから推定された各カテゴリのmarginal mean(emmeans)を算出する</span></span>
+<span id="cb432-5"><a href="11-linear_model2.html#cb432-5" tabindex="-1"></a>emm</span></code></pre></div>
 <pre><code>##  group  emmean    SE df lower.CL upper.CL
 ##  ctrl  -0.0585 0.281 27  -0.6353   0.5184
 ##  trt1  -0.5876 0.281 27  -1.1644  -0.0107
 ##  trt2   0.6460 0.281 27   0.0692   1.2229
 ## 
 ## Confidence level used: 0.95</code></pre>
-<div class="sourceCode" id="cb427"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb427-1"><a href="11-linear_model2.html#cb427-1" tabindex="-1"></a>emmeans<span class="sc">::</span><span class="fu">contrast</span>(emm, <span class="at">method =</span> <span class="st">&quot;pairwise&quot;</span>, <span class="at">adjust =</span> <span class="st">&quot;tukey&quot;</span>)    <span class="co">#pairwiseで条件の組み合わせごとのemmeansの比較の結果が表示される。adjustで多重比較補正の方法を指定できる。</span></span></code></pre></div>
+<div class="sourceCode" id="cb434"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb434-1"><a href="11-linear_model2.html#cb434-1" tabindex="-1"></a>emmeans<span class="sc">::</span><span class="fu">contrast</span>(emm, <span class="at">method =</span> <span class="st">&quot;pairwise&quot;</span>, <span class="at">adjust =</span> <span class="st">&quot;tukey&quot;</span>)    <span class="co">#pairwiseで条件の組み合わせごとのemmeansの比較の結果が表示される。adjustで多重比較補正の方法を指定できる。</span></span></code></pre></div>
 <pre><code>##  contrast    estimate    SE df t.ratio p.value
 ##  ctrl - trt1    0.529 0.398 27   1.331  0.3909
 ##  ctrl - trt2   -0.705 0.398 27  -1.772  0.1980
@@ -1379,11 +1380,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="chap11_emmeans2" class="section level3 hasAnchor" number="12.10.2">
 <h3><span class="header-section-number">12.10.2</span> 二要因の分散分析における単純主効果検定<a href="11-linear_model2.html#chap11_emmeans2" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<div class="sourceCode" id="cb429"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb429-1"><a href="11-linear_model2.html#cb429-1" tabindex="-1"></a>dat <span class="ot">=</span> warpbreaks <span class="sc">|&gt;</span> dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">breaks_std =</span> <span class="fu">scale</span>(breaks))</span>
-<span id="cb429-2"><a href="11-linear_model2.html#cb429-2" tabindex="-1"></a>result <span class="ot">=</span> <span class="fu">lm</span>(<span class="at">data =</span> dat, breaks_std <span class="sc">~</span> wool <span class="sc">*</span> tension)</span>
-<span id="cb429-3"><a href="11-linear_model2.html#cb429-3" tabindex="-1"></a></span>
-<span id="cb429-4"><a href="11-linear_model2.html#cb429-4" tabindex="-1"></a>emm <span class="ot">=</span> emmeans<span class="sc">::</span><span class="fu">emmeans</span>(result, <span class="sc">~</span> wool <span class="sc">*</span> tension)</span>
-<span id="cb429-5"><a href="11-linear_model2.html#cb429-5" tabindex="-1"></a>emm</span></code></pre></div>
+<div class="sourceCode" id="cb436"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb436-1"><a href="11-linear_model2.html#cb436-1" tabindex="-1"></a>dat <span class="ot">=</span> warpbreaks <span class="sc">|&gt;</span> dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">breaks_std =</span> <span class="fu">scale</span>(breaks))</span>
+<span id="cb436-2"><a href="11-linear_model2.html#cb436-2" tabindex="-1"></a>result <span class="ot">=</span> <span class="fu">lm</span>(<span class="at">data =</span> dat, breaks_std <span class="sc">~</span> wool <span class="sc">*</span> tension)</span>
+<span id="cb436-3"><a href="11-linear_model2.html#cb436-3" tabindex="-1"></a></span>
+<span id="cb436-4"><a href="11-linear_model2.html#cb436-4" tabindex="-1"></a>emm <span class="ot">=</span> emmeans<span class="sc">::</span><span class="fu">emmeans</span>(result, <span class="sc">~</span> wool <span class="sc">*</span> tension)</span>
+<span id="cb436-5"><a href="11-linear_model2.html#cb436-5" tabindex="-1"></a>emm</span></code></pre></div>
 <pre><code>##  wool tension   emmean    SE df lower.CL upper.CL
 ##  A    L        1.24311 0.276 48    0.688    1.799
 ##  B    L        0.00561 0.276 48   -0.550    0.561
@@ -1393,7 +1394,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ##  B    H       -0.70995 0.276 48   -1.265   -0.154
 ## 
 ## Confidence level used: 0.95</code></pre>
-<div class="sourceCode" id="cb431"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb431-1"><a href="11-linear_model2.html#cb431-1" tabindex="-1"></a>emmeans<span class="sc">::</span><span class="fu">contrast</span>(emm, <span class="at">method =</span> <span class="st">&quot;pairwise&quot;</span>, <span class="at">by =</span> <span class="st">&quot;wool&quot;</span>)<span class="co">#wool内でtension間の比較を行う</span></span></code></pre></div>
+<div class="sourceCode" id="cb438"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb438-1"><a href="11-linear_model2.html#cb438-1" tabindex="-1"></a>emmeans<span class="sc">::</span><span class="fu">contrast</span>(emm, <span class="at">method =</span> <span class="st">&quot;pairwise&quot;</span>, <span class="at">by =</span> <span class="st">&quot;wool&quot;</span>)<span class="co">#wool内でtension間の比較を行う</span></span></code></pre></div>
 <pre><code>## wool = A:
 ##  contrast estimate    SE df t.ratio p.value
 ##  L - M      1.5574 0.391 48   3.986  0.0007
@@ -1407,7 +1408,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ##  M - H      0.7577 0.391 48   1.939  0.1389
 ## 
 ## P value adjustment: tukey method for comparing a family of 3 estimates</code></pre>
-<div class="sourceCode" id="cb433"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb433-1"><a href="11-linear_model2.html#cb433-1" tabindex="-1"></a>emmeans<span class="sc">::</span><span class="fu">contrast</span>(emm, <span class="at">method =</span> <span class="st">&quot;pairwise&quot;</span>, <span class="at">by =</span> <span class="st">&quot;tension&quot;</span>) <span class="co">#tension内でwool間の比較を行う</span></span></code></pre></div>
+<div class="sourceCode" id="cb440"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb440-1"><a href="11-linear_model2.html#cb440-1" tabindex="-1"></a>emmeans<span class="sc">::</span><span class="fu">contrast</span>(emm, <span class="at">method =</span> <span class="st">&quot;pairwise&quot;</span>, <span class="at">by =</span> <span class="st">&quot;tension&quot;</span>) <span class="co">#tension内でwool間の比較を行う</span></span></code></pre></div>
 <pre><code>## tension = L:
 ##  contrast estimate    SE df t.ratio p.value
 ##  A - B       1.238 0.391 48   3.167  0.0027
@@ -1430,22 +1431,22 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="chap11_ss_1" class="section level3 hasAnchor" number="12.11.1">
 <h3><span class="header-section-number">12.11.1</span> 調整変数がカテゴリカル変数，予測変数が量的変数のとき<a href="11-linear_model2.html#chap11_ss_1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>本章で交互作用の解説で用いたサンプルデータを再び例にして、単純傾斜の推定方法について理解する。</p>
-<div class="sourceCode" id="cb435"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb435-1"><a href="11-linear_model2.html#cb435-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
-<span id="cb435-2"><a href="11-linear_model2.html#cb435-2" tabindex="-1"></a><span class="co">#男性のみのデータ</span></span>
-<span id="cb435-3"><a href="11-linear_model2.html#cb435-3" tabindex="-1"></a>x <span class="ot">=</span> <span class="fu">round</span>(<span class="fu">runif</span>(<span class="at">n =</span> <span class="dv">20</span>, <span class="at">min =</span> <span class="dv">1</span>, <span class="at">max =</span> <span class="dv">10</span>),<span class="dv">0</span>) </span>
-<span id="cb435-4"><a href="11-linear_model2.html#cb435-4" tabindex="-1"></a>mu <span class="ot">=</span> <span class="fl">0.1</span> <span class="sc">+</span> <span class="fl">0.4</span> <span class="sc">*</span> x</span>
-<span id="cb435-5"><a href="11-linear_model2.html#cb435-5" tabindex="-1"></a>y <span class="ot">=</span> <span class="fu">rnorm</span>(<span class="at">n =</span> <span class="dv">20</span>, <span class="at">mean =</span> mu, <span class="at">sd =</span> <span class="dv">1</span>)</span>
-<span id="cb435-6"><a href="11-linear_model2.html#cb435-6" tabindex="-1"></a>d_M <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="at">x =</span> x, <span class="at">y =</span> y, <span class="at">gender =</span> <span class="st">&quot;M&quot;</span>)</span>
-<span id="cb435-7"><a href="11-linear_model2.html#cb435-7" tabindex="-1"></a><span class="co">#女性のみのデータ</span></span>
-<span id="cb435-8"><a href="11-linear_model2.html#cb435-8" tabindex="-1"></a>x <span class="ot">=</span> <span class="fu">round</span>(<span class="fu">runif</span>(<span class="at">n =</span> <span class="dv">20</span>, <span class="at">min =</span> <span class="dv">1</span>, <span class="at">max =</span> <span class="dv">10</span>),<span class="dv">0</span>) </span>
-<span id="cb435-9"><a href="11-linear_model2.html#cb435-9" tabindex="-1"></a>mu <span class="ot">=</span> <span class="fl">0.3</span> <span class="sc">+</span> <span class="sc">-</span><span class="fl">0.6</span> <span class="sc">*</span> x</span>
-<span id="cb435-10"><a href="11-linear_model2.html#cb435-10" tabindex="-1"></a>y <span class="ot">=</span> <span class="fu">rnorm</span>(<span class="at">n =</span> <span class="dv">20</span>, <span class="at">mean =</span> mu, <span class="at">sd =</span> <span class="dv">1</span>)</span>
-<span id="cb435-11"><a href="11-linear_model2.html#cb435-11" tabindex="-1"></a>d_F <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="at">x =</span> x, <span class="at">y =</span> y, <span class="at">gender =</span> <span class="st">&quot;F&quot;</span>)</span>
-<span id="cb435-12"><a href="11-linear_model2.html#cb435-12" tabindex="-1"></a></span>
-<span id="cb435-13"><a href="11-linear_model2.html#cb435-13" tabindex="-1"></a><span class="co">#２つを合わせたデータ</span></span>
-<span id="cb435-14"><a href="11-linear_model2.html#cb435-14" tabindex="-1"></a>d <span class="ot">=</span> <span class="fu">rbind</span>(d_M, d_F)</span>
-<span id="cb435-15"><a href="11-linear_model2.html#cb435-15" tabindex="-1"></a></span>
-<span id="cb435-16"><a href="11-linear_model2.html#cb435-16" tabindex="-1"></a><span class="fu">head</span>(d)</span></code></pre></div>
+<div class="sourceCode" id="cb442"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb442-1"><a href="11-linear_model2.html#cb442-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
+<span id="cb442-2"><a href="11-linear_model2.html#cb442-2" tabindex="-1"></a><span class="co">#男性のみのデータ</span></span>
+<span id="cb442-3"><a href="11-linear_model2.html#cb442-3" tabindex="-1"></a>x <span class="ot">=</span> <span class="fu">round</span>(<span class="fu">runif</span>(<span class="at">n =</span> <span class="dv">20</span>, <span class="at">min =</span> <span class="dv">1</span>, <span class="at">max =</span> <span class="dv">10</span>),<span class="dv">0</span>) </span>
+<span id="cb442-4"><a href="11-linear_model2.html#cb442-4" tabindex="-1"></a>mu <span class="ot">=</span> <span class="fl">0.1</span> <span class="sc">+</span> <span class="fl">0.4</span> <span class="sc">*</span> x</span>
+<span id="cb442-5"><a href="11-linear_model2.html#cb442-5" tabindex="-1"></a>y <span class="ot">=</span> <span class="fu">rnorm</span>(<span class="at">n =</span> <span class="dv">20</span>, <span class="at">mean =</span> mu, <span class="at">sd =</span> <span class="dv">1</span>)</span>
+<span id="cb442-6"><a href="11-linear_model2.html#cb442-6" tabindex="-1"></a>d_M <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="at">x =</span> x, <span class="at">y =</span> y, <span class="at">gender =</span> <span class="st">&quot;M&quot;</span>)</span>
+<span id="cb442-7"><a href="11-linear_model2.html#cb442-7" tabindex="-1"></a><span class="co">#女性のみのデータ</span></span>
+<span id="cb442-8"><a href="11-linear_model2.html#cb442-8" tabindex="-1"></a>x <span class="ot">=</span> <span class="fu">round</span>(<span class="fu">runif</span>(<span class="at">n =</span> <span class="dv">20</span>, <span class="at">min =</span> <span class="dv">1</span>, <span class="at">max =</span> <span class="dv">10</span>),<span class="dv">0</span>) </span>
+<span id="cb442-9"><a href="11-linear_model2.html#cb442-9" tabindex="-1"></a>mu <span class="ot">=</span> <span class="fl">0.3</span> <span class="sc">+</span> <span class="sc">-</span><span class="fl">0.6</span> <span class="sc">*</span> x</span>
+<span id="cb442-10"><a href="11-linear_model2.html#cb442-10" tabindex="-1"></a>y <span class="ot">=</span> <span class="fu">rnorm</span>(<span class="at">n =</span> <span class="dv">20</span>, <span class="at">mean =</span> mu, <span class="at">sd =</span> <span class="dv">1</span>)</span>
+<span id="cb442-11"><a href="11-linear_model2.html#cb442-11" tabindex="-1"></a>d_F <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="at">x =</span> x, <span class="at">y =</span> y, <span class="at">gender =</span> <span class="st">&quot;F&quot;</span>)</span>
+<span id="cb442-12"><a href="11-linear_model2.html#cb442-12" tabindex="-1"></a></span>
+<span id="cb442-13"><a href="11-linear_model2.html#cb442-13" tabindex="-1"></a><span class="co">#２つを合わせたデータ</span></span>
+<span id="cb442-14"><a href="11-linear_model2.html#cb442-14" tabindex="-1"></a>d <span class="ot">=</span> <span class="fu">rbind</span>(d_M, d_F)</span>
+<span id="cb442-15"><a href="11-linear_model2.html#cb442-15" tabindex="-1"></a></span>
+<span id="cb442-16"><a href="11-linear_model2.html#cb442-16" tabindex="-1"></a><span class="fu">head</span>(d)</span></code></pre></div>
 <pre><code>##   x        y gender
 ## 1 3 2.811781      M
 ## 2 4 2.089843      M
@@ -1455,11 +1456,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## 6 9 3.655066      M</code></pre>
 <p>性別を調整変数、<span class="math inline">\(x\)</span>を予測変数として考える。<br />
 本章で行った分析と同様に、男性（<code>gender == M</code>）ならば1，女性（<code>gender == F</code>）ならば0のダミー変数<code>M</code>を作成し、調整変数<code>M</code>と予測変数<code>x</code>、さらに２つの積である交互作用（<code>x:M</code>）を加えた線形モデルを実行する。</p>
-<div class="sourceCode" id="cb437"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb437-1"><a href="11-linear_model2.html#cb437-1" tabindex="-1"></a><span class="co">#ダミー変数の作成</span></span>
-<span id="cb437-2"><a href="11-linear_model2.html#cb437-2" tabindex="-1"></a>d<span class="sc">$</span>M <span class="ot">=</span> <span class="fu">ifelse</span>(d<span class="sc">$</span>gender <span class="sc">==</span> <span class="st">&quot;M&quot;</span>, <span class="dv">1</span>, <span class="dv">0</span>) <span class="co">#genderがMならば1, Fならば1のダミー変数を作る</span></span>
-<span id="cb437-3"><a href="11-linear_model2.html#cb437-3" tabindex="-1"></a></span>
-<span id="cb437-4"><a href="11-linear_model2.html#cb437-4" tabindex="-1"></a>result_1 <span class="ot">=</span> <span class="fu">lm</span>(<span class="at">data =</span> d, y <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> x<span class="sc">*</span>M) <span class="co">#F=0, M=1のダミー変数を使った場合</span></span>
-<span id="cb437-5"><a href="11-linear_model2.html#cb437-5" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">coef</span>(<span class="fu">summary</span>(result_1)), <span class="dv">3</span>) <span class="co">#係数を確認する</span></span></code></pre></div>
+<div class="sourceCode" id="cb444"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb444-1"><a href="11-linear_model2.html#cb444-1" tabindex="-1"></a><span class="co">#ダミー変数の作成</span></span>
+<span id="cb444-2"><a href="11-linear_model2.html#cb444-2" tabindex="-1"></a>d<span class="sc">$</span>M <span class="ot">=</span> <span class="fu">ifelse</span>(d<span class="sc">$</span>gender <span class="sc">==</span> <span class="st">&quot;M&quot;</span>, <span class="dv">1</span>, <span class="dv">0</span>) <span class="co">#genderがMならば1, Fならば1のダミー変数を作る</span></span>
+<span id="cb444-3"><a href="11-linear_model2.html#cb444-3" tabindex="-1"></a></span>
+<span id="cb444-4"><a href="11-linear_model2.html#cb444-4" tabindex="-1"></a>result_1 <span class="ot">=</span> <span class="fu">lm</span>(<span class="at">data =</span> d, y <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> x<span class="sc">*</span>M) <span class="co">#F=0, M=1のダミー変数を使った場合</span></span>
+<span id="cb444-5"><a href="11-linear_model2.html#cb444-5" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">coef</span>(<span class="fu">summary</span>(result_1)), <span class="dv">3</span>) <span class="co">#係数を確認する</span></span></code></pre></div>
 <pre><code>##             Estimate Std. Error t value Pr(&gt;|t|)
 ## (Intercept)    0.051      0.536   0.095    0.925
 ## x             -0.537      0.081  -6.622    0.000
@@ -1472,10 +1473,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 \]</span></p>
 <p>である。式からも、<span class="math inline">\(x\)</span>の傾きである<span class="math inline">\(\beta_{1}\)</span>は、調整変数<span class="math inline">\(M\)</span>がゼロ（すなわち、女性）のときに<span class="math inline">\(x\)</span>が1単位増えたときの<span class="math inline">\(y\)</span>の変化量であることが明らかである。</p>
 <p>逆に、男性の時の<code>x</code>の傾きを知りたいときにはどうすればよいか？この場合、先程のダミー変数のコーディングを逆にしたダミー変数を代わりに使えば良い。つまり、「女性ならば1, 男性ならば0」のダミー変数<code>F</code>を作成し、調整変数<code>F</code>, 予測変数<code>x</code>及び交互作用項<code>x:F</code>から<code>y</code>を予測する線形モデルを実行してみる。</p>
-<div class="sourceCode" id="cb439"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb439-1"><a href="11-linear_model2.html#cb439-1" tabindex="-1"></a>d<span class="sc">$</span>F <span class="ot">=</span> <span class="fu">ifelse</span>(d<span class="sc">$</span>gender <span class="sc">==</span> <span class="st">&quot;F&quot;</span>, <span class="dv">1</span>, <span class="dv">0</span>) <span class="co">#genderがFならば1, Mならば1のダミー変数を作る</span></span>
-<span id="cb439-2"><a href="11-linear_model2.html#cb439-2" tabindex="-1"></a></span>
-<span id="cb439-3"><a href="11-linear_model2.html#cb439-3" tabindex="-1"></a>result_2 <span class="ot">=</span> <span class="fu">lm</span>(<span class="at">data =</span> d, y <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> x<span class="sc">*</span>F) <span class="co">#F=1, M=0のダミー変数を使った場合</span></span>
-<span id="cb439-4"><a href="11-linear_model2.html#cb439-4" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">coef</span>(<span class="fu">summary</span>(result_2)), <span class="dv">3</span>) <span class="co">#係数を確認する</span></span></code></pre></div>
+<div class="sourceCode" id="cb446"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb446-1"><a href="11-linear_model2.html#cb446-1" tabindex="-1"></a>d<span class="sc">$</span>F <span class="ot">=</span> <span class="fu">ifelse</span>(d<span class="sc">$</span>gender <span class="sc">==</span> <span class="st">&quot;F&quot;</span>, <span class="dv">1</span>, <span class="dv">0</span>) <span class="co">#genderがFならば1, Mならば1のダミー変数を作る</span></span>
+<span id="cb446-2"><a href="11-linear_model2.html#cb446-2" tabindex="-1"></a></span>
+<span id="cb446-3"><a href="11-linear_model2.html#cb446-3" tabindex="-1"></a>result_2 <span class="ot">=</span> <span class="fu">lm</span>(<span class="at">data =</span> d, y <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> x<span class="sc">*</span>F) <span class="co">#F=1, M=0のダミー変数を使った場合</span></span>
+<span id="cb446-4"><a href="11-linear_model2.html#cb446-4" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">coef</span>(<span class="fu">summary</span>(result_2)), <span class="dv">3</span>) <span class="co">#係数を確認する</span></span></code></pre></div>
 <pre><code>##             Estimate Std. Error t value Pr(&gt;|t|)
 ## (Intercept)    1.099      0.506   2.171    0.037
 ## x              0.242      0.078   3.086    0.004
@@ -1489,8 +1490,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>である。</p>
 <p>このように、ダミー変数のコーディングを工夫することで、それぞれの調整変数別に予測変数と応答変数との関連（単純傾斜）を推定することができる。</p>
 <p><code>interactions</code>パッケージの<code>sim_slopew</code>関数を使えば、ダミー変数を作り直さなくても調整変数のカテゴリごとに単純傾斜を算出することができる。</p>
-<div class="sourceCode" id="cb441"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb441-1"><a href="11-linear_model2.html#cb441-1" tabindex="-1"></a><span class="fu">library</span>(interactions)</span>
-<span id="cb441-2"><a href="11-linear_model2.html#cb441-2" tabindex="-1"></a>interactions<span class="sc">::</span><span class="fu">sim_slopes</span>(result_1, <span class="at">pred =</span> x, <span class="at">modx =</span> M) <span class="co">#predに予測変数、modxに調整変数を入れる。</span></span></code></pre></div>
+<div class="sourceCode" id="cb448"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb448-1"><a href="11-linear_model2.html#cb448-1" tabindex="-1"></a><span class="fu">library</span>(interactions)</span>
+<span id="cb448-2"><a href="11-linear_model2.html#cb448-2" tabindex="-1"></a>interactions<span class="sc">::</span><span class="fu">sim_slopes</span>(result_1, <span class="at">pred =</span> x, <span class="at">modx =</span> M) <span class="co">#predに予測変数、modxに調整変数を入れる。</span></span></code></pre></div>
 <pre><code>## JOHNSON-NEYMAN INTERVAL
 ## 
 ## When M is OUTSIDE the interval [0.54, 0.87], the slope of x is p &lt; .05.
@@ -1510,11 +1511,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ##   Est.   S.E.   t val.      p
 ## ------ ------ -------- ------
 ##   0.24   0.08     3.09   0.00</code></pre>
-<div class="sourceCode" id="cb443"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb443-1"><a href="11-linear_model2.html#cb443-1" tabindex="-1"></a>interactions<span class="sc">::</span><span class="fu">interact_plot</span>(result_1, <span class="at">pred =</span> x, <span class="at">modx =</span> M, <span class="at">plot.points =</span> <span class="cn">TRUE</span>) <span class="co">#単純傾斜をプロットすることもできる</span></span></code></pre></div>
-<p><img src="Data-Analysis-for-Psychology_files/figure-html/unnamed-chunk-238-1.png" width="672" /></p>
+<div class="sourceCode" id="cb450"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb450-1"><a href="11-linear_model2.html#cb450-1" tabindex="-1"></a>interactions<span class="sc">::</span><span class="fu">interact_plot</span>(result_1, <span class="at">pred =</span> x, <span class="at">modx =</span> M, <span class="at">plot.points =</span> <span class="cn">TRUE</span>) <span class="co">#単純傾斜をプロットすることもできる</span></span></code></pre></div>
+<p><img src="Data-Analysis-for-Psychology_files/figure-html/unnamed-chunk-242-1.png" width="672" /></p>
 <p>また、<code>emmeans</code>パッケージの<code>emtrends</code>でも同様に推定することができる。</p>
-<div class="sourceCode" id="cb444"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb444-1"><a href="11-linear_model2.html#cb444-1" tabindex="-1"></a>emtrend_1 <span class="ot">=</span> emmeans<span class="sc">::</span><span class="fu">emtrends</span>(result_1, <span class="at">specs =</span> <span class="st">&quot;M&quot;</span>, <span class="at">var =</span> <span class="st">&quot;x&quot;</span>) <span class="co">#specsに調整変数, xに予測変数を指定する。</span></span>
-<span id="cb444-2"><a href="11-linear_model2.html#cb444-2" tabindex="-1"></a>emtrend_1</span></code></pre></div>
+<div class="sourceCode" id="cb451"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb451-1"><a href="11-linear_model2.html#cb451-1" tabindex="-1"></a>emtrend_1 <span class="ot">=</span> emmeans<span class="sc">::</span><span class="fu">emtrends</span>(result_1, <span class="at">specs =</span> <span class="st">&quot;M&quot;</span>, <span class="at">var =</span> <span class="st">&quot;x&quot;</span>) <span class="co">#specsに調整変数, xに予測変数を指定する。</span></span>
+<span id="cb451-2"><a href="11-linear_model2.html#cb451-2" tabindex="-1"></a>emtrend_1</span></code></pre></div>
 <pre><code>##  M x.trend     SE df lower.CL upper.CL
 ##  0  -0.537 0.0811 36  -0.7013   -0.372
 ##  1   0.242 0.0783 36   0.0829    0.401
@@ -1522,7 +1523,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## Confidence level used: 0.95</code></pre>
 <p>それぞれで推定された結果が、先ほどの線形モデルでの<span class="math inline">\(x\)</span>の傾きの推定値と一致していることがわかる。</p>
 <p>また、<code>emtrends</code>では単純傾斜の比較もすることができる（男性と女性で傾きが有意に異なるか？）。この結果は、線形モデルの推定結果に表示される交互作用項の検定の結果と一致する（交互作用の傾きが意味するのは「調整変数が1であるときに、予測変数の傾きがどのくらい変化するか」であり、その増え方がゼロより有意に大きいあるいは小さいかを検定している）。</p>
-<div class="sourceCode" id="cb446"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb446-1"><a href="11-linear_model2.html#cb446-1" tabindex="-1"></a>emmeans<span class="sc">::</span><span class="fu">emtrends</span>(result_1, pairwise <span class="sc">~</span> M, <span class="at">var =</span> <span class="st">&quot;x&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb453"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb453-1"><a href="11-linear_model2.html#cb453-1" tabindex="-1"></a>emmeans<span class="sc">::</span><span class="fu">emtrends</span>(result_1, pairwise <span class="sc">~</span> M, <span class="at">var =</span> <span class="st">&quot;x&quot;</span>)</span></code></pre></div>
 <pre><code>## $emtrends
 ##  M x.trend     SE df lower.CL upper.CL
 ##  0  -0.537 0.0811 36  -0.7013   -0.372
@@ -1533,7 +1534,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## $contrasts
 ##  contrast estimate    SE df t.ratio p.value
 ##  M0 - M1    -0.779 0.113 36  -6.907  &lt;.0001</code></pre>
-<div class="sourceCode" id="cb448"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb448-1"><a href="11-linear_model2.html#cb448-1" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">coef</span>(<span class="fu">summary</span>(result_1)), <span class="dv">3</span>) <span class="co">#係数を確認する</span></span></code></pre></div>
+<div class="sourceCode" id="cb455"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb455-1"><a href="11-linear_model2.html#cb455-1" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">coef</span>(<span class="fu">summary</span>(result_1)), <span class="dv">3</span>) <span class="co">#係数を確認する</span></span></code></pre></div>
 <pre><code>##             Estimate Std. Error t value Pr(&gt;|t|)
 ## (Intercept)    0.051      0.536   0.095    0.925
 ## x             -0.537      0.081  -6.622    0.000
@@ -1545,15 +1546,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h3><span class="header-section-number">12.11.2</span> 予測変数と調整変数が量的変数のとき<a href="11-linear_model2.html#chap11_ss_2" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>交互作用項が２つの量的変数の積である場合も、予測変数の傾きが意味することは「調整変数がゼロであるときの予測変数の傾き」という点で同じだが、モデルによっては解釈に注意が必要である。</p>
 <p>サンプルデータの解析を通して確認していく。</p>
-<div class="sourceCode" id="cb450"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb450-1"><a href="11-linear_model2.html#cb450-1" tabindex="-1"></a><span class="co">#サンプルデータの作成</span></span>
-<span id="cb450-2"><a href="11-linear_model2.html#cb450-2" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
-<span id="cb450-3"><a href="11-linear_model2.html#cb450-3" tabindex="-1"></a>m <span class="ot">=</span> <span class="fu">rnorm</span>(<span class="at">n =</span> <span class="dv">40</span>, <span class="at">mean =</span> <span class="dv">1</span>, <span class="at">sd =</span> <span class="dv">1</span>)</span>
-<span id="cb450-4"><a href="11-linear_model2.html#cb450-4" tabindex="-1"></a>x <span class="ot">=</span> <span class="fu">rnorm</span>(<span class="at">n =</span> <span class="dv">40</span>, <span class="at">mean =</span> <span class="dv">2</span>, <span class="at">sd =</span> <span class="dv">1</span>)</span>
-<span id="cb450-5"><a href="11-linear_model2.html#cb450-5" tabindex="-1"></a>mu <span class="ot">=</span> <span class="fl">0.1</span> <span class="sc">+</span> <span class="fl">0.3</span> <span class="sc">*</span> x <span class="sc">+</span> <span class="fl">0.2</span> <span class="sc">*</span> m <span class="sc">-</span> <span class="fl">0.2</span> <span class="sc">*</span> x <span class="sc">*</span> m</span>
-<span id="cb450-6"><a href="11-linear_model2.html#cb450-6" tabindex="-1"></a>y <span class="ot">=</span> <span class="fu">rnorm</span>(<span class="at">n =</span> <span class="dv">40</span>, <span class="at">mean =</span> mu, <span class="at">sd =</span> <span class="dv">1</span>)</span>
-<span id="cb450-7"><a href="11-linear_model2.html#cb450-7" tabindex="-1"></a>d <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="at">x =</span> x, <span class="at">m =</span> m, <span class="at">y =</span> y)</span>
-<span id="cb450-8"><a href="11-linear_model2.html#cb450-8" tabindex="-1"></a></span>
-<span id="cb450-9"><a href="11-linear_model2.html#cb450-9" tabindex="-1"></a><span class="fu">head</span>(d)</span></code></pre></div>
+<div class="sourceCode" id="cb457"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb457-1"><a href="11-linear_model2.html#cb457-1" tabindex="-1"></a><span class="co">#サンプルデータの作成</span></span>
+<span id="cb457-2"><a href="11-linear_model2.html#cb457-2" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
+<span id="cb457-3"><a href="11-linear_model2.html#cb457-3" tabindex="-1"></a>m <span class="ot">=</span> <span class="fu">rnorm</span>(<span class="at">n =</span> <span class="dv">40</span>, <span class="at">mean =</span> <span class="dv">1</span>, <span class="at">sd =</span> <span class="dv">1</span>)</span>
+<span id="cb457-4"><a href="11-linear_model2.html#cb457-4" tabindex="-1"></a>x <span class="ot">=</span> <span class="fu">rnorm</span>(<span class="at">n =</span> <span class="dv">40</span>, <span class="at">mean =</span> <span class="dv">2</span>, <span class="at">sd =</span> <span class="dv">1</span>)</span>
+<span id="cb457-5"><a href="11-linear_model2.html#cb457-5" tabindex="-1"></a>mu <span class="ot">=</span> <span class="fl">0.1</span> <span class="sc">+</span> <span class="fl">0.3</span> <span class="sc">*</span> x <span class="sc">+</span> <span class="fl">0.2</span> <span class="sc">*</span> m <span class="sc">-</span> <span class="fl">0.2</span> <span class="sc">*</span> x <span class="sc">*</span> m</span>
+<span id="cb457-6"><a href="11-linear_model2.html#cb457-6" tabindex="-1"></a>y <span class="ot">=</span> <span class="fu">rnorm</span>(<span class="at">n =</span> <span class="dv">40</span>, <span class="at">mean =</span> mu, <span class="at">sd =</span> <span class="dv">1</span>)</span>
+<span id="cb457-7"><a href="11-linear_model2.html#cb457-7" tabindex="-1"></a>d <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="at">x =</span> x, <span class="at">m =</span> m, <span class="at">y =</span> y)</span>
+<span id="cb457-8"><a href="11-linear_model2.html#cb457-8" tabindex="-1"></a></span>
+<span id="cb457-9"><a href="11-linear_model2.html#cb457-9" tabindex="-1"></a><span class="fu">head</span>(d)</span></code></pre></div>
 <pre><code>##          x         m           y
 ## 1 1.835476 0.3735462  0.01955638
 ## 2 1.746638 1.1836433  0.31206219
@@ -1562,8 +1563,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## 5 1.311244 1.3295078  1.00455913
 ## 6 1.292505 0.1795316  0.81019905</code></pre>
 <p><code>m</code>を調整変数、<code>x</code>を予測変数とし、応答変数<code>y</code>を予測する線形モデルを行う。</p>
-<div class="sourceCode" id="cb452"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb452-1"><a href="11-linear_model2.html#cb452-1" tabindex="-1"></a>result_3 <span class="ot">=</span> <span class="fu">lm</span>(<span class="at">data =</span> d, y <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> x <span class="sc">*</span> m)</span>
-<span id="cb452-2"><a href="11-linear_model2.html#cb452-2" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">coef</span>(<span class="fu">summary</span>(result_3)), <span class="dv">3</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb459"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb459-1"><a href="11-linear_model2.html#cb459-1" tabindex="-1"></a>result_3 <span class="ot">=</span> <span class="fu">lm</span>(<span class="at">data =</span> d, y <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> x <span class="sc">*</span> m)</span>
+<span id="cb459-2"><a href="11-linear_model2.html#cb459-2" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">coef</span>(<span class="fu">summary</span>(result_3)), <span class="dv">3</span>)</span></code></pre></div>
 <pre><code>##             Estimate Std. Error t value Pr(&gt;|t|)
 ## (Intercept)   -0.104      0.473  -0.220    0.827
 ## x              0.615      0.229   2.690    0.011
@@ -1577,23 +1578,23 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>しかし、調整変数がゼロを取り得ない変数である場合には（例として身長や体重など）、係数の意味の解釈がしにくくなる（本章でも述べているように、平均値をゼロに変換する標準化も一つの対応策である）。</p>
 <p>そこで、調整変数が量的変数の場合には調整変数のレベルを「平均」、「平均＋1標準偏差」および「平均 - 1標準偏差」の3つに分けて、予測変数の単純傾斜を推定することが多い。</p>
 <p>ここでは、<code>m</code>が「平均」、「平均 + 1標準偏差」および「平均 - 1標準偏差」の場合に分けて、<code>x</code>が<code>y</code>に及ぼす影響を見てみよう。</p>
-<div class="sourceCode" id="cb454"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb454-1"><a href="11-linear_model2.html#cb454-1" tabindex="-1"></a>d<span class="sc">$</span>m_minus_SD <span class="ot">=</span> d<span class="sc">$</span>m <span class="sc">-</span> (<span class="fu">mean</span>(d<span class="sc">$</span>m) <span class="sc">-</span> <span class="fu">sd</span>(d<span class="sc">$</span>m)) <span class="co"># mが平均-1標準偏差の値であるときにゼロになる変数を作成</span></span>
-<span id="cb454-2"><a href="11-linear_model2.html#cb454-2" tabindex="-1"></a>d<span class="sc">$</span>m_plus_SD <span class="ot">=</span> d<span class="sc">$</span>m <span class="sc">-</span> (<span class="fu">mean</span>(d<span class="sc">$</span>m) <span class="sc">+</span> <span class="fu">sd</span>(d<span class="sc">$</span>m)) <span class="co"># mが平均値であるときにゼロになる変数を作成</span></span>
-<span id="cb454-3"><a href="11-linear_model2.html#cb454-3" tabindex="-1"></a>d<span class="sc">$</span>m_mean <span class="ot">=</span> d<span class="sc">$</span>m <span class="sc">-</span> <span class="fu">mean</span>(d<span class="sc">$</span>m)  <span class="co"># mが平均+1標準偏差の値であるときにゼロになる変数を作成</span></span>
-<span id="cb454-4"><a href="11-linear_model2.html#cb454-4" tabindex="-1"></a></span>
-<span id="cb454-5"><a href="11-linear_model2.html#cb454-5" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">coef</span>(<span class="fu">summary</span>(<span class="fu">lm</span>(<span class="at">data =</span> d, y <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> x <span class="sc">*</span> m_minus_SD))), <span class="dv">3</span>) <span class="co"># mean -1SD</span></span></code></pre></div>
+<div class="sourceCode" id="cb461"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb461-1"><a href="11-linear_model2.html#cb461-1" tabindex="-1"></a>d<span class="sc">$</span>m_minus_SD <span class="ot">=</span> d<span class="sc">$</span>m <span class="sc">-</span> (<span class="fu">mean</span>(d<span class="sc">$</span>m) <span class="sc">-</span> <span class="fu">sd</span>(d<span class="sc">$</span>m)) <span class="co"># mが平均-1標準偏差の値であるときにゼロになる変数を作成</span></span>
+<span id="cb461-2"><a href="11-linear_model2.html#cb461-2" tabindex="-1"></a>d<span class="sc">$</span>m_plus_SD <span class="ot">=</span> d<span class="sc">$</span>m <span class="sc">-</span> (<span class="fu">mean</span>(d<span class="sc">$</span>m) <span class="sc">+</span> <span class="fu">sd</span>(d<span class="sc">$</span>m)) <span class="co"># mが平均値であるときにゼロになる変数を作成</span></span>
+<span id="cb461-3"><a href="11-linear_model2.html#cb461-3" tabindex="-1"></a>d<span class="sc">$</span>m_mean <span class="ot">=</span> d<span class="sc">$</span>m <span class="sc">-</span> <span class="fu">mean</span>(d<span class="sc">$</span>m)  <span class="co"># mが平均+1標準偏差の値であるときにゼロになる変数を作成</span></span>
+<span id="cb461-4"><a href="11-linear_model2.html#cb461-4" tabindex="-1"></a></span>
+<span id="cb461-5"><a href="11-linear_model2.html#cb461-5" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">coef</span>(<span class="fu">summary</span>(<span class="fu">lm</span>(<span class="at">data =</span> d, y <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> x <span class="sc">*</span> m_minus_SD))), <span class="dv">3</span>) <span class="co"># mean -1SD</span></span></code></pre></div>
 <pre><code>##              Estimate Std. Error t value Pr(&gt;|t|)
 ## (Intercept)    -0.099      0.423  -0.234    0.816
 ## x               0.561      0.204   2.753    0.009
 ## m_minus_SD      0.024      0.368   0.066    0.947
 ## x:m_minus_SD   -0.262      0.165  -1.592    0.120</code></pre>
-<div class="sourceCode" id="cb456"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb456-1"><a href="11-linear_model2.html#cb456-1" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">coef</span>(<span class="fu">summary</span>(<span class="fu">lm</span>(<span class="at">data =</span> d, y <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> x <span class="sc">*</span> m_mean))), <span class="dv">3</span>) <span class="co"># mean</span></span></code></pre></div>
+<div class="sourceCode" id="cb463"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb463-1"><a href="11-linear_model2.html#cb463-1" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">coef</span>(<span class="fu">summary</span>(<span class="fu">lm</span>(<span class="at">data =</span> d, y <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> x <span class="sc">*</span> m_mean))), <span class="dv">3</span>) <span class="co"># mean</span></span></code></pre></div>
 <pre><code>##             Estimate Std. Error t value Pr(&gt;|t|)
 ## (Intercept)   -0.077      0.339  -0.228    0.821
 ## x              0.329      0.147   2.241    0.031
 ## m_mean         0.024      0.368   0.066    0.947
 ## x:m_mean      -0.262      0.165  -1.592    0.120</code></pre>
-<div class="sourceCode" id="cb458"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb458-1"><a href="11-linear_model2.html#cb458-1" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">coef</span>(<span class="fu">summary</span>(<span class="fu">lm</span>(<span class="at">data =</span> d, y <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> x <span class="sc">*</span> m_plus_SD))), <span class="dv">3</span>) <span class="co"># mean + 1SD</span></span></code></pre></div>
+<div class="sourceCode" id="cb465"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb465-1"><a href="11-linear_model2.html#cb465-1" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">coef</span>(<span class="fu">summary</span>(<span class="fu">lm</span>(<span class="at">data =</span> d, y <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> x <span class="sc">*</span> m_plus_SD))), <span class="dv">3</span>) <span class="co"># mean + 1SD</span></span></code></pre></div>
 <pre><code>##             Estimate Std. Error t value Pr(&gt;|t|)
 ## (Intercept)   -0.056      0.514  -0.108    0.915
 ## x              0.096      0.210   0.459    0.649
@@ -1601,7 +1602,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## x:m_plus_SD   -0.262      0.165  -1.592    0.120</code></pre>
 <p>それぞれのモデルの<code>x</code>の傾きは、<code>m_minum_SD</code>, <code>m_mean</code>, <code>m_plus_SD</code>がゼロのとき、すなわち調整変数がそれぞれ平均-1標準偏差, 平均、平均-1標準偏差の値を取るときの<code>x</code>の傾きを意味する。</p>
 <p>「平均」、「平均+1標準偏差」、「平均-1標準偏差」に対応する変数を新たに作らなくても、<code>interactions</code>パッケージの<code>sim_slopes</code>でも単純傾斜を推定することができる。</p>
-<div class="sourceCode" id="cb460"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb460-1"><a href="11-linear_model2.html#cb460-1" tabindex="-1"></a>interactions<span class="sc">::</span><span class="fu">sim_slopes</span>(result_3, <span class="at">pred =</span> x, <span class="at">modx =</span> m) <span class="co">#predに連続量の予測変数、modxに調整変数を入れる。</span></span></code></pre></div>
+<div class="sourceCode" id="cb467"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb467-1"><a href="11-linear_model2.html#cb467-1" tabindex="-1"></a>interactions<span class="sc">::</span><span class="fu">sim_slopes</span>(result_3, <span class="at">pred =</span> x, <span class="at">modx =</span> m) <span class="co">#predに連続量の予測変数、modxに調整変数を入れる。</span></span></code></pre></div>
 <pre><code>## JOHNSON-NEYMAN INTERVAL
 ## 
 ## When m is INSIDE the interval [-3.18, 1.20], the slope of x is p &lt; .05.
@@ -1627,23 +1628,23 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ##   Est.   S.E.   t val.      p
 ## ------ ------ -------- ------
 ##   0.10   0.21     0.46   0.65</code></pre>
-<div class="sourceCode" id="cb462"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb462-1"><a href="11-linear_model2.html#cb462-1" tabindex="-1"></a>interactions<span class="sc">::</span><span class="fu">interact_plot</span>(result_3, <span class="at">pred =</span> x, <span class="at">modx =</span> m, <span class="at">plot.points =</span> <span class="cn">TRUE</span>) <span class="co">#単純傾斜をプロットすることもできる</span></span></code></pre></div>
-<p><img src="Data-Analysis-for-Psychology_files/figure-html/unnamed-chunk-244-1.png" width="672" /></p>
-<div class="sourceCode" id="cb463"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb463-1"><a href="11-linear_model2.html#cb463-1" tabindex="-1"></a><span class="co">#emmeansパッケージのemtrendsを使う場合（自分でmean -1sd, mean, mean + 1sdのレベルを予め指定する必要がある）</span></span>
-<span id="cb463-2"><a href="11-linear_model2.html#cb463-2" tabindex="-1"></a>m_minus_SD <span class="ot">=</span> (<span class="fu">mean</span>(d<span class="sc">$</span>m) <span class="sc">-</span> <span class="fu">sd</span>(d<span class="sc">$</span>m)) <span class="co"># x_2 = mean - 1SDのときにゼロになる変数を作成</span></span>
-<span id="cb463-3"><a href="11-linear_model2.html#cb463-3" tabindex="-1"></a>m_Mean <span class="ot">=</span> <span class="fu">mean</span>(d<span class="sc">$</span>m)  <span class="co"># x_2 = mean のときにゼロになる変数を作成</span></span>
-<span id="cb463-4"><a href="11-linear_model2.html#cb463-4" tabindex="-1"></a>m_plus_SD <span class="ot">=</span> (<span class="fu">mean</span>(d<span class="sc">$</span>m) <span class="sc">+</span> <span class="fu">sd</span>(d<span class="sc">$</span>m)) <span class="co"># x_2 = mean + 1SDのときにゼロになる変数を作成</span></span>
-<span id="cb463-5"><a href="11-linear_model2.html#cb463-5" tabindex="-1"></a>m_list <span class="ot">=</span> <span class="fu">list</span>(<span class="at">m =</span> <span class="fu">c</span>(m_minus_SD, m_plus_SD, m_Mean))</span>
-<span id="cb463-6"><a href="11-linear_model2.html#cb463-6" tabindex="-1"></a></span>
-<span id="cb463-7"><a href="11-linear_model2.html#cb463-7" tabindex="-1"></a>emmeans<span class="sc">::</span><span class="fu">emtrends</span>(result_3, <span class="at">specs =</span> <span class="st">&quot;m&quot;</span>, <span class="at">var =</span> <span class="st">&quot;x&quot;</span>, <span class="at">at =</span> m_list)</span></code></pre></div>
+<div class="sourceCode" id="cb469"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb469-1"><a href="11-linear_model2.html#cb469-1" tabindex="-1"></a>interactions<span class="sc">::</span><span class="fu">interact_plot</span>(result_3, <span class="at">pred =</span> x, <span class="at">modx =</span> m, <span class="at">plot.points =</span> <span class="cn">TRUE</span>) <span class="co">#単純傾斜をプロットすることもできる</span></span></code></pre></div>
+<p><img src="Data-Analysis-for-Psychology_files/figure-html/unnamed-chunk-248-1.png" width="672" /></p>
+<div class="sourceCode" id="cb470"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb470-1"><a href="11-linear_model2.html#cb470-1" tabindex="-1"></a><span class="co">#emmeansパッケージのemtrendsを使う場合（自分でmean -1sd, mean, mean + 1sdのレベルを予め指定する必要がある）</span></span>
+<span id="cb470-2"><a href="11-linear_model2.html#cb470-2" tabindex="-1"></a>m_minus_SD <span class="ot">=</span> (<span class="fu">mean</span>(d<span class="sc">$</span>m) <span class="sc">-</span> <span class="fu">sd</span>(d<span class="sc">$</span>m)) <span class="co"># x_2 = mean - 1SDのときにゼロになる変数を作成</span></span>
+<span id="cb470-3"><a href="11-linear_model2.html#cb470-3" tabindex="-1"></a>m_Mean <span class="ot">=</span> <span class="fu">mean</span>(d<span class="sc">$</span>m)  <span class="co"># x_2 = mean のときにゼロになる変数を作成</span></span>
+<span id="cb470-4"><a href="11-linear_model2.html#cb470-4" tabindex="-1"></a>m_plus_SD <span class="ot">=</span> (<span class="fu">mean</span>(d<span class="sc">$</span>m) <span class="sc">+</span> <span class="fu">sd</span>(d<span class="sc">$</span>m)) <span class="co"># x_2 = mean + 1SDのときにゼロになる変数を作成</span></span>
+<span id="cb470-5"><a href="11-linear_model2.html#cb470-5" tabindex="-1"></a>m_list <span class="ot">=</span> <span class="fu">list</span>(<span class="at">m =</span> <span class="fu">c</span>(m_minus_SD, m_plus_SD, m_Mean))</span>
+<span id="cb470-6"><a href="11-linear_model2.html#cb470-6" tabindex="-1"></a></span>
+<span id="cb470-7"><a href="11-linear_model2.html#cb470-7" tabindex="-1"></a>emmeans<span class="sc">::</span><span class="fu">emtrends</span>(result_3, <span class="at">specs =</span> <span class="st">&quot;m&quot;</span>, <span class="at">var =</span> <span class="st">&quot;x&quot;</span>, <span class="at">at =</span> m_list)</span></code></pre></div>
 <pre><code>##      m x.trend    SE df lower.CL upper.CL
 ##  0.205  0.5610 0.204 36   0.1476    0.974
 ##  1.979  0.0964 0.210 36  -0.3296    0.522
 ##  1.092  0.3287 0.147 36   0.0312    0.626
 ## 
 ## Confidence level used: 0.95</code></pre>
-<div class="sourceCode" id="cb465"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb465-1"><a href="11-linear_model2.html#cb465-1" tabindex="-1"></a><span class="co">#単純傾斜の比較</span></span>
-<span id="cb465-2"><a href="11-linear_model2.html#cb465-2" tabindex="-1"></a>emmeans<span class="sc">::</span><span class="fu">emtrends</span>(result_3, pairwise <span class="sc">~</span> m, <span class="at">var =</span> <span class="st">&quot;x&quot;</span>, <span class="at">at =</span> m_list) </span></code></pre></div>
+<div class="sourceCode" id="cb472"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb472-1"><a href="11-linear_model2.html#cb472-1" tabindex="-1"></a><span class="co">#単純傾斜の比較</span></span>
+<span id="cb472-2"><a href="11-linear_model2.html#cb472-2" tabindex="-1"></a>emmeans<span class="sc">::</span><span class="fu">emtrends</span>(result_3, pairwise <span class="sc">~</span> m, <span class="at">var =</span> <span class="st">&quot;x&quot;</span>, <span class="at">at =</span> m_list) </span></code></pre></div>
 <pre><code>## $emtrends
 ##      m x.trend    SE df lower.CL upper.CL
 ##  0.205  0.5610 0.204 36   0.1476    0.974
