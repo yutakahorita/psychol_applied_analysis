@@ -23,7 +23,7 @@
 <meta name="author" content="帝京大学文学部心理学科　堀田結孝" />
 
 
-<meta name="date" content="2025-10-14" />
+<meta name="date" content="2025-10-30" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -552,9 +552,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="19.5" data-path="18-Bayese.html"><a href="18-Bayese.html#chap18_Practice"><i class="fa fa-check"></i><b>19.5</b> 確認問題</a>
 <ul>
 <li class="chapter" data-level="" data-path=""><a href="#%E5%95%8F1-1"><i class="fa fa-check"></i>問1</a></li>
-<li class="chapter" data-level="" data-path="18-Bayese.html"><a href="18-Bayese.html#section-6"><i class="fa fa-check"></i>1-1</a></li>
-<li class="chapter" data-level="" data-path="18-Bayese.html"><a href="18-Bayese.html#section-7"><i class="fa fa-check"></i>1-2</a></li>
-<li class="chapter" data-level="" data-path="18-Bayese.html"><a href="18-Bayese.html#section-8"><i class="fa fa-check"></i>1-3</a></li>
+<li class="chapter" data-level="" data-path="18-Bayese.html"><a href="18-Bayese.html#section-5"><i class="fa fa-check"></i>1-1</a></li>
+<li class="chapter" data-level="" data-path="18-Bayese.html"><a href="18-Bayese.html#section-6"><i class="fa fa-check"></i>1-2</a></li>
+<li class="chapter" data-level="" data-path="18-Bayese.html"><a href="18-Bayese.html#section-7"><i class="fa fa-check"></i>1-3</a></li>
 <li class="chapter" data-level="" data-path=""><a href="#%E5%95%8F2-1"><i class="fa fa-check"></i>問2</a></li>
 </ul></li>
 </ul></li>
@@ -1146,6 +1146,84 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p><span class="math inline">\(M = 0\)</span>を代入すると、<span class="math inline">\(\hat{y} = \alpha +\beta_{1} x\)</span>となる。<span class="math inline">\(M = 0\)</span>はつまり女性であることを意味するので、<span class="math inline">\(\beta_{1}\)</span>は「データが女性であるときの、予測変数<span class="math inline">\(x\)</span>が１単位増加したときの応答変数<span class="math inline">\(y\)</span>の変化量」を意味する。
 つまり、交互作用項を含む際のある予測変数の傾きは、<strong>他の予測変数がゼロであるときの予測変数の効果</strong>を意味している。すなわち、<span class="math inline">\(x\)</span>の傾き<span class="math inline">\(\beta_{1}\)</span>は「限定的な条件のもとでの予測変数の応答変数に対する効果」を示しており、主効果の一般的理解である「応答変数に対する予測変数の平均的効果」とは異なる。</p>
 <p>このように、交互作用を含むモデルの場合、<strong>予測変数の傾きは必ずしも主効果を意味するわけではない</strong>。次の節の補足で、この問題に対する対処法について説明する。</p>
+<hr />
+<p>予測変数（ダミー変数も含む）を標準化した場合には、各予測変数の傾きの解釈の仕方も変わってくる。</p>
+<div class="sourceCode" id="cb413"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb413-1"><a href="11-linear_model2.html#cb413-1" tabindex="-1"></a><span class="co">#データを再度作成する。</span></span>
+<span id="cb413-2"><a href="11-linear_model2.html#cb413-2" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
+<span id="cb413-3"><a href="11-linear_model2.html#cb413-3" tabindex="-1"></a>x <span class="ot">=</span> <span class="fu">round</span>(<span class="fu">runif</span>(<span class="at">n =</span> <span class="dv">20</span>, <span class="at">min =</span> <span class="dv">1</span>, <span class="at">max =</span> <span class="dv">10</span>),<span class="dv">0</span>) </span>
+<span id="cb413-4"><a href="11-linear_model2.html#cb413-4" tabindex="-1"></a>mu <span class="ot">=</span> <span class="fl">0.1</span> <span class="sc">+</span> <span class="fl">0.4</span> <span class="sc">*</span> x</span>
+<span id="cb413-5"><a href="11-linear_model2.html#cb413-5" tabindex="-1"></a>y <span class="ot">=</span> <span class="fu">rnorm</span>(<span class="at">n =</span> <span class="dv">20</span>, <span class="at">mean =</span> mu, <span class="at">sd =</span> <span class="dv">1</span>)</span>
+<span id="cb413-6"><a href="11-linear_model2.html#cb413-6" tabindex="-1"></a>d_M <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="at">x =</span> x, <span class="at">y =</span> y, <span class="at">gender =</span> <span class="st">&quot;M&quot;</span>)</span>
+<span id="cb413-7"><a href="11-linear_model2.html#cb413-7" tabindex="-1"></a></span>
+<span id="cb413-8"><a href="11-linear_model2.html#cb413-8" tabindex="-1"></a>x <span class="ot">=</span> <span class="fu">round</span>(<span class="fu">runif</span>(<span class="at">n =</span> <span class="dv">20</span>, <span class="at">min =</span> <span class="dv">1</span>, <span class="at">max =</span> <span class="dv">10</span>),<span class="dv">0</span>) </span>
+<span id="cb413-9"><a href="11-linear_model2.html#cb413-9" tabindex="-1"></a>mu <span class="ot">=</span> <span class="fl">0.3</span> <span class="sc">+</span> <span class="sc">-</span><span class="fl">0.6</span> <span class="sc">*</span> x</span>
+<span id="cb413-10"><a href="11-linear_model2.html#cb413-10" tabindex="-1"></a>y <span class="ot">=</span> <span class="fu">rnorm</span>(<span class="at">n =</span> <span class="dv">20</span>, <span class="at">mean =</span> mu, <span class="at">sd =</span> <span class="dv">1</span>)</span>
+<span id="cb413-11"><a href="11-linear_model2.html#cb413-11" tabindex="-1"></a>d_F <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="at">x =</span> x, <span class="at">y =</span> y, <span class="at">gender =</span> <span class="st">&quot;F&quot;</span>)</span>
+<span id="cb413-12"><a href="11-linear_model2.html#cb413-12" tabindex="-1"></a></span>
+<span id="cb413-13"><a href="11-linear_model2.html#cb413-13" tabindex="-1"></a>d <span class="ot">=</span> <span class="fu">rbind</span>(d_M, d_F)</span>
+<span id="cb413-14"><a href="11-linear_model2.html#cb413-14" tabindex="-1"></a>d<span class="sc">$</span>M <span class="ot">=</span> <span class="fu">ifelse</span>(d<span class="sc">$</span>gender <span class="sc">==</span> <span class="st">&quot;M&quot;</span>, <span class="dv">1</span>, <span class="dv">0</span>) <span class="co">#genderがMならば1, Fならば1のダミー変数を作る</span></span></code></pre></div>
+<div class="sourceCode" id="cb414"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb414-1"><a href="11-linear_model2.html#cb414-1" tabindex="-1"></a><span class="co">#標準化する前の結果</span></span>
+<span id="cb414-2"><a href="11-linear_model2.html#cb414-2" tabindex="-1"></a>result <span class="ot">=</span> <span class="fu">lm</span>(<span class="at">data =</span> d, y <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> x<span class="sc">*</span>M)</span>
+<span id="cb414-3"><a href="11-linear_model2.html#cb414-3" tabindex="-1"></a><span class="fu">summary</span>(result)</span></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = y ~ 1 + x * M, data = d)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -2.3555 -0.6534  0.2205  0.5636  1.6618 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  0.05079    0.53625   0.095    0.925    
+## x           -0.53691    0.08107  -6.622 1.03e-07 ***
+## M            1.04827    0.73745   1.421    0.164    
+## x:M          0.77868    0.11274   6.907 4.35e-08 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.8827 on 36 degrees of freedom
+## Multiple R-squared:  0.9307, Adjusted R-squared:  0.9249 
+## F-statistic: 161.1 on 3 and 36 DF,  p-value: &lt; 2.2e-16</code></pre>
+<p>応答変数と予測変数を標準化する。ダミー変数も標準化する。</p>
+<div class="sourceCode" id="cb416"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb416-1"><a href="11-linear_model2.html#cb416-1" tabindex="-1"></a><span class="co">#変数を標準化</span></span>
+<span id="cb416-2"><a href="11-linear_model2.html#cb416-2" tabindex="-1"></a>d <span class="ot">=</span> d <span class="sc">|&gt;</span> dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">y_std =</span> <span class="fu">scale</span>(y),</span>
+<span id="cb416-3"><a href="11-linear_model2.html#cb416-3" tabindex="-1"></a>                       <span class="at">x_std =</span> <span class="fu">scale</span>(x),</span>
+<span id="cb416-4"><a href="11-linear_model2.html#cb416-4" tabindex="-1"></a>                       <span class="at">M_std =</span> <span class="fu">scale</span>(M)</span>
+<span id="cb416-5"><a href="11-linear_model2.html#cb416-5" tabindex="-1"></a>                       )</span>
+<span id="cb416-6"><a href="11-linear_model2.html#cb416-6" tabindex="-1"></a><span class="fu">head</span>(d)</span></code></pre></div>
+<pre><code>##   x        y gender M     y_std       x_std     M_std
+## 1 3 2.811781      M 1 0.9835716 -1.21465482 0.9874209
+## 2 4 2.089843      M 1 0.7594727 -0.81640734 0.9874209
+## 3 6 1.878759      M 1 0.6939495 -0.01991237 0.9874209
+## 4 9 1.485300      M 1 0.5718146  1.17483007 0.9874209
+## 5 3 2.424931      M 1 0.8634883 -1.21465482 0.9874209
+## 6 9 3.655066      M 1 1.2453383  1.17483007 0.9874209</code></pre>
+<div class="sourceCode" id="cb418"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb418-1"><a href="11-linear_model2.html#cb418-1" tabindex="-1"></a>result <span class="ot">=</span> <span class="fu">lm</span>(<span class="at">data =</span> d, y_std <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> x_std<span class="sc">*</span>M_std)</span>
+<span id="cb418-2"><a href="11-linear_model2.html#cb418-2" tabindex="-1"></a><span class="fu">summary</span>(result)</span></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = y_std ~ 1 + x_std * M_std, data = d)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -0.73117 -0.20282  0.06843  0.17496  0.51584 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  0.01209    0.04336   0.279   0.7821    
+## x_std       -0.11502    0.04394  -2.618   0.0129 *  
+## M_std        0.90526    0.04391  20.615  &lt; 2e-16 ***
+## x_std:M_std  0.30734    0.04450   6.907 4.35e-08 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.274 on 36 degrees of freedom
+## Multiple R-squared:  0.9307, Adjusted R-squared:  0.9249 
+## F-statistic: 161.1 on 3 and 36 DF,  p-value: &lt; 2.2e-16</code></pre>
+<p>それぞれの係数とp値が変わった。</p>
+<p>変数を標準化する前のモデルでは、パラメータ<span class="math inline">\(\beta_{1}\)</span>は「女性のときの<code>x</code>の傾き」であり、特定のカテゴリのときの予測変数<code>x</code>が応答変数に及ぼす影響を意味していた。<br />
+これに対し、標準化した後のモデルでは<code>x_std</code>の傾きが意味することは、「<strong>他の変数がゼロのとき、つまり平均であるとき</strong>に、<code>x_std</code>が1単位（1標準偏差）変化したときの応答変数の変化量」を意味することになる。他の変数が特定の条件である場合ではなく、平均的水準であるときの予測変数の効果に関心がある場合は標準化した変数を用いるとよい。</p>
 </div>
 </div>
 <div id="chap11_ANCOVA" class="section level2 hasAnchor" number="12.7">
@@ -1155,7 +1233,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h3><span class="header-section-number">12.7.1</span> 変数の効果の統制<a href="11-linear_model2.html#chap11_Controlling" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>予測変数を複数加えた線形モデルの解析のメリットは、ある予測変数について他の予測変数の効果を<strong>統制(control)</strong>したときの効果を検討できることにある。</p>
 <p>Rで標準で入っている<code>attitude</code>データを使って、予測変数が複数ある場合の線形モデルの解析の結果を確認してみよう。</p>
-<div class="sourceCode" id="cb413"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb413-1"><a href="11-linear_model2.html#cb413-1" tabindex="-1"></a><span class="fu">head</span>(attitude)</span></code></pre></div>
+<div class="sourceCode" id="cb420"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb420-1"><a href="11-linear_model2.html#cb420-1" tabindex="-1"></a><span class="fu">head</span>(attitude)</span></code></pre></div>
 <pre><code>##   rating complaints privileges learning raises critical advance
 ## 1     43         51         30       39     61       92      45
 ## 2     63         64         51       54     63       73      47
@@ -1164,15 +1242,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## 5     81         78         56       66     71       83      47
 ## 6     43         55         49       44     54       49      34</code></pre>
 <p>以下のように、<code>complaints</code>, <code>privileges</code>, <code>learning</code>, <code>raises</code>の4つを予測変数として、<code>rating</code>の値の推定を行ってみよう。</p>
-<div class="sourceCode" id="cb415"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb415-1"><a href="11-linear_model2.html#cb415-1" tabindex="-1"></a>dat <span class="ot">=</span> attitude <span class="sc">|&gt;</span> dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">rating_std =</span> <span class="fu">scale</span>(rating),</span>
-<span id="cb415-2"><a href="11-linear_model2.html#cb415-2" tabindex="-1"></a>                                <span class="at">complaints_std =</span> <span class="fu">scale</span>(complaints),</span>
-<span id="cb415-3"><a href="11-linear_model2.html#cb415-3" tabindex="-1"></a>                                <span class="at">privileges_std =</span> <span class="fu">scale</span>(privileges),</span>
-<span id="cb415-4"><a href="11-linear_model2.html#cb415-4" tabindex="-1"></a>                                <span class="at">learning_std =</span> <span class="fu">scale</span>(learning),</span>
-<span id="cb415-5"><a href="11-linear_model2.html#cb415-5" tabindex="-1"></a>                                <span class="at">raises_std =</span> <span class="fu">scale</span>(raises)</span>
-<span id="cb415-6"><a href="11-linear_model2.html#cb415-6" tabindex="-1"></a>                                ) <span class="co">#変数を標準化したものを使う</span></span>
-<span id="cb415-7"><a href="11-linear_model2.html#cb415-7" tabindex="-1"></a></span>
-<span id="cb415-8"><a href="11-linear_model2.html#cb415-8" tabindex="-1"></a>result <span class="ot">=</span> <span class="fu">lm</span>(<span class="at">data =</span> dat, rating_std <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> complaints_std <span class="sc">+</span> privileges_std <span class="sc">+</span> learning_std <span class="sc">+</span> raises_std)</span>
-<span id="cb415-9"><a href="11-linear_model2.html#cb415-9" tabindex="-1"></a><span class="fu">summary</span>(result)</span></code></pre></div>
+<div class="sourceCode" id="cb422"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb422-1"><a href="11-linear_model2.html#cb422-1" tabindex="-1"></a>dat <span class="ot">=</span> attitude <span class="sc">|&gt;</span> dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">rating_std =</span> <span class="fu">scale</span>(rating),</span>
+<span id="cb422-2"><a href="11-linear_model2.html#cb422-2" tabindex="-1"></a>                                <span class="at">complaints_std =</span> <span class="fu">scale</span>(complaints),</span>
+<span id="cb422-3"><a href="11-linear_model2.html#cb422-3" tabindex="-1"></a>                                <span class="at">privileges_std =</span> <span class="fu">scale</span>(privileges),</span>
+<span id="cb422-4"><a href="11-linear_model2.html#cb422-4" tabindex="-1"></a>                                <span class="at">learning_std =</span> <span class="fu">scale</span>(learning),</span>
+<span id="cb422-5"><a href="11-linear_model2.html#cb422-5" tabindex="-1"></a>                                <span class="at">raises_std =</span> <span class="fu">scale</span>(raises)</span>
+<span id="cb422-6"><a href="11-linear_model2.html#cb422-6" tabindex="-1"></a>                                ) <span class="co">#変数を標準化したものを使う</span></span>
+<span id="cb422-7"><a href="11-linear_model2.html#cb422-7" tabindex="-1"></a></span>
+<span id="cb422-8"><a href="11-linear_model2.html#cb422-8" tabindex="-1"></a>result <span class="ot">=</span> <span class="fu">lm</span>(<span class="at">data =</span> dat, rating_std <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> complaints_std <span class="sc">+</span> privileges_std <span class="sc">+</span> learning_std <span class="sc">+</span> raises_std)</span>
+<span id="cb422-9"><a href="11-linear_model2.html#cb422-9" tabindex="-1"></a><span class="fu">summary</span>(result)</span></code></pre></div>
 <pre><code>## 
 ## Call:
 ## lm(formula = rating_std ~ 1 + complaints_std + privileges_std + 
@@ -1195,88 +1273,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## Residual standard error: 0.5748 on 25 degrees of freedom
 ## Multiple R-squared:  0.7152, Adjusted R-squared:  0.6697 
 ## F-statistic:  15.7 on 4 and 25 DF,  p-value: 1.509e-06</code></pre>
-<p>切片（Intercept）は全ての予測変数の値がゼロ（ここでは標準化しているので平均）のときの応答変数の予測値であり、各予測変数の係数は予測変数が1単位（1標準偏差）増えた場合の応答変数の変化量を意味している。例えば、<code>complaints_std</code>の係数は0.76であるが、これは「<code>complaints</code>が1増えると<code>rating</code>は0.76増える傾向にある」ことを意味している。</p>
-<p>各係数の値は「他の変数の値がゼロであるときの効果」を意味している。先程の<code>complaints</code>の係数0.76は、その他の予測変数<code>privileges</code>, <code>learning</code>, <code>raises</code>がゼロのときの、<code>complaints</code>が<code>rating</code>に与えるそのものの効果を示している。</p>
-<p>このように複数の予測変数を入れたモデルで推定される係数は、他の予測変数の効果を統制した上での予測変数が応答変数に及ぼす効果を意味する。</p>
-<hr />
-<p>交互作用を含むモデルの場合も、（ダミー変数も含めて）予測変数を標準化すると係数を解釈しやすくなる。</p>
-<div class="sourceCode" id="cb417"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb417-1"><a href="11-linear_model2.html#cb417-1" tabindex="-1"></a><span class="co">#データを再度作成する。</span></span>
-<span id="cb417-2"><a href="11-linear_model2.html#cb417-2" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
-<span id="cb417-3"><a href="11-linear_model2.html#cb417-3" tabindex="-1"></a>x <span class="ot">=</span> <span class="fu">round</span>(<span class="fu">runif</span>(<span class="at">n =</span> <span class="dv">20</span>, <span class="at">min =</span> <span class="dv">1</span>, <span class="at">max =</span> <span class="dv">10</span>),<span class="dv">0</span>) </span>
-<span id="cb417-4"><a href="11-linear_model2.html#cb417-4" tabindex="-1"></a>mu <span class="ot">=</span> <span class="fl">0.1</span> <span class="sc">+</span> <span class="fl">0.4</span> <span class="sc">*</span> x</span>
-<span id="cb417-5"><a href="11-linear_model2.html#cb417-5" tabindex="-1"></a>y <span class="ot">=</span> <span class="fu">rnorm</span>(<span class="at">n =</span> <span class="dv">20</span>, <span class="at">mean =</span> mu, <span class="at">sd =</span> <span class="dv">1</span>)</span>
-<span id="cb417-6"><a href="11-linear_model2.html#cb417-6" tabindex="-1"></a>d_M <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="at">x =</span> x, <span class="at">y =</span> y, <span class="at">gender =</span> <span class="st">&quot;M&quot;</span>)</span>
-<span id="cb417-7"><a href="11-linear_model2.html#cb417-7" tabindex="-1"></a></span>
-<span id="cb417-8"><a href="11-linear_model2.html#cb417-8" tabindex="-1"></a>x <span class="ot">=</span> <span class="fu">round</span>(<span class="fu">runif</span>(<span class="at">n =</span> <span class="dv">20</span>, <span class="at">min =</span> <span class="dv">1</span>, <span class="at">max =</span> <span class="dv">10</span>),<span class="dv">0</span>) </span>
-<span id="cb417-9"><a href="11-linear_model2.html#cb417-9" tabindex="-1"></a>mu <span class="ot">=</span> <span class="fl">0.3</span> <span class="sc">+</span> <span class="sc">-</span><span class="fl">0.6</span> <span class="sc">*</span> x</span>
-<span id="cb417-10"><a href="11-linear_model2.html#cb417-10" tabindex="-1"></a>y <span class="ot">=</span> <span class="fu">rnorm</span>(<span class="at">n =</span> <span class="dv">20</span>, <span class="at">mean =</span> mu, <span class="at">sd =</span> <span class="dv">1</span>)</span>
-<span id="cb417-11"><a href="11-linear_model2.html#cb417-11" tabindex="-1"></a>d_F <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="at">x =</span> x, <span class="at">y =</span> y, <span class="at">gender =</span> <span class="st">&quot;F&quot;</span>)</span>
-<span id="cb417-12"><a href="11-linear_model2.html#cb417-12" tabindex="-1"></a></span>
-<span id="cb417-13"><a href="11-linear_model2.html#cb417-13" tabindex="-1"></a>d <span class="ot">=</span> <span class="fu">rbind</span>(d_M, d_F)</span>
-<span id="cb417-14"><a href="11-linear_model2.html#cb417-14" tabindex="-1"></a>d<span class="sc">$</span>M <span class="ot">=</span> <span class="fu">ifelse</span>(d<span class="sc">$</span>gender <span class="sc">==</span> <span class="st">&quot;M&quot;</span>, <span class="dv">1</span>, <span class="dv">0</span>) <span class="co">#genderがMならば1, Fならば1のダミー変数を作る</span></span></code></pre></div>
-<div class="sourceCode" id="cb418"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb418-1"><a href="11-linear_model2.html#cb418-1" tabindex="-1"></a><span class="co">#標準化する前の結果</span></span>
-<span id="cb418-2"><a href="11-linear_model2.html#cb418-2" tabindex="-1"></a>result <span class="ot">=</span> <span class="fu">lm</span>(<span class="at">data =</span> d, y <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> x<span class="sc">*</span>M)</span>
-<span id="cb418-3"><a href="11-linear_model2.html#cb418-3" tabindex="-1"></a><span class="fu">summary</span>(result)</span></code></pre></div>
-<pre><code>## 
-## Call:
-## lm(formula = y ~ 1 + x * M, data = d)
-## 
-## Residuals:
-##     Min      1Q  Median      3Q     Max 
-## -2.3555 -0.6534  0.2205  0.5636  1.6618 
-## 
-## Coefficients:
-##             Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept)  0.05079    0.53625   0.095    0.925    
-## x           -0.53691    0.08107  -6.622 1.03e-07 ***
-## M            1.04827    0.73745   1.421    0.164    
-## x:M          0.77868    0.11274   6.907 4.35e-08 ***
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-## 
-## Residual standard error: 0.8827 on 36 degrees of freedom
-## Multiple R-squared:  0.9307, Adjusted R-squared:  0.9249 
-## F-statistic: 161.1 on 3 and 36 DF,  p-value: &lt; 2.2e-16</code></pre>
-<p>応答変数と予測変数を標準化する。ダミー変数も標準化する。</p>
-<div class="sourceCode" id="cb420"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb420-1"><a href="11-linear_model2.html#cb420-1" tabindex="-1"></a><span class="co">#変数を標準化</span></span>
-<span id="cb420-2"><a href="11-linear_model2.html#cb420-2" tabindex="-1"></a>d <span class="ot">=</span> d <span class="sc">|&gt;</span> dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">y_std =</span> <span class="fu">scale</span>(y),</span>
-<span id="cb420-3"><a href="11-linear_model2.html#cb420-3" tabindex="-1"></a>                       <span class="at">x_std =</span> <span class="fu">scale</span>(x),</span>
-<span id="cb420-4"><a href="11-linear_model2.html#cb420-4" tabindex="-1"></a>                       <span class="at">M_std =</span> <span class="fu">scale</span>(M)</span>
-<span id="cb420-5"><a href="11-linear_model2.html#cb420-5" tabindex="-1"></a>                       )</span>
-<span id="cb420-6"><a href="11-linear_model2.html#cb420-6" tabindex="-1"></a><span class="fu">head</span>(d)</span></code></pre></div>
-<pre><code>##   x        y gender M     y_std       x_std     M_std
-## 1 3 2.811781      M 1 0.9835716 -1.21465482 0.9874209
-## 2 4 2.089843      M 1 0.7594727 -0.81640734 0.9874209
-## 3 6 1.878759      M 1 0.6939495 -0.01991237 0.9874209
-## 4 9 1.485300      M 1 0.5718146  1.17483007 0.9874209
-## 5 3 2.424931      M 1 0.8634883 -1.21465482 0.9874209
-## 6 9 3.655066      M 1 1.2453383  1.17483007 0.9874209</code></pre>
-<div class="sourceCode" id="cb422"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb422-1"><a href="11-linear_model2.html#cb422-1" tabindex="-1"></a>result <span class="ot">=</span> <span class="fu">lm</span>(<span class="at">data =</span> d, y_std <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> x_std<span class="sc">*</span>M_std)</span>
-<span id="cb422-2"><a href="11-linear_model2.html#cb422-2" tabindex="-1"></a><span class="fu">summary</span>(result)</span></code></pre></div>
-<pre><code>## 
-## Call:
-## lm(formula = y_std ~ 1 + x_std * M_std, data = d)
-## 
-## Residuals:
-##      Min       1Q   Median       3Q      Max 
-## -0.73117 -0.20282  0.06843  0.17496  0.51584 
-## 
-## Coefficients:
-##             Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept)  0.01209    0.04336   0.279   0.7821    
-## x_std       -0.11502    0.04394  -2.618   0.0129 *  
-## M_std        0.90526    0.04391  20.615  &lt; 2e-16 ***
-## x_std:M_std  0.30734    0.04450   6.907 4.35e-08 ***
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-## 
-## Residual standard error: 0.274 on 36 degrees of freedom
-## Multiple R-squared:  0.9307, Adjusted R-squared:  0.9249 
-## F-statistic: 161.1 on 3 and 36 DF,  p-value: &lt; 2.2e-16</code></pre>
-<p>それぞれの係数とp値が変わった。それぞれの係数の値は、他の変数がゼロのときの応答変数の増減分を意味する、すなわち他の全ての変数が平均（=0）であるときの、その変数そのものの効果（平均的効果）を意味することになる。</p>
-<p>変数を標準化する前のモデルでは、パラメータ<span class="math inline">\(\beta_{1}\)</span>は「女性のときの<code>x</code>の傾き」であり、予測変数<code>x</code>そのものの効果を意味するものではなかった。<br />
-これに対し、標準化した後のモデルでは<code>x_std</code>の傾きを「変数<code>x</code>の平均的効果」として捉えることができる。<code>x_std</code>の傾きが意味することは、「他の変数がゼロのとき、つまり平均であるときに、<code>x_std</code>が1単位（1標準偏差）変化したときの応答変数の変化量」を意味することになり、係数の値をそのまま用いて直感的に解釈することができる。<br />
-交互作用項の係数も、一方の変数の効果が一定の場合（0のとき）、<code>M</code>または<code>x</code>に追加分で係る効果として理解することができる。</p>
+<p>切片（Intercept）は全ての予測変数の値がゼロ（ここでは標準化しているので平均）のときの応答変数の予測値である。</p>
+<p>各予測変数の傾きの値は「<strong>他の変数の影響を統制したとき</strong>の、その予測変数が1単位変化したときの応答変数量の変化量」を意味する。例えば、<code>complaints</code>の係数0.76は、その他の予測変数<code>privileges</code>, <code>learning</code>, <code>raises</code>の値が一定だと仮定したときの、<code>complaints</code>が<code>rating</code>に与える効果を示す。言い換えれば、モデルに含まれる他の予測変数の値に関係なく、<code>complaints</code>が独立に<code>rating</code>に与える効果を意味する。</p>
+<p>複数の予測変数を入れることで、他の予測変数の影響を統制した上での予測変数が応答変数に及ぼす影響を検討することができる。</p>
 </div>
 </div>
 <div id="chap11_Summary" class="section level2 hasAnchor" number="12.8">
@@ -1289,7 +1288,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </li>
 <li>2つの予測変数の組み合わせの効果（交互作用）を見たい場合は、2つの予測変数の積を線形予測子に投入する。<br />
 </li>
-<li>予測変数を複数加えたときの各予測変数の傾きは、他の予測変数がゼロのときのその予測変数が応答変数に及ぼす効果を意味する。</li>
+<li>予測変数を複数加えたときの各予測変数の傾きは、他の予測変数の影響を統制した上での、その予測変数の応答変数に及ぼす効果を意味する。</li>
 </ul>
 <p>線形予測子を拡張することで、正規分布を扱う様々な統計解析を線形モデルを扱う関数(<code>lm</code>)のみで行うことができることを学んできた。</p>
 <p>この章では、応答変数は正規分布に従うという前提をおいてきたが、応答変数が従う確率分布を正規分布以外にすることも可能である。以降の章では、応答変数が従う確率分布を変更して一般化した「一般化線形モデル」を扱っていく。</p>
@@ -1324,13 +1323,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h4>1-2<a href="11-linear_model2.html#section-1" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>変数<code>tension</code>について, 「<code>L</code>を1, それ以外を0」、「<code>M</code>を1, それ以外を0」とした2種類のダミー変数を作成し、それら2つのダミー変数を予測変数、<code>breaks</code>を応答変数として線形モデルを行い、切片及び各ダミー変数に係る傾きの推定値を報告せよ。<br />
 更に、そのときの切片及び各ダミー変数の係数が意味することを説明せよ。</p>
-</div>
-<div id="section-2" class="section level4 unnumbered hasAnchor">
-<h4>1-3<a href="11-linear_model2.html#section-2" class="anchor-section" aria-label="Anchor link to header"></a></h4>
-<p>1-2で作ったダミー変数に加え、更に「<code>H</code>を1, それ以外を0」としたダミー変数を追加で作成する。<br />
-更に、<code>breaks</code>から全体の<code>breaks</code>の平均を引いた変数<code>breaks_2</code>を作成する。</p>
-<p>それら3つのダミー変数を予測変数、<code>breaks_2</code>を応答変数として線形モデルを行い、各ダミー変数に係る傾きの推定値を報告せよ。ただし、モデルには切片の項は加えないものとする。</p>
-<p>更に、そのときの各ダミー変数の係数が意味することを説明せよ。</p>
 </div>
 </div>
 <div id="問2" class="section level3 unnumbered hasAnchor">
@@ -1574,7 +1566,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p><span class="math display">\[
 \hat{y} = \alpha + \beta_{1} x + \beta_{2}  m + \beta_{3}  x m  \\
 \]</span></p>
-<p>先ほどと同様に<span class="math inline">\(\beta_{1}\)</span>は<span class="math inline">\(m = 0\)</span>であるときの<span class="math inline">\(\x\)</span>が1単位増えたときの<span class="math inline">\(y\)</span>の変化量として解釈することができる。</p>
+<p>先ほどと同様に<span class="math inline">\(\beta_{1}\)</span>は<span class="math inline">\(m = 0\)</span>であるときの<span class="math inline">\(x\)</span>が1単位増えたときの<span class="math inline">\(y\)</span>の変化量として解釈することができる。</p>
 <p>しかし、調整変数がゼロを取り得ない変数である場合には（例として身長や体重など）、係数の意味の解釈がしにくくなる（本章でも述べているように、平均値をゼロに変換する標準化も一つの対応策である）。</p>
 <p>そこで、調整変数が量的変数の場合には調整変数のレベルを「平均」、「平均＋1標準偏差」および「平均 - 1標準偏差」の3つに分けて、予測変数の単純傾斜を推定することが多い。</p>
 <p>ここでは、<code>m</code>が「平均」、「平均 + 1標準偏差」および「平均 - 1標準偏差」の場合に分けて、<code>x</code>が<code>y</code>に及ぼす影響を見てみよう。</p>
@@ -1631,9 +1623,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode" id="cb469"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb469-1"><a href="11-linear_model2.html#cb469-1" tabindex="-1"></a>interactions<span class="sc">::</span><span class="fu">interact_plot</span>(result_3, <span class="at">pred =</span> x, <span class="at">modx =</span> m, <span class="at">plot.points =</span> <span class="cn">TRUE</span>) <span class="co">#単純傾斜をプロットすることもできる</span></span></code></pre></div>
 <p><img src="Data-Analysis-for-Psychology_files/figure-html/unnamed-chunk-248-1.png" width="672" /></p>
 <div class="sourceCode" id="cb470"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb470-1"><a href="11-linear_model2.html#cb470-1" tabindex="-1"></a><span class="co">#emmeansパッケージのemtrendsを使う場合（自分でmean -1sd, mean, mean + 1sdのレベルを予め指定する必要がある）</span></span>
-<span id="cb470-2"><a href="11-linear_model2.html#cb470-2" tabindex="-1"></a>m_minus_SD <span class="ot">=</span> (<span class="fu">mean</span>(d<span class="sc">$</span>m) <span class="sc">-</span> <span class="fu">sd</span>(d<span class="sc">$</span>m)) <span class="co"># x_2 = mean - 1SDのときにゼロになる変数を作成</span></span>
-<span id="cb470-3"><a href="11-linear_model2.html#cb470-3" tabindex="-1"></a>m_Mean <span class="ot">=</span> <span class="fu">mean</span>(d<span class="sc">$</span>m)  <span class="co"># x_2 = mean のときにゼロになる変数を作成</span></span>
-<span id="cb470-4"><a href="11-linear_model2.html#cb470-4" tabindex="-1"></a>m_plus_SD <span class="ot">=</span> (<span class="fu">mean</span>(d<span class="sc">$</span>m) <span class="sc">+</span> <span class="fu">sd</span>(d<span class="sc">$</span>m)) <span class="co"># x_2 = mean + 1SDのときにゼロになる変数を作成</span></span>
+<span id="cb470-2"><a href="11-linear_model2.html#cb470-2" tabindex="-1"></a>m_minus_SD <span class="ot">=</span> (<span class="fu">mean</span>(d<span class="sc">$</span>m) <span class="sc">-</span> <span class="fu">sd</span>(d<span class="sc">$</span>m)) <span class="co"># m = mean - 1SDのときにゼロになる変数を作成</span></span>
+<span id="cb470-3"><a href="11-linear_model2.html#cb470-3" tabindex="-1"></a>m_Mean <span class="ot">=</span> <span class="fu">mean</span>(d<span class="sc">$</span>m)  <span class="co"># m = mean のときにゼロになる変数を作成</span></span>
+<span id="cb470-4"><a href="11-linear_model2.html#cb470-4" tabindex="-1"></a>m_plus_SD <span class="ot">=</span> (<span class="fu">mean</span>(d<span class="sc">$</span>m) <span class="sc">+</span> <span class="fu">sd</span>(d<span class="sc">$</span>m)) <span class="co"># m = mean + 1SDのときにゼロになる変数を作成</span></span>
 <span id="cb470-5"><a href="11-linear_model2.html#cb470-5" tabindex="-1"></a>m_list <span class="ot">=</span> <span class="fu">list</span>(<span class="at">m =</span> <span class="fu">c</span>(m_minus_SD, m_plus_SD, m_Mean))</span>
 <span id="cb470-6"><a href="11-linear_model2.html#cb470-6" tabindex="-1"></a></span>
 <span id="cb470-7"><a href="11-linear_model2.html#cb470-7" tabindex="-1"></a>emmeans<span class="sc">::</span><span class="fu">emtrends</span>(result_3, <span class="at">specs =</span> <span class="st">&quot;m&quot;</span>, <span class="at">var =</span> <span class="st">&quot;x&quot;</span>, <span class="at">at =</span> m_list)</span></code></pre></div>
