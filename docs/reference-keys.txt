@@ -169,6 +169,7 @@ chap12_LogisticProb
 chap12_LogisticLink
 chap12_SummaryLogistic
 chap12_glmbinom
+chap12_glmslope
 chap12_Summary
 chap12_Practice
 chap13_Poisson
@@ -177,6 +178,7 @@ chap13_BasisPoisson
 chap13_PoissonProb
 chap13_PoissonLink
 chap13_glmpoisson
+chap13_glmslope
 chap13_Overdisperse
 chap13_Overdisperse1
 chap13_CheckOverdisperse

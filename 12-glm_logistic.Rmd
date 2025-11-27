@@ -102,13 +102,11 @@ summary(result_lm)
 
 ```{r}
 
-predict_lm = predict(result_lm, interval = "confidence", level = 0.95) #直線の95%信頼区間を求める
-dat_predict = cbind(dat, predict_lm)
-
 ggplot2::ggplot() + 
   ggplot2::geom_jitter(data = dat, aes(x = x, y = y), height = 0.05) + 
-  ggplot2::geom_line(data = dat_predict, aes(x = x, y = fit)) + 
-  ggplot2::geom_ribbon(data = dat_predict, aes(x = x, ymax = upr, ymin = lwr), alpha = 0.5) + 
+  ggplot2::geom_smooth(data = dat, aes(x = x, y = y), 
+                       formula = "y ~ x",
+                       method = "lm") + 
   ggplot2::scale_y_continuous(breaks = seq(0,1,0.1))
 
 
@@ -200,7 +198,7 @@ $$
 上の例で見た「応答変数が従う確率分布をベルヌーイ分布（または二項分布）」、「リンク関数をロジスティック関数（ロジット関数）」とした一般化線形モデルは、**ロジスティック回帰**と呼ばれる。
 
 
-### Rでのロジスティック回帰{#chap12_glmbinom}
+## Rでのロジスティック回帰{#chap12_glmbinom}
 
 Rには、一般化線形モデルを扱うための関数`glm()`が用意されている。線形モデルを扱う`lm()`と同じ要領でプログラムを書けばよいが、確率分布とリンク関数のオプションを自分で指定する必要がある。先程のサンプルデータ`dat`で、`glm()`関数を使ってロジスティック回帰をやってみよう。
 
@@ -226,21 +224,40 @@ summary(result_glm)
 
 出力は`lm()`と似ている。`Coefficients`の部分を見よう。`Estimate`がパラメータの推定結果である。`Pr`がp値である。パラメータの推定値は、プラスならば応答変数が1の値、マイナスならば応答変数が0の値を取りやすいことを意味する。  
 
-***
+
+求めた係数の推定値を元に、確率を予測する線を引いてみよう。
+
+```{r}
+
+ggplot2::ggplot() + 
+  ggplot2::geom_jitter(data = dat, aes(x = x, y = y), height = 0.05) + 
+  ggplot2::geom_smooth(data = dat, aes(x = x, y = y), 
+                       formula = "y ~ x",
+                       method = "glm",
+                       method.args = list(family = "binomial")) + 
+  ggplot2::scale_y_continuous(breaks = seq(0,1,0.1))
+
+```
+
+予測線は0から1の範囲に収まっており、線形予測子から確率の予測ができている。
+
+
+## ロジスティック回帰の係数の解釈{#chap12_glmslope}
   
 `x`に係る傾きの値`r round(result_glm$coefficient[2],2)`は何を意味しているのか？  
   
-線形モデルでは傾きの推定値は、「予測変数が1単位増えたときの応答変数の変化量」を意味していた。今回の例も、`x`が1増えると確率が`r round(result_glm$coefficient[2],2)`上がるということを示しているのか？  
+線形モデルでは傾きの推定値は、「予測変数が1単位増えたときの応答変数の変化量」を意味していた。ロジスティック回帰の場合も、`x`が1増えると確率が`r round(result_glm$coefficient[2],2)`上がるということを示しているのか？  
   
-一般化線形モデルの場合、係数の値が意味することの解釈には注意が必要である。  
-  
+もう一度、モデルを確認してみよう。  
 
 $$
 \begin{equation}
   \log\frac{q}{1-q} = \alpha +  \beta x \\
 \end{equation}
 $$
-右辺を線形の式とすると、左辺は対数オッズとなる。つまり、$x$に係る傾き$\beta$は、「$x$が1増えた時の$q$の対数オッズの変化量」を意味しており、確率$q$そのものの変化量ではない。このように、正規分布以外の確率分布を用いた一般化線形モデルでは、係数そのものの値を解釈するのが難しくなる点に注意が必要である。 
+右辺を線形の式で整理すると、左辺は対数オッズになる。
+
+つまり、$x$に係る傾き$\beta$は、「$x$が1単位増加した時の$q$の対数オッズの変化量」を意味しており、確率$q$そのものの変化量ではない。このように、線形モデル（リンク関数を指定しないモデル）のときとは異なり、リンク関数で線形予測子を変換する場合には傾きや切片の値を解釈する上で注意が必要となる（応答変数そのものの変化量として解釈できるとは限らない）。 
   
 対数オッズと確率$q$との関係を図で見てみよう。x軸を$\log(q/[1-q])$、y軸を$q$とした図を示す。  
   
@@ -253,32 +270,14 @@ sample_dat = data.frame(q = q, logit = logit)
 ggplot2::ggplot() + 
   ggplot2::geom_line(data = sample_dat, aes(x = logit, y = q))
 
-
 ```
 
-つまり、対数オッズがプラスだと確率$q$は0.5より大きくなり、対数オッズがマイナスだと確率$q$は0.5より小さくなる関係にある。要は、対数オッズがプラスだと$y = 1$が起こりやすくなり、マイナスだと起こりにくくなることを意味している。
+対数オッズがプラスだと確率$q$は0.5より大きくなり、対数オッズがマイナスだと確率$q$は0.5より小さくなる関係にある。すなわち、対数オッズがプラスだと$y = 1$が起こりやすくなり、マイナスだと起こりにくくなることを意味する。  
+  
+予測変数の傾きが意味する対数オッズの変化量は、予測変数が確率の増減に及ぼす効果の大きさを示している。
 
 ***
-
-
-求めた係数の推定値を元に、確率を予測する線を引いてみよう。
-
-```{r}
-
-new = data.frame(x = seq(0, 11, 0.1))
-predict_glm = predict(result_glm, newdata = new, type = "response") 
-dat_predict = data.frame(new, y = predict_glm)
-
-ggplot2::ggplot() + 
-  ggplot2::geom_jitter(data = dat, aes(x = x, y = y), height = 0.05) + 
-  ggplot2::geom_line(data = dat_predict, aes(x = x, y = y)) + 
-  ggplot2::scale_y_continuous(breaks = seq(0,1,0.1))
-
-
-```
-
-予測線は0から1の範囲に収まっており、線形予測子から確率の予測ができている。
-
+確率（$q$）は、0から1までの範囲しか取りえない。オッズ（$\frac{q}{1-q}$）の取る範囲も、正の値の範囲$[0, \infty]$に制限される。それに対し、対数オッズ（$\log\frac {q}{1-q}$）は取り得る値の範囲に制限がない。対数オッズは直感的に解釈しにくい一方、解析的に扱いやすいという利点がある。  
 
 ## まとめ{#chap12_Summary}
 
