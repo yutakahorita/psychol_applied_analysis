@@ -148,7 +148,7 @@ $$
 傾きを$\beta_{ j}$にする、すなわちグループごとに予測変数に係る効果が異なるという前提を置くこともできる。これは、**ランダム傾き（random slope）**と呼ばれる。
 
 $$
-\hat{y}_{i} = \alpha_{0} + \beta_{j} x_{i} + \alpha_{j}  \\
+\hat{y}_{i} = \alpha_{0} + (\beta_{0} + \beta_{j}) x_{i} + \alpha_{j}  \\
 \alpha_{j} \sim \text{Normal}(0, \sigma_{\alpha})\\
 \beta_{j} \sim \text{Normal}(0, \sigma_{\beta})\\
 y_{i} \sim \text{Normal}(\hat{y}_{i}, \sigma)
