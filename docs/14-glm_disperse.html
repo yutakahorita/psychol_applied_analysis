@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 15 一般化線形モデル（過分散への対処） | 心理データ応用解析法</title>
   <meta name="description" content="Chapter 15 一般化線形モデル（過分散への対処） | 心理データ応用解析法" />
-  <meta name="generator" content="bookdown 0.46 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.47 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 15 一般化線形モデル（過分散への対処） | 心理データ応用解析法" />
   <meta property="og:type" content="book" />
@@ -23,7 +23,7 @@
 <meta name="author" content="帝京大学文学部心理学科　堀田結孝" />
 
 
-<meta name="date" content="2026-05-18" />
+<meta name="date" content="2026-07-26" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -675,12 +675,12 @@ binomial distribution)</strong>を用いる方法がよく使われる。</p>
 <p>例えばコインを投げて表が出る確率を0.5として、表が3回出るまで投げると決めたとする。8回投げたところで表が3回出た場合、表が3回出る確率は以下から求めることができる。</p>
 <div class="sourceCode" id="cb526"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb526-1"><a href="14-glm_disperse.html#cb526-1" tabindex="-1"></a><span class="fu">choose</span>(<span class="dv">8-1</span>, <span class="dv">3-1</span>) <span class="sc">*</span> <span class="fl">0.5</span><span class="sc">^</span><span class="dv">2</span> <span class="sc">*</span> (<span class="dv">1</span><span class="fl">-0.5</span>)<span class="sc">^</span>(<span class="dv">8-3</span>) <span class="sc">*</span> <span class="fl">0.5</span> <span class="co">#つまり、7回中表が2回、裏が5回出て、最後の１回で表が出る確率を求める。</span></span></code></pre></div>
 <pre><code>## [1] 0.08203125</code></pre>
-<p>これを一般化した式が以下である。成功確率を<span class="math inline">\(q\)</span>、成功回数を<span class="math inline">\(r\)</span>、全試行数（成功回数+失敗回数）を<span class="math inline">\(n\)</span>とした場合の確率<span class="math inline">\(P(n)\)</span>を表している。（上の例の場合は、<span class="math inline">\(q=0.5\)</span>,
-<span class="math inline">\(r=3\)</span>, <span class="math inline">\(n=8\)</span>である）</p>
+<p>これを一般化した式が以下である。成功確率を<span class="math inline">\(q\)</span>、成功回数を<span class="math inline">\(r\)</span>、全試行数（成功回数+失敗回数）を<span class="math inline">\(n\)</span>とした場合の確率<span class="math inline">\(P(n)\)</span>を表している。</p>
+<p>（上の例の場合は、<span class="math inline">\(q=0.5\)</span>, <span class="math inline">\(r=3\)</span>, <span class="math inline">\(n=8\)</span>である）</p>
 <p><span class="math display">\[
 P(n) = {}_{n-1}\mathrm{C}_{r-1} q^{r}(1-q)^{n-r}
 \]</span>
-失敗回数を<span class="math inline">\(x\)</span>として、以下のように置き換えることもできる。ある事象が<span class="math inline">\(r\)</span>回生じるまでに、<span class="math inline">\(x\)</span>回失敗する確率と言い換えることができる。この確率分布を負の二項分布という。</p>
+失敗回数を<span class="math inline">\(x\)</span>として、以下のように置き換えることもできる。ある事象が<span class="math inline">\(r\)</span>回生じるまでに、<span class="math inline">\(x\)</span>回失敗する確率と言い換えることができる。この確率分布を<strong>負の二項分布</strong>という。</p>
 <p><span class="math display">\[
 P(x) = {}_{x+r-1}\mathrm{C}_{r-1} q^{r}(1-q)^{x}
 \]</span></p>
@@ -698,15 +698,24 @@ P(x) = {}_{x+r-1}\mathrm{C}_{r-1} q^{r}(1-q)^{x}
 <p><span class="math display">\[
 E(x) = \frac{r(1-q)}{q}\\
 Var(x) = \frac{r(1-q)}{q^2}\\
+\]</span>
+<span class="math inline">\(E(x) = \mu\)</span>とすると、</p>
+<p><span class="math display">\[
+\mu = \frac{r(1-q)}{q}\\
+q = \frac{r}{\mu+r}\\
 \]</span></p>
-<p><code>dnbinom()</code>に期待値<code>mu</code>を入力しても、確率を計算してくれる。</p>
+<p>となるので、分散は以下のように変換できる。</p>
+<p><span class="math display">\[
+Var(x) = \mu + \frac{\mu^2}{r}\\
+\]</span></p>
+<p>すなわち、負の二項分布では、分散が期待値（平均）よりも<span class="math inline">\(\mu^{2}/r\)</span>大きい。負の二項分布によって、分散が平均よりも大きい分布を扱うことができる。分散は<span class="math inline">\(r\)</span>の値によって決まる。つまり、<span class="math inline">\(r\)</span>（負の二項分布における成功回数を意味するパラメータ）は、分散を調整するパラメータとして機能する。</p>
+<p><code>dnbinom()</code>では期待値<code>mu</code>を入力しても、確率を計算してくれる。</p>
 <div class="sourceCode" id="cb529"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb529-1"><a href="14-glm_disperse.html#cb529-1" tabindex="-1"></a><span class="fu">dnbinom</span>(<span class="at">x =</span> x, <span class="at">size =</span> <span class="dv">3</span>, <span class="at">prob =</span> <span class="fl">0.5</span>) </span></code></pre></div>
 <pre><code>##  [1] 0.125000000 0.187500000 0.187500000 0.156250000 0.117187500 0.082031250
 ##  [7] 0.054687500 0.035156250 0.021972656 0.013427734 0.008056641</code></pre>
 <div class="sourceCode" id="cb531"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb531-1"><a href="14-glm_disperse.html#cb531-1" tabindex="-1"></a><span class="fu">dnbinom</span>(<span class="at">x =</span> x, <span class="at">size =</span> <span class="dv">3</span>, <span class="at">mu =</span> <span class="dv">3</span><span class="sc">*</span><span class="fl">0.5</span><span class="sc">/</span>(<span class="dv">1</span><span class="fl">-0.5</span>)) </span></code></pre></div>
 <pre><code>##  [1] 0.125000000 0.187500000 0.187500000 0.156250000 0.117187500 0.082031250
 ##  [7] 0.054687500 0.035156250 0.021972656 0.013427734 0.008056641</code></pre>
-<p>期待値を<span class="math inline">\(E(x)=\mu\)</span>とすると、分散は<span class="math inline">\(Var(x)=\mu + \mu^{2}/r\)</span>で、分散が期待値（平均）よりも<span class="math inline">\(\mu^{2}/r\)</span>大きい。負の二項分布によって、分散が平均よりも大きい分布を扱うことができる。</p>
 </div>
 <div id="chap14_glmnb" class="section level3 hasAnchor" number="15.2.2">
 <h3><span class="header-section-number">15.2.2</span> Rでの負の二項回帰<a href="14-glm_disperse.html#chap14_glmnb" class="anchor-section" aria-label="Anchor link to header"></a></h3>
@@ -727,7 +736,7 @@ Var(x) = \frac{r(1-q)}{q^2}\\
 <p><code>breaks</code>に対する<code>wool</code>(A or
 B)の効果を検討する。まずは、ポアソン回帰の結果を見てみる。<code>breaks</code>を<span class="math inline">\(y\)</span>、<code>A</code>を<span class="math inline">\(x\)</span>とすると、モデルは以下のように表現できる。</p>
 <p><span class="math display">\[
-\lambda = \alpha + \beta x\\
+\log{\lambda} = \alpha + \beta x\\
 y \sim \text{Poisson}(\lambda)
 \]</span></p>
 <div class="sourceCode" id="cb536"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb536-1"><a href="14-glm_disperse.html#cb536-1" tabindex="-1"></a>model_poisson <span class="ot">=</span> <span class="fu">glm</span>(<span class="at">data =</span> d, breaks <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> A, <span class="at">family =</span> <span class="fu">poisson</span>(<span class="at">link =</span> <span class="st">&quot;log&quot;</span>))</span>
@@ -756,9 +765,9 @@ y \sim \text{Poisson}(\lambda)
 <div class="sourceCode" id="cb540"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb540-1"><a href="14-glm_disperse.html#cb540-1" tabindex="-1"></a><span class="fu">var</span>(d<span class="sc">$</span>breaks)</span></code></pre></div>
 <pre><code>## [1] 174.2041</code></pre>
 <p><code>A</code>に係る傾きの推定値について、かなり小さいp値が推定されている。</p>
-<p>次に、負の二項回帰の結果と比較してみよう。</p>
+<p>次に、負の二項回帰の結果と比較してみよう（<span class="math inline">\(\mu\)</span>は負の二項分布の期待値，<span class="math inline">\(r\)</span>は過分散のパラメータ）。</p>
 <p><span class="math display">\[
-\mu = \alpha + \beta x\\
+\log{\mu} = \alpha + \beta x\\
 y \sim \text{NegativeBinom}(\mu, r)
 \]</span></p>
 <p><code>MASS</code>パッケージの<code>glm.nb()</code>を使う。</p>
